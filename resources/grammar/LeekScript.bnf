@@ -1,0 +1,140 @@
+{
+  parserClass="com.plopiplop.leekwars.parser.LeekScriptParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="LS"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.plopiplop.leekwars.psi"
+  psiImplPackage="com.plopiplop.leekwars.psi.impl"
+
+  elementTypeHolderClass="com.plopiplop.leekwars.psi.LSTypes"
+  elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
+  tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
+
+  tokens=[
+    identifier='regexp:(\p{Alpha}|_)\w*'
+    number='regexp:\d+(\.\d*)?'
+    string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
+    comment='regexp://.*'
+    multiline_comment='regexp:/\*([^\*]|\*[^/])*\*/'
+
+    kw_function='function'
+    kw_var='var'
+    kw_global='global'
+    kw_if='if'
+    kw_else='else'
+    kw_while='while'
+    kw_for='for'
+    kw_null='null'
+    kw_undefined='undefined'
+    kw_true='true'
+    kw_false='false'
+    kw_return='return'
+    kw_break='break'
+
+    op_plus='+'
+    op_minus='-'
+    op_times='*'
+    op_divide='/'
+    op_modulo='%'
+    op_semicolon=';'
+    op_lparen='('
+    op_rparen=')'
+    op_lbracket='['
+    op_rbracket=']'
+    op_lbrace='{'
+    op_rbrace='}'
+    op_comma=','
+    op_assign='='
+    op_not='!'
+    op_logical_or='||'
+    op_logical_and='&&'
+    op_le='<='
+    op_lt='<'
+    op_ge='>='
+    op_gt='>'
+    op_identity_equals='==='
+    op_equals='=='
+    op_identity_not_equals='!=='
+    op_not_equals='!='
+    op_binary_or='|'
+    op_binary_and='&'
+  ]
+}
+
+program ::= sourceElements? <<eof>>
+
+private sourceElements ::= sourceElement+
+private sourceElement ::= functionDeclaration | statement | multiline_comment
+
+statement ::=
+        block
+    |   variableStatement
+    |   emptyStatement
+    |   expressionStatement
+    |   ifStatement
+    |   whileStatement
+    |   forStatement
+    |   returnStatement
+    |   breakStatement
+
+functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' '{' functionBody '}'
+
+block ::= '{' statementList? '}'
+statementList ::= statement+
+
+variableStatement ::= modifier variableDeclarationList eos
+variableDeclarationList ::= variableDeclaration (',' variableDeclaration)*
+variableDeclaration ::= identifier initialiser?
+initialiser ::= '=' singleExpression
+
+emptyStatement ::= ';'
+expressionStatement ::= expressionSequence
+expressionSequence ::= singleExpression (',' singleExpression)*
+
+ifStatement ::= 'if' '(' expressionSequence ')' statement ('else' statement)?
+whileStatement ::= 'while' '(' expressionSequence ')' statement
+forStatement ::= 'for' '(' ('var' variableDeclarationList | expressionSequence?) ';' expressionSequence? ';' expressionSequence? ')' statement
+returnStatement ::= 'return' expressionSequence? eos
+breakStatement ::= 'break' eos
+
+singleExpression ::=
+        'function' identifier? '(' formalParameterList ')' '{' functionBody '}'
+    |   simpleExpression comparator singleExpression
+    |   simpleExpression booleanOperator singleExpression
+    |   simpleExpression mathOperator singleExpression
+    |   variableReference '=' singleExpression
+    |   simpleExpression
+
+simpleExpression ::=
+        identifier postfixOperator
+    |   identifier arguments
+    |   prefixOperator singleExpression
+    |   variableReference
+    |   '(' expressionSequence ')'
+    |   literal
+    |   arrayLiteral
+
+variableReference ::= identifier '[' expressionSequence ']' | identifier
+
+functionBody ::= sourceElements?
+
+eos ::= ';'
+
+arguments ::= '(' argumentList? ')'
+argumentList ::= singleExpression (',' singleExpression)*
+
+formalParameterList ::= identifier (',' identifier)*
+
+comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
+booleanOperator ::= '&&' | '||' | '&' | '|'
+modifier ::= 'var' | 'global'
+postfixOperator ::= '++' | '--'
+prefixOperator ::= postfixOperator | '+' | '-' | '~' | '!'
+mathOperator ::= '+' | '-' | '*' | '/' | '%'
+
+literal ::= 'null' | 'undefined' | 'true' | 'false' | string | number
+
+arrayLiteral ::= '[' elementList? ']'
+elementList ::= singleExpression (',' singleExpression)*
