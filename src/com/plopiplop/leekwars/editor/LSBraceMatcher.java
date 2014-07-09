@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class LSBraceMatcher implements PairedBraceMatcher {
-    private static final BracePair[] BRACE_PAIRS = new BracePair[] {
+    private static final BracePair[] BRACE_PAIRS = new BracePair[]{
             new BracePair(LSTypes.OP_LPAREN, LSTypes.OP_RPAREN, false),
             new BracePair(LSTypes.OP_LBRACE, LSTypes.OP_RBRACE, true),
             new BracePair(LSTypes.OP_LBRACKET, LSTypes.OP_RBRACKET, false),

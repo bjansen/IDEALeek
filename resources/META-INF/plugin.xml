@@ -32,6 +32,10 @@
       <lang.commenter language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSCommenter"/>
       <lang.braceMatcher language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSBraceMatcher"/>
       <quoteHandler fileType="LeekScript" className="com.plopiplop.leekwars.editor.LSQuoteHandler"/>
+      <lang.documentationProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.doc.LSDocumentationProvider"/>
+
+      <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
+      <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>
   </extensions>
 
   <application-components>
@@ -39,11 +43,15 @@
   </application-components>
 
   <project-components>
-    <!-- Add your project components here -->
+    <component>
+        <implementation-class>com.plopiplop.leekwars.model.ModelManager</implementation-class>
+    </component>
   </project-components>
 
   <actions>
-    <!-- Add your actions here -->
+    <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update API">
+        <add-to-group group-id="ToolsMenu"/>
+    </action>
   </actions>
 
 </idea-plugin>
