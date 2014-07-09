@@ -30,6 +30,8 @@
       <lang.syntaxHighlighterFactory key="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSSyntaxHighlighterFactory"/>
       <lang.foldingBuilder language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSFoldingBuilder"/>
       <lang.commenter language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSCommenter"/>
+      <lang.braceMatcher language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSBraceMatcher"/>
+      <quoteHandler fileType="LeekScript" className="com.plopiplop.leekwars.editor.LSQuoteHandler"/>
   </extensions>
 
   <application-components>
