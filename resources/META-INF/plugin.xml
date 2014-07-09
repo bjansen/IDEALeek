@@ -49,7 +49,7 @@
   </project-components>
 
   <actions>
-    <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update API">
+    <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update LeekWars API">
         <add-to-group group-id="ToolsMenu"/>
     </action>
   </actions>
