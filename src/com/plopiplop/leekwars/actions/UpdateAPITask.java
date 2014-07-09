@@ -8,6 +8,7 @@ import com.plopiplop.leekwars.model.Chip;
 import com.plopiplop.leekwars.model.LeekWarsServer;
 import com.plopiplop.leekwars.model.ModelManager;
 import com.plopiplop.leekwars.model.Weapon;
+import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -30,10 +31,13 @@ public class UpdateAPITask implements Runnable {
     public void run() {
         Document doc;
         try {
-            doc = LeekWarsServer.getMarket();
+            doc = LeekWarsServer.getInstance().getMarket();
         } catch (IOException e) {
             Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
             e.printStackTrace();
+            return;
+        } catch (PluginNotConfiguredException e) {
+            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
             return;
         }
 

@@ -6,11 +6,15 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.openapi.components.StoragePathMacros;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
 @State(name = "LSSettings", storages = {@Storage(id = "leekscript", file = StoragePathMacros.APP_CONFIG + "/leekscript.xml")})
 public class LSSettings implements PersistentStateComponent<LSSettings> {
-    public String siteUrl;
+    public String siteUrl = "http://leekwars.com";
+    public String siteLogin;
+    public String sitePassword;
+    public boolean enableAuth;
     public String authLogin;
     public String authPassword;
 
@@ -27,6 +31,10 @@ public class LSSettings implements PersistentStateComponent<LSSettings> {
     @Override
     public void loadState(LSSettings state) {
         XmlSerializerUtil.copyBean(state, this);
+    }
+
+    public boolean isValid() {
+        return StringUtils.isNotBlank(siteUrl) && StringUtils.isNotBlank(siteLogin) && StringUtils.isNotBlank(sitePassword);
     }
 
     /**
@@ -48,5 +56,17 @@ public class LSSettings implements PersistentStateComponent<LSSettings> {
      */
     public String getAuthPassword() {
         return authPassword;
+    }
+
+    public String getSiteLogin() {
+        return siteLogin;
+    }
+
+    public String getSitePassword() {
+        return sitePassword;
+    }
+
+    public boolean isEnableAuth() {
+        return enableAuth;
     }
 }
