@@ -3,19 +3,28 @@ package com.plopiplop.leekwars.actions;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.plopiplop.leekwars.model.Chip;
 import com.plopiplop.leekwars.model.LeekWarsServer;
 import com.plopiplop.leekwars.model.ModelManager;
 import com.plopiplop.leekwars.model.Weapon;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
+import com.plopiplop.leekwars.transformer.WeaponTransformer;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.Objects.firstNonNull;
 
 public class UpdateAPITask implements Runnable {
 
@@ -24,7 +33,7 @@ public class UpdateAPITask implements Runnable {
 
     public UpdateAPITask(Project project, ModelManager modelManager) {
         this.project = project;
-        this.modelManager = modelManager;
+        this.modelManager = firstNonNull(modelManager, ModelManager.getInstance(project));
     }
 
     @Override
@@ -70,12 +79,29 @@ public class UpdateAPITask implements Runnable {
             }
         }
 
-        if (modelManager == null) {
-            ModelManager.getInstance(project).setWeapons(weapons);
-            ModelManager.getInstance(project).setChips(chips);
-        } else {
-            modelManager.setWeapons(weapons);
-            modelManager.setChips(chips);
-        }
+        modelManager.setWeapons(weapons);
+        modelManager.setChips(chips);
+
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Module module = ModuleManager.getInstance(project).getModules()[0];
+                            VirtualFile folder = ModuleRootManager.getInstance(module).getSourceRoots(false)[0];
+
+                            OutputStream out = folder.createChildData(this, "leekwars-api.lks").getOutputStream(this);
+                            WeaponTransformer.getInstance().transformToLeekScript(modelManager, out);
+                            out.flush();
+                            out.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+        });
     }
 }

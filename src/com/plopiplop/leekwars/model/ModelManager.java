@@ -29,11 +29,11 @@ public class ModelManager extends AbstractProjectComponent {
 
     @Override
     public void initComponent() {
-        MapDataContext context = new MapDataContext();
-        context.put(CommonDataKeys.PROJECT, myProject);
-        AnActionEvent event = new AnActionEvent(null, context, ActionPlaces.UNKNOWN, new Presentation(), ActionManager.getInstance(), 0);
-
-        new UpdateAPIAction(this).actionPerformed(event);
+//        MapDataContext context = new MapDataContext();
+//        context.put(CommonDataKeys.PROJECT, myProject);
+//        AnActionEvent event = new AnActionEvent(null, context, ActionPlaces.UNKNOWN, new Presentation(), ActionManager.getInstance(), 0);
+//
+//        new UpdateAPIAction(this).actionPerformed(event);
     }
 
     /**
