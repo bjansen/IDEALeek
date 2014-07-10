@@ -12,6 +12,9 @@
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
 
+  implements("(functionDeclaration|variableDeclaration|variableReference)")="com.plopiplop.leekwars.psi.LSNamedElement"
+  mixin("(functionDeclaration|variableDeclaration|variableReference)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
+
   tokens=[
     identifier='regexp:(\p{Alpha}|_)\w*'
     number='regexp:\d+(\.\d*)?'
@@ -68,7 +71,7 @@ program ::= sourceElements? <<eof>>
 private sourceElements ::= sourceElement+
 private sourceElement ::= functionDeclaration | statement | multiline_comment
 
-statement ::=
+private statement ::=
         block
     |   variableStatement
     |   emptyStatement
