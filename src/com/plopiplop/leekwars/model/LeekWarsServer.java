@@ -34,7 +34,7 @@ public class LeekWarsServer {
             throw new PluginNotConfiguredException();
         }
         // FIXME handle expired sessions
-        if (cookie == null) {
+        if (cookie == null || !cookie.contains("farmer_id")) {
             connectToLeekWars();
         }
         HttpURLConnection connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl(url));
@@ -45,7 +45,7 @@ public class LeekWarsServer {
         return Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
     }
 
-    private void connectToLeekWars() throws IOException {
+    private void connectToLeekWars() throws IOException, PluginNotConfiguredException {
         HttpURLConnection connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl("/"));
 
         addAuth(connection);
@@ -78,6 +78,12 @@ public class LeekWarsServer {
             // farmer_id and farmer_hash
             cookie += "; " + fields.get(0).substring(0, fields.get(0).indexOf(';'));
             cookie += "; " + fields.get(1).substring(0, fields.get(1).indexOf(';'));
+        } else {
+            Document doc = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
+            if (doc.body().text().contains("Les identifiants sont incorrects")) {
+                cookie = null;
+                throw new PluginNotConfiguredException();
+            }
         }
     }
 

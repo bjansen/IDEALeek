@@ -9,6 +9,8 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiManager;
 import com.plopiplop.leekwars.model.Chip;
 import com.plopiplop.leekwars.model.LeekWarsServer;
 import com.plopiplop.leekwars.model.ModelManager;
@@ -20,7 +22,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,13 +94,11 @@ public class UpdateAPITask implements Runnable {
                         try {
                             Module module = ModuleManager.getInstance(project).getModules()[0];
                             VirtualFile folder = ModuleRootManager.getInstance(module).getSourceRoots(false)[0];
-
-                            OutputStream out = folder.createChildData(this, LEEKWARS_API_FILE).getOutputStream(this);
+                            PsiDirectory out = PsiManager.getInstance(project).findDirectory(folder);
                             WeaponTransformer.getInstance().transformToLeekScript(modelManager, out);
-                            out.flush();
-                            out.close();
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
+                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars APPI", "Can't write API to " + LEEKWARS_API_FILE, NotificationType.ERROR));
                         }
                     }
                 });

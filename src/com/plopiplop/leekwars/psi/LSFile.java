@@ -22,7 +22,7 @@ public class LSFile extends PsiFileBase {
 
     @Override
     public String toString() {
-        return "Simple File";
+        return "LeekScript " + getName();
     }
 
     @Override

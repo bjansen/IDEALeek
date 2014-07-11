@@ -1,49 +1,40 @@
 package com.plopiplop.leekwars.transformer;
 
-import com.plopiplop.leekwars.model.Chip;
+import com.intellij.ide.fileTemplates.FileTemplateManager;
+import com.intellij.ide.fileTemplates.FileTemplateUtil;
+import com.intellij.psi.PsiDirectory;
+import com.intellij.psi.PsiFile;
 import com.plopiplop.leekwars.model.ModelManager;
-import com.plopiplop.leekwars.model.Weapon;
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.DefaultObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.plopiplop.leekwars.actions.UpdateAPITask.LEEKWARS_API_FILE;
+
 
 public class WeaponTransformer {
 
     private static final WeaponTransformer INSTANCE = new WeaponTransformer();
 
-    private Configuration config;
-
     private WeaponTransformer() {
-        config = new Configuration();
-        config.setObjectWrapper(new DefaultObjectWrapper());
-        config.setTemplateLoader(new ClassTemplateLoader(WeaponTransformer.class, "/templates"));
     }
 
     public static WeaponTransformer getInstance() {
         return INSTANCE;
     }
 
-    public void transformToLeekScript(ModelManager manager, OutputStream out) throws IOException {
-        Template ftl = config.getTemplate("leekscript-api.ftl");
+    public void transformToLeekScript(ModelManager manager, PsiDirectory out) throws Exception {
+        FileTemplateManager templateManager = FileTemplateManager.getInstance();
+        Map<String, Object> context = new HashMap<>();
+        context.put("weapons", manager.getWeapons());
+        context.put("chips", manager.getChips());
 
-        Map<String, Object> root = new HashMap<>();
+        PsiFile existingApi = out.findFile(LEEKWARS_API_FILE);
 
-        OutputStreamWriter writer = new OutputStreamWriter(out);
-
-        try {
-            root.put("weapons", manager.getWeapons());
-            root.put("chips", manager.getChips());
-            ftl.process(root, writer);
-        } catch (TemplateException e) {
-            e.printStackTrace();
+        if (existingApi != null) {
+            existingApi.delete();
         }
+
+        FileTemplateUtil.createFromTemplate(templateManager.getInternalTemplate(LEEKWARS_API_FILE), LEEKWARS_API_FILE, context, out, getClass().getClassLoader());
     }
 }
