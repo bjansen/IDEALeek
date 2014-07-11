@@ -28,6 +28,8 @@ import static com.google.common.base.Objects.firstNonNull;
 
 public class UpdateAPITask implements Runnable {
 
+    public static final String LEEKWARS_API_FILE = "leekwars-api.lks";
+
     private Project project;
     private ModelManager modelManager;
 
@@ -92,7 +94,7 @@ public class UpdateAPITask implements Runnable {
                             Module module = ModuleManager.getInstance(project).getModules()[0];
                             VirtualFile folder = ModuleRootManager.getInstance(module).getSourceRoots(false)[0];
 
-                            OutputStream out = folder.createChildData(this, "leekwars-api.lks").getOutputStream(this);
+                            OutputStream out = folder.createChildData(this, LEEKWARS_API_FILE).getOutputStream(this);
                             WeaponTransformer.getInstance().transformToLeekScript(modelManager, out);
                             out.flush();
                             out.close();
