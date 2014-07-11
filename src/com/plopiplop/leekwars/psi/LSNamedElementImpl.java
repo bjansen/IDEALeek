@@ -35,6 +35,6 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
     public PsiReference getReference() {
         PsiElement id = getNameIdentifier();
 
-        return new LSReference(id, new TextRange(id.getStartOffsetInParent(), id.getTextLength()));
+        return new LSReference(id, new TextRange(id.getStartOffsetInParent(), id.getStartOffsetInParent() + id.getTextLength()));
     }
 }

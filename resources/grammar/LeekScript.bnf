@@ -12,8 +12,8 @@
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
 
-  implements("(functionDeclaration|variableDeclaration|variableReference)")="com.plopiplop.leekwars.psi.LSNamedElement"
-  mixin("(functionDeclaration|variableDeclaration|variableReference)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
+  implements("(functionDeclaration|variableDeclaration|variableReference|parameter)")="com.plopiplop.leekwars.psi.LSNamedElement"
+  mixin("(functionDeclaration|variableDeclaration|variableReference|parameter)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
 
   tokens=[
     identifier='regexp:(\p{Alpha}|_)\w*'
@@ -96,9 +96,12 @@ emptyStatement ::= ';'
 expressionStatement ::= expressionSequence
 expressionSequence ::= singleExpression (',' singleExpression)*
 
-ifStatement ::= 'if' '(' expressionSequence ')' statement ('else' statement)?
+ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock?
+thenBlock ::= statement
+elseBlock ::= 'else' statement
 whileStatement ::= 'while' '(' expressionSequence ')' statement
-forStatement ::= 'for' '(' ('var' variableDeclarationList | expressionSequence?) ';' expressionSequence? ';' expressionSequence? ')' statement
+forStatement ::= 'for' '(' (forInitializerDeclaration | expressionSequence?) ';' expressionSequence? ';' expressionSequence? ')' statement
+forInitializerDeclaration ::= 'var' variableDeclarationList
 returnStatement ::= 'return' expressionSequence? eos
 breakStatement ::= 'break' eos
 
@@ -128,7 +131,8 @@ eos ::= ';'
 arguments ::= '(' argumentList? ')'
 argumentList ::= singleExpression (',' singleExpression)*
 
-formalParameterList ::= identifier (',' identifier)*
+formalParameterList ::= parameter (',' parameter)*
+parameter ::= identifier
 
 comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
 booleanOperator ::= '&&' | '||' | '&' | '|'

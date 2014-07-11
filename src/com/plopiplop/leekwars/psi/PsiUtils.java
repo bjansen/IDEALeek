@@ -6,6 +6,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 public class PsiUtils {
 
     public static PsiElement findParentBlock(PsiElement element) {
-        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class, LSFile.class);
+        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class, LSThenBlock.class,
+                LSElseBlock.class, LSWhileStatement.class, LSForStatement.class, LSFile.class);
     }
 }
