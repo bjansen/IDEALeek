@@ -11,12 +11,12 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
-import com.plopiplop.leekwars.model.Chip;
-import com.plopiplop.leekwars.model.LeekWarsServer;
-import com.plopiplop.leekwars.model.ModelManager;
-import com.plopiplop.leekwars.model.Weapon;
+import com.plopiplop.leekwars.model.*;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
-import com.plopiplop.leekwars.transformer.WeaponTransformer;
+import com.plopiplop.leekwars.transformer.ApiTransformer;
+import com.plopiplop.leekwars.transformer.ChipParser;
+import com.plopiplop.leekwars.transformer.FunctionParser;
+import com.plopiplop.leekwars.transformer.WeaponParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -41,9 +41,12 @@ public class UpdateAPITask implements Runnable {
 
     @Override
     public void run() {
-        Document doc;
+        Document market;
+        Document documentation;
+
         try {
-            doc = LeekWarsServer.getInstance().getMarket();
+            market = LeekWarsServer.getInstance().getMarket();
+            documentation = LeekWarsServer.getInstance().getDocumentation();
         } catch (IOException e) {
             Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
             e.printStackTrace();
@@ -53,37 +56,8 @@ public class UpdateAPITask implements Runnable {
             return;
         }
 
-        Elements elements = doc.select("#preview div.item");
-
-        List<Weapon> weapons = new ArrayList<>();
-        List<Chip> chips = new ArrayList<>();
-
-        for (Element element : elements) {
-            if (element.attr("id").startsWith("weapon-")) {
-                Weapon weapon = new Weapon();
-                weapon.id = element.select("div.constant").text();
-                weapon.name = element.select("div.header h2.name").text();
-                weapon.level = element.select("div.header div.level").text();
-                weapon.description = element.select("div.desc").text();
-                weapon.price = element.select("div.buy-button span").text();
-
-                weapons.add(weapon);
-            } else if (element.attr("id").startsWith("chip-")) {
-                Chip chip = new Chip();
-                element = element.child(0);
-
-                chip.id = element.select("div.constant").text();
-                chip.name = element.select("div.header h2.name").text();
-                chip.level = element.select("div.header div.level").text();
-                chip.description = element.select("div.desc").text();
-                chip.price = element.parent().select("div.buy-button span").text();
-
-                chips.add(chip);
-            }
-        }
-
-        modelManager.setWeapons(weapons);
-        modelManager.setChips(chips);
+        parseMarket(market);
+        parseDocumentation(documentation);
 
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
@@ -95,7 +69,7 @@ public class UpdateAPITask implements Runnable {
                             Module module = ModuleManager.getInstance(project).getModules()[0];
                             VirtualFile folder = ModuleRootManager.getInstance(module).getSourceRoots(false)[0];
                             PsiDirectory out = PsiManager.getInstance(project).findDirectory(folder);
-                            WeaponTransformer.getInstance().transformToLeekScript(modelManager, out);
+                            ApiTransformer.getInstance().transformToLeekScript(modelManager, out);
                         } catch (Exception e) {
                             e.printStackTrace();
                             Notifications.Bus.notify(new Notification("LeekScript", "LeekWars APPI", "Can't write API to " + LEEKWARS_API_FILE, NotificationType.ERROR));
@@ -104,5 +78,38 @@ public class UpdateAPITask implements Runnable {
                 });
             }
         });
+    }
+
+    private void parseDocumentation(Document documentation) {
+        Elements elements = documentation.select("#functions .function");
+        List<Function> functions = new ArrayList<>();
+
+        for (Element element : elements) {
+            Function function = (FunctionParser.getInstance()).parse(element);
+
+            if (function != null) {
+                functions.add(function);
+            }
+        }
+
+        modelManager.setFunctions(functions);
+    }
+
+    private void parseMarket(Document market) {
+        Elements elements = market.select("#preview div.item");
+
+        List<Weapon> weapons = new ArrayList<>();
+        List<Chip> chips = new ArrayList<>();
+
+        for (Element element : elements) {
+            if (element.attr("id").startsWith("weapon-")) {
+                weapons.add(WeaponParser.getInstance().parse(element));
+            } else if (element.attr("id").startsWith("chip-")) {
+                chips.add(ChipParser.getInstance().parse(element));
+            }
+        }
+
+        modelManager.setWeapons(weapons);
+        modelManager.setChips(chips);
     }
 }

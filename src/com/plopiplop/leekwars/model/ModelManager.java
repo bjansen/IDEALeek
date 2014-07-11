@@ -1,14 +1,7 @@
 package com.plopiplop.leekwars.model;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
-import com.intellij.testFramework.MapDataContext;
-import com.plopiplop.leekwars.actions.UpdateAPIAction;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -18,6 +11,7 @@ public class ModelManager extends AbstractProjectComponent {
 
     private List<Weapon> weapons = Collections.emptyList();
     private List<Chip> chips = Collections.emptyList();
+    private List<Function> functions;
 
     protected ModelManager(Project project) {
         super(project);
@@ -82,5 +76,13 @@ public class ModelManager extends AbstractProjectComponent {
      */
     public void setChips(List<Chip> chips) {
         this.chips = chips;
+    }
+
+    public void setFunctions(List<Function> functions) {
+        this.functions = functions;
+    }
+
+    public List<Function> getFunctions() {
+        return functions;
     }
 }

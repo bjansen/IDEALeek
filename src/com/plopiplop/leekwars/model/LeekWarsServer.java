@@ -18,6 +18,7 @@ public class LeekWarsServer {
 
     private static final String LOGIN_PATH = "/index.php?page=login_form";
     private static final String MARKET_URL = "/market";
+    private static final String DOCUMENTATION_URL = "/documentation";
 
     private String cookie;
 
@@ -27,6 +28,10 @@ public class LeekWarsServer {
 
     public Document getMarket() throws IOException, PluginNotConfiguredException {
         return getPage(MARKET_URL);
+    }
+
+    public Document getDocumentation() throws IOException, PluginNotConfiguredException {
+        return getPage(DOCUMENTATION_URL);
     }
 
     private Document getPage(String url) throws IOException, PluginNotConfiguredException {

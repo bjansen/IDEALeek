@@ -14,3 +14,10 @@ global ${weapon.id};
 global ${chip.id};
 
 #end
+#foreach($fun in $functions)
+/**
+ * ${fun.description}
+ */
+function ${fun.name}(#foreach($param in $fun.parameters.entrySet())${param.key}#if($foreach.hasNext), #end#end) {}
+
+#end

@@ -12,14 +12,14 @@ import java.util.Map;
 import static com.plopiplop.leekwars.actions.UpdateAPITask.LEEKWARS_API_FILE;
 
 
-public class WeaponTransformer {
+public class ApiTransformer {
 
-    private static final WeaponTransformer INSTANCE = new WeaponTransformer();
+    private static final ApiTransformer INSTANCE = new ApiTransformer();
 
-    private WeaponTransformer() {
+    private ApiTransformer() {
     }
 
-    public static WeaponTransformer getInstance() {
+    public static ApiTransformer getInstance() {
         return INSTANCE;
     }
 
@@ -28,6 +28,7 @@ public class WeaponTransformer {
         Map<String, Object> context = new HashMap<>();
         context.put("weapons", manager.getWeapons());
         context.put("chips", manager.getChips());
+        context.put("functions", manager.getFunctions());
 
         PsiFile existingApi = out.findFile(LEEKWARS_API_FILE);
 
