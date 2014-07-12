@@ -47,7 +47,10 @@ public class LeekWarsServer {
         addAuth(connection);
         connection.connect();
 
-        return Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
+        Document document = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
+        document.outputSettings().prettyPrint(false);
+
+        return document;
     }
 
     private void connectToLeekWars() throws IOException, PluginNotConfiguredException {

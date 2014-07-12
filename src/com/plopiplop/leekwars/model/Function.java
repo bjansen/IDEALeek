@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Function {
     public String name;
-
     public String description;
+    public boolean isConstant;
 
     public Map<String, String> parameters = new LinkedHashMap<>();
 
@@ -16,6 +16,10 @@ public class Function {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean getIsConstant() {
+        return isConstant;
     }
 
     public Map<String, String> getParameters() {
