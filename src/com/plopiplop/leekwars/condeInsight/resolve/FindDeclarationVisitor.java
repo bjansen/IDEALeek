@@ -32,6 +32,8 @@ public class FindDeclarationVisitor extends LSVisitor {
         for (PsiElement psiElement : file.getChildren()) {
             if (psiElement instanceof LSVariableStatement) {
                 visitVariableStatement((LSVariableStatement) psiElement);
+            } else if (psiElement instanceof LSFunctionDeclaration) {
+                visitFunctionDeclaration((LSFunctionDeclaration) psiElement);
             }
         }
     }
@@ -50,6 +52,10 @@ public class FindDeclarationVisitor extends LSVisitor {
     @Override
     public void visitFunctionDeclaration(@NotNull LSFunctionDeclaration decl) {
         List<LSVariableStatement> variableStatements = decl.getFunctionBody().getVariableStatementList();
+
+        if (decl.getIdentifier().getText().equals(element.getText())) {
+            this.declaration = decl;
+        }
 
         for (LSVariableStatement variableStatement : variableStatements) {
             visitVariableStatement(variableStatement);

@@ -12,8 +12,8 @@
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
 
-  implements("(functionDeclaration|variableDeclaration|variableReference|parameter)")="com.plopiplop.leekwars.psi.LSNamedElement"
-  mixin("(functionDeclaration|variableDeclaration|variableReference|parameter)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
+  implements("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall)")="com.plopiplop.leekwars.psi.LSNamedElement"
+  mixin("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
 
   tokens=[
     identifier='regexp:(\p{Alpha}|_)\w*'
@@ -115,7 +115,7 @@ singleExpression ::=
 
 simpleExpression ::=
         identifier postfixOperator
-    |   identifier arguments
+    |   methodCall
     |   prefixOperator singleExpression
     |   variableReference
     |   '(' expressionSequence ')'
@@ -123,7 +123,7 @@ simpleExpression ::=
     |   arrayLiteral
 
 variableReference ::= identifier '[' expressionSequence ']' | identifier
-
+methodCall ::= identifier arguments
 functionBody ::= sourceElements?
 
 eos ::= ';'
