@@ -11,7 +11,6 @@ import com.plopiplop.leekwars.psi.LSParameter;
 import com.plopiplop.leekwars.psi.LSStatementList;
 import com.plopiplop.leekwars.psi.LSThenBlock;
 import com.plopiplop.leekwars.psi.LSVariableDeclaration;
-import com.plopiplop.leekwars.psi.LSVariableDeclarationList;
 import com.plopiplop.leekwars.psi.LSVariableStatement;
 import com.plopiplop.leekwars.psi.LSVisitor;
 import com.plopiplop.leekwars.psi.LSWhileStatement;
@@ -114,21 +113,23 @@ public class FindDeclarationVisitor extends LSVisitor {
 
     @Override
     public void visitForInitializerDeclaration(@NotNull LSForInitializerDeclaration initializer) {
-        visitVariableDeclarationList(initializer.getVariableDeclarationList());
+        for (LSVariableDeclaration declaration : initializer.getVariableDeclarationList()) {
+            visitVariableDeclaration(declaration);
+        }
     }
 
     @Override
-    public void visitVariableDeclarationList(@NotNull LSVariableDeclarationList declarationList) {
-        for (LSVariableDeclaration declaration : declarationList.getVariableDeclarationList()) {
-            if (declaration.getIdentifier().getText().equals(element.getText())) {
-                this.declaration = declaration;
-            }
+    public void visitVariableDeclaration(@NotNull LSVariableDeclaration declaration) {
+        if (declaration.getIdentifier().getText().equals(element.getText())) {
+            this.declaration = declaration;
         }
     }
 
     @Override
     public void visitVariableStatement(@NotNull LSVariableStatement variableStatement) {
-        visitVariableDeclarationList(variableStatement.getVariableDeclarationList());
+        for (LSVariableDeclaration declaration : variableStatement.getVariableDeclarationList()) {
+            visitVariableDeclaration(declaration);
+        }
     }
 
     public PsiElement getDeclaration() {
