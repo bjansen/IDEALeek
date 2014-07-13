@@ -34,6 +34,7 @@
       <quoteHandler fileType="LeekScript" className="com.plopiplop.leekwars.editor.LSQuoteHandler"/>
       <lang.documentationProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.doc.LSDocumentationProvider"/>
       <lang.findUsagesProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.resolve.LSFindUsagesProvider"/>
+      <annotator language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.annotator.LSAnnotator"/>
 
       <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
       <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>

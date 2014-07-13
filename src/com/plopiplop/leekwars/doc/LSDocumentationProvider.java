@@ -8,6 +8,7 @@ import com.plopiplop.leekwars.model.AbstractItem;
 import com.plopiplop.leekwars.model.Chip;
 import com.plopiplop.leekwars.model.ModelManager;
 import com.plopiplop.leekwars.model.Weapon;
+import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
 import com.plopiplop.leekwars.psi.LSTypes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +17,11 @@ public class LSDocumentationProvider extends AbstractDocumentationProvider {
 
     @Override
     public String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
-        return generateDoc(element, originalElement);
+        if (element instanceof LSFunctionDeclaration) {
+            return "Function " + ((LSFunctionDeclaration) element).getSignature();
+        }
+
+        return null; // The "type" returned by LSFindUsagesProvider will be used by default
     }
 
     @Override
