@@ -32,6 +32,7 @@ public class FunctionParser {
 
         Elements ulList = element.select(".content > ul");
 
+        // FIXME handle functions with no return (say(), setWeapon()...)
         if (ulList.size() > 1) {
             for (Element li : ulList.first().select("li")) {
                 String paramName = li.text();

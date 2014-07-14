@@ -2,18 +2,7 @@ package com.plopiplop.leekwars.condeInsight.resolve;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.plopiplop.leekwars.psi.LSBlock;
-import com.plopiplop.leekwars.psi.LSElseBlock;
-import com.plopiplop.leekwars.psi.LSForInitializerDeclaration;
-import com.plopiplop.leekwars.psi.LSForStatement;
-import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
-import com.plopiplop.leekwars.psi.LSParameter;
-import com.plopiplop.leekwars.psi.LSStatementList;
-import com.plopiplop.leekwars.psi.LSThenBlock;
-import com.plopiplop.leekwars.psi.LSVariableDeclaration;
-import com.plopiplop.leekwars.psi.LSVariableStatement;
-import com.plopiplop.leekwars.psi.LSVisitor;
-import com.plopiplop.leekwars.psi.LSWhileStatement;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -53,7 +42,26 @@ public class FindDeclarationVisitor extends LSVisitor {
         List<LSVariableStatement> variableStatements = decl.getFunctionBody().getVariableStatementList();
 
         if (decl.getIdentifier().getText().equals(element.getText())) {
-            this.declaration = decl;
+            if (decl.getIdentifier() == element) {
+                this.declaration = decl;
+            } else if (element.getParent() instanceof LSMethodCall) {
+                LSMethodCall methodCall = (LSMethodCall) element.getParent();
+                int expectedNbArgs = 0;
+
+                if (methodCall.getArguments().getArgumentList() != null) {
+                    expectedNbArgs = methodCall.getArguments().getArgumentList().getSingleExpressionList().size();
+                }
+
+                int declNbArgs = 0;
+
+                if (decl.getFormalParameterList() != null) {
+                    declNbArgs = decl.getFormalParameterList().getParameterList().size();
+                }
+
+                if (expectedNbArgs == declNbArgs) {
+                    this.declaration = decl;
+                }
+            }
         }
 
         for (LSVariableStatement variableStatement : variableStatements) {
