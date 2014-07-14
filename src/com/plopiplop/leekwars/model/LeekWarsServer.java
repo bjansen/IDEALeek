@@ -61,7 +61,10 @@ public class LeekWarsServer {
         connection.connect();
 
         String phpSessId = connection.getHeaderField("Set-Cookie");
-        cookie = phpSessId.substring(0, phpSessId.indexOf(';'));
+
+        if (phpSessId != null) {
+            cookie = phpSessId.substring(0, phpSessId.indexOf(';'));
+        }
 
         connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl(LOGIN_PATH));
         addAuth(connection);

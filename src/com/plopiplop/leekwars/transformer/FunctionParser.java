@@ -5,6 +5,8 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.Map;
+
 public class FunctionParser {
 
     private static final FunctionParser INSTANCE = new FunctionParser();
@@ -28,21 +30,27 @@ public class FunctionParser {
             function.name = element.select("ul li").text();
         }
 
-        function.description = StringEscapeUtils.unescapeHtml(element.select("div.content div.searchable").html()).replace("<br />", "\n").replace("\n", "\n * ");
+        function.description = html(element.select("div.content div.searchable"));
 
-        Elements ulList = element.select(".content > ul");
+        parseMap(element.select(".content h3:contains(Param) + ul"), function.parameters);
+        parseMap(element.select(".content h3:contains(Retour) + ul"), function.returns);
 
-        // FIXME handle functions with no return (say(), setWeapon()...)
-        if (ulList.size() > 1) {
-            for (Element li : ulList.first().select("li")) {
+        return function;
+    }
+
+    private void parseMap(Elements elements, Map<String, String> map) {
+        if (!elements.isEmpty()) {
+            for (Element li : elements.first().select("> li")) {
                 String paramName = li.text();
                 if (paramName.contains(":")) {
                     paramName = paramName.substring(0, paramName.indexOf(':') - 1);
                 }
-                function.parameters.put(paramName, li.select("span.searchable").text());
+                map.put(paramName, html(li.select("span.searchable")));
             }
         }
+    }
 
-        return function;
+    private String html(Elements element) {
+        return StringEscapeUtils.unescapeHtml(element.html()).replace("<br />", "\n").replace("<br>", "\n").replace("\n", "\n * ");
     }
 }

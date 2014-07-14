@@ -9,6 +9,7 @@ public class Function {
     public boolean isConstant;
 
     public Map<String, String> parameters = new LinkedHashMap<>();
+    public Map<String, String> returns = new LinkedHashMap<>();
 
     public String getName() {
         return name;
@@ -24,6 +25,10 @@ public class Function {
 
     public Map<String, String> getParameters() {
         return parameters;
+    }
+
+    public Map<String, String> getReturns() {
+        return returns;
     }
 
     @Override
