@@ -34,7 +34,7 @@ public class LSBraceMatcher implements PairedBraceMatcher {
         PsiElement parent = element.getParent();
 
         if (parent instanceof LSFunctionDeclaration) {
-            LSFunctionDeclaration parentDeclaration = (LSFunctionDeclaration) parent.getParent();
+            LSFunctionDeclaration parentDeclaration = (LSFunctionDeclaration) parent;
             PsiElement nameIdentifier = parentDeclaration.getIdentifier();
             return nameIdentifier.getTextOffset();
         }
