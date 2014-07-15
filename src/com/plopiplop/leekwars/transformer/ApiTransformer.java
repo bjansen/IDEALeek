@@ -9,7 +9,7 @@ import com.plopiplop.leekwars.model.ModelManager;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.plopiplop.leekwars.actions.UpdateAPITask.LEEKWARS_API_FILE;
+import static com.plopiplop.leekwars.LeekWarsApi.LEEKWARS_API_FILE;
 
 
 public class ApiTransformer {

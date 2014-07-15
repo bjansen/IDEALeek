@@ -11,6 +11,7 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
+import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.model.*;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.transformer.ApiTransformer;
@@ -28,8 +29,6 @@ import java.util.List;
 import static com.google.common.base.Objects.firstNonNull;
 
 public class UpdateAPITask implements Runnable {
-
-    public static final String LEEKWARS_API_FILE = "leekwars-api.lks";
 
     private Project project;
     private ModelManager modelManager;
@@ -72,7 +71,7 @@ public class UpdateAPITask implements Runnable {
                             ApiTransformer.getInstance().transformToLeekScript(modelManager, out);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars APPI", "Can't write API to " + LEEKWARS_API_FILE, NotificationType.ERROR));
+                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars APPI", "Can't write API to " + LeekWarsApi.LEEKWARS_API_FILE, NotificationType.ERROR));
                         }
                     }
                 });

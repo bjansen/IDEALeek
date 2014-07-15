@@ -115,7 +115,7 @@ singleExpression ::=
     |   simpleExpression
 
 simpleExpression ::=
-        identifier postfixOperator
+        variableReference postfixOperator
     |   methodCall
     |   prefixOperator singleExpression
     |   variableReference

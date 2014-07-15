@@ -1,12 +1,9 @@
 package com.plopiplop.leekwars.psi;
 
 import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiReferenceBase;
-import com.plopiplop.leekwars.actions.UpdateAPITask;
+import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.condeInsight.resolve.FindDeclarationVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,6 +25,7 @@ public class LSReference extends PsiReferenceBase<PsiElement> {
             FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
             parentBlock.accept(visitor);
 
+            // FIXME should resolve to multiple declarations if functions are overloaded, so that invalid parameters are underlined and method name is not red
             if (visitor.getDeclaration() != null) {
                 return visitor.getDeclaration();
             }
@@ -37,21 +35,10 @@ public class LSReference extends PsiReferenceBase<PsiElement> {
     }
 
     private PsiElement visitApiFile() {
-        VirtualFile parentFolder = myElement.getContainingFile().getVirtualFile().getParent();
-        VirtualFile apiFile = parentFolder.findChild(UpdateAPITask.LEEKWARS_API_FILE);
+        FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
+        LeekWarsApi.getApiPsiFile(myElement).accept(visitor);
 
-        if (apiFile != null && apiFile.exists()) {
-            FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
-            PsiFile psiFile = PsiManager.getInstance(myElement.getProject()).findFile(apiFile);
-
-            if (psiFile != null) {
-                psiFile.accept(visitor);
-                return visitor.getDeclaration();
-            }
-
-        }
-
-        return null;
+        return visitor.getDeclaration();
     }
 
     @Override
