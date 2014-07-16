@@ -83,14 +83,14 @@ private statement ::=
     |   returnStatement
     |   breakStatement
 
-functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' '{' functionBody '}' {methods=[getSignature]}
+functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' '{' functionBody '}' {methods=[getSignature getNbArguments getPresentation]}
 
 block ::= '{' statementList? '}'
 statementList ::= statement+
 
 variableStatement ::= modifier variableDeclarationList eos {methods = [isGlobal]}
 private variableDeclarationList ::= variableDeclaration (',' variableDeclaration)*
-variableDeclaration ::= identifier initialiser?
+variableDeclaration ::= identifier initialiser? {methods=[getPresentation]}
 initialiser ::= '=' singleExpression
 
 emptyStatement ::= ';'
@@ -124,7 +124,7 @@ simpleExpression ::=
     |   arrayLiteral
 
 variableReference ::= identifier '[' expressionSequence ']' | identifier
-methodCall ::= identifier arguments
+methodCall ::= identifier arguments {methods=[getNbArguments]}
 functionBody ::= sourceElements?
 
 eos ::= ';'

@@ -2,14 +2,18 @@ package com.plopiplop.leekwars.psi;
 
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReferenceBase;
+import com.intellij.psi.PsiElementResolveResult;
+import com.intellij.psi.PsiPolyVariantReferenceBase;
+import com.intellij.psi.ResolveResult;
 import com.intellij.util.IncorrectOperationException;
 import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.condeInsight.resolve.FindDeclarationVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class LSReference extends PsiReferenceBase<PsiElement> {
+import java.util.List;
+
+public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
     public LSReference(PsiElement element, TextRange range) {
         super(element, range);
@@ -28,9 +32,9 @@ public class LSReference extends PsiReferenceBase<PsiElement> {
         return myElement;
     }
 
-    @Nullable
+    @NotNull
     @Override
-    public PsiElement resolve() {
+    public ResolveResult[] multiResolve(boolean incompleteCode) {
         PsiElement parentBlock = myElement;
 
         do {
@@ -39,30 +43,58 @@ public class LSReference extends PsiReferenceBase<PsiElement> {
             FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
             parentBlock.accept(visitor);
 
-            // FIXME should resolve to multiple declarations if functions are overloaded, so that invalid parameters are underlined and method name is not red
-            if (visitor.getDeclaration() != null) {
-                return visitor.getDeclaration();
+            if (!visitor.getDeclarations().isEmpty()) {
+                return toResolveResult(visitor.getDeclarations());
             }
         } while (parentBlock != myElement.getContainingFile());
 
-        return visitApiFile();
+        return toResolveResult(visitApiFile());
     }
 
-    private PsiElement visitApiFile() {
+    @NotNull
+    private ResolveResult[] toResolveResult(List<PsiElement> elements) {
+        ResolveResult[] results;
+
+        if (myElement.getParent() instanceof LSMethodCall) {
+            PsiElement declaration = findExactMethodSignature(elements);
+
+            if (declaration != null) {
+                results = new ResolveResult[1];
+                results[0] = new PsiElementResolveResult(declaration);
+                return results;
+            }
+        }
+
+        results = new ResolveResult[elements.size()];
+        for (int i = 0, size = elements.size(); i < size; i++) {
+            results[i] = new PsiElementResolveResult(elements.get(i));
+        }
+
+        return results;
+    }
+
+    @Nullable
+    private PsiElement findExactMethodSignature(List<PsiElement> elements) {
+        LSMethodCall methodCall = (LSMethodCall) myElement.getParent();
+
+        for (PsiElement element : elements) {
+            if (element instanceof LSFunctionDeclaration) {
+                LSFunctionDeclaration decl = (LSFunctionDeclaration) element;
+
+                if (methodCall.getNbArguments() == decl.getNbArguments()) {
+                    return element;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private List<PsiElement> visitApiFile() {
         FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
         LeekWarsApi.getApiPsiFile(myElement).accept(visitor);
 
-        return visitor.getDeclaration();
-    }
-
-    @Override
-    public boolean isReferenceTo(PsiElement element) {
-        return resolve() == element;
-    }
-
-    @Override
-    public boolean isSoft() {
-        return super.isSoft();
+        return visitor.getDeclarations();
     }
 
     @NotNull

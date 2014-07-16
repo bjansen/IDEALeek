@@ -1,5 +1,10 @@
 package com.plopiplop.leekwars.psi;
 
+import com.intellij.navigation.ItemPresentation;
+import org.jetbrains.annotations.Nullable;
+
+import javax.swing.*;
+
 public class LSPsiImplUtil {
 
     public static String getSignature(LSFunctionDeclaration declaration) {
@@ -18,6 +23,70 @@ public class LSPsiImplUtil {
         builder.append(')');
 
         return builder.toString();
+    }
+
+    public static int getNbArguments(LSFunctionDeclaration declaration) {
+        int nbArgs = 0;
+
+        if (declaration.getFormalParameterList() != null) {
+            nbArgs = declaration.getFormalParameterList().getParameterList().size();
+        }
+
+        return nbArgs;
+    }
+
+    public static int getNbArguments(LSMethodCall methodCall) {
+        int nbArgs = 0;
+
+        if (methodCall.getArguments().getArgumentList() != null) {
+            nbArgs = methodCall.getArguments().getArgumentList().getSingleExpressionList().size();
+        }
+
+        return nbArgs;
+    }
+
+    public static ItemPresentation getPresentation(final LSFunctionDeclaration declaration) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return declaration.getSignature();
+            }
+
+            @Nullable
+            @Override
+            public String getLocationString() {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return declaration.getIcon(0);
+            }
+        };
+    }
+
+    public static ItemPresentation getPresentation(final LSVariableDeclaration declaration) {
+        return new ItemPresentation() {
+            @Nullable
+            @Override
+            public String getPresentableText() {
+                return declaration.getName();
+            }
+
+            @Nullable
+            @Override
+            public String getLocationString() {
+                return null;
+            }
+
+            @Nullable
+            @Override
+            public Icon getIcon(boolean unused) {
+                return declaration.getIcon(0);
+            }
+        };
     }
 
     public static boolean isGlobal(LSVariableStatement statement) {

@@ -5,10 +5,11 @@ import com.intellij.psi.PsiFile;
 import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FindDeclarationVisitor extends LSVisitor {
-    private PsiElement declaration;
+    private List<PsiElement> declarations = new ArrayList<>();
     private PsiElement element;
 
     public FindDeclarationVisitor(PsiElement element) {
@@ -21,7 +22,9 @@ public class FindDeclarationVisitor extends LSVisitor {
             if (psiElement instanceof LSVariableStatement) {
                 visitVariableStatement((LSVariableStatement) psiElement);
             } else if (psiElement instanceof LSFunctionDeclaration) {
-                visitFunctionDeclaration((LSFunctionDeclaration) psiElement);
+                if (((LSFunctionDeclaration) psiElement).getIdentifier().getText().equals(element.getText())) {
+                    declarations.add(psiElement);
+                }
             }
         }
     }
@@ -42,26 +45,7 @@ public class FindDeclarationVisitor extends LSVisitor {
         List<LSVariableStatement> variableStatements = decl.getFunctionBody().getVariableStatementList();
 
         if (decl.getIdentifier().getText().equals(element.getText())) {
-            if (decl.getIdentifier() == element) {
-                this.declaration = decl;
-            } else if (element.getParent() instanceof LSMethodCall) {
-                LSMethodCall methodCall = (LSMethodCall) element.getParent();
-                int expectedNbArgs = 0;
-
-                if (methodCall.getArguments().getArgumentList() != null) {
-                    expectedNbArgs = methodCall.getArguments().getArgumentList().getSingleExpressionList().size();
-                }
-
-                int declNbArgs = 0;
-
-                if (decl.getFormalParameterList() != null) {
-                    declNbArgs = decl.getFormalParameterList().getParameterList().size();
-                }
-
-                if (expectedNbArgs == declNbArgs) {
-                    this.declaration = decl;
-                }
-            }
+            declarations.add(decl);
         }
 
         for (LSVariableStatement variableStatement : variableStatements) {
@@ -78,7 +62,7 @@ public class FindDeclarationVisitor extends LSVisitor {
     @Override
     public void visitParameter(@NotNull LSParameter param) {
         if (param.getIdentifier().getText().equals(element.getText())) {
-            this.declaration = param;
+            declarations.add(param);
         }
     }
 
@@ -129,7 +113,7 @@ public class FindDeclarationVisitor extends LSVisitor {
     @Override
     public void visitVariableDeclaration(@NotNull LSVariableDeclaration declaration) {
         if (declaration.getIdentifier().getText().equals(element.getText())) {
-            this.declaration = declaration;
+            declarations.add(declaration);
         }
     }
 
@@ -140,7 +124,7 @@ public class FindDeclarationVisitor extends LSVisitor {
         }
     }
 
-    public PsiElement getDeclaration() {
-        return declaration;
+    public List<PsiElement> getDeclarations() {
+        return declarations;
     }
 }

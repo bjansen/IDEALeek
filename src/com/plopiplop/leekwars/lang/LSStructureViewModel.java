@@ -8,20 +8,17 @@ import com.intellij.ide.util.treeView.smartTree.ActionPresentationData;
 import com.intellij.ide.util.treeView.smartTree.Filter;
 import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.navigation.NavigationItem;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.pom.Navigatable;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNamedElement;
-import com.intellij.util.PlatformIcons;
 import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
 import com.plopiplop.leekwars.psi.LSVariableDeclaration;
 import com.plopiplop.leekwars.psi.LSVariableStatement;
 import com.plopiplop.leekwars.psi.LSVisitor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +43,7 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
         };
     }
 
-    private static class LSStructureViewTreeElement implements StructureViewTreeElement, ItemPresentation {
+    private static class LSStructureViewTreeElement implements StructureViewTreeElement {
         private PsiElement element;
 
         public LSStructureViewTreeElement(PsiElement element) {
@@ -76,7 +73,7 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
         @NotNull
         @Override
         public ItemPresentation getPresentation() {
-            return this;
+            return ((NavigationItem) element).getPresentation();
         }
 
         @NotNull
@@ -107,34 +104,6 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
             }
 
             return children;
-        }
-
-        @Nullable
-        @Override
-        public String getPresentableText() {
-            if (element instanceof LSFunctionDeclaration) {
-                return ((LSFunctionDeclaration) element).getSignature();
-            } else if (element instanceof PsiNamedElement) {
-                return ((PsiNamedElement) element).getName();
-            }
-
-            return "plopiplop";
-        }
-
-        @Nullable
-        @Override
-        public String getLocationString() {
-            return null;
-        }
-
-        @Nullable
-        @Override
-        public Icon getIcon(boolean unused) {
-            if (element instanceof LSFunctionDeclaration) {
-                return PlatformIcons.FUNCTION_ICON;
-            }
-
-            return PlatformIcons.VARIABLE_ICON;
         }
     }
 

@@ -11,6 +11,7 @@ Features
 * Syntax highlighting, find usages, brace matching, code folding, structure view, code commenting
 * Retrieve functions, weapons and chips from LeekWars and aggregate them in a special script named `leekwars-api.lks`
 * Code completion
+* Refactoring : rename variable/function
 
 Planned features
 ================
