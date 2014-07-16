@@ -10,6 +10,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.util.PsiUtilCore;
 import com.intellij.util.ProcessingContext;
+import com.plopiplop.leekwars.ApiNotFoundException;
 import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
 import com.plopiplop.leekwars.psi.PsiUtils;
@@ -25,7 +26,11 @@ public class LSCompletionContributor extends CompletionContributor {
             protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
                 PsiElement element = PsiUtilCore.getElementAtOffset(parameters.getOriginalFile(), parameters.getOffset());
                 findCompletions(element, result);
-                findCompletions(LeekWarsApi.getApiPsiFile(parameters.getOriginalFile()), result);
+                try {
+                    findCompletions(LeekWarsApi.getApiPsiFile(parameters.getOriginalFile().getProject()), result);
+                } catch (ApiNotFoundException e) {
+                    // Not available is leekwars API is not found
+                }
             }
         });
     }

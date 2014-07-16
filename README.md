@@ -18,10 +18,8 @@ Planned features
 * Import/save scripts from/to leekwars.com
 * "Include" a file into another (for example to share code between team members)
 * Javadoc-like popup (very limited at the moment)
-* Save `leekwars-api.lks` into a `gen` source root, so that user scripts can have arbitrary hierarchies
 
 Current limitations
 ===================
 
-* All scripts should be placed in the same directory, otherwise declarations from `leekwars-api.lks` won't be found.
 * Most of the data exchanged with the LeekWars server was deduced by reverse engineering, no official API is exposed, so changes on the server may require a new version of this plugin.

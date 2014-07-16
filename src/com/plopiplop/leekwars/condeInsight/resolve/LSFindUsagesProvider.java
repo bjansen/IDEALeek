@@ -58,6 +58,8 @@ public class LSFindUsagesProvider implements FindUsagesProvider {
             return ((LSFunctionDeclaration) element).getSignature();
         } else if (element instanceof LSNamedElement) {
             return ((LSNamedElement) element).getName();
+        } else if (element instanceof LSFile) {
+            return ((LSFile) element).getName();
         }
 
         throw new UnsupportedOperationException("Cannot get node text for element of type " + element.getClass().getName());

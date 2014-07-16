@@ -7,6 +7,8 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ContentEntry;
+import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -18,6 +20,9 @@ import com.plopiplop.leekwars.transformer.ApiTransformer;
 import com.plopiplop.leekwars.transformer.ChipParser;
 import com.plopiplop.leekwars.transformer.FunctionParser;
 import com.plopiplop.leekwars.transformer.WeaponParser;
+import org.jetbrains.jps.model.java.JavaSourceRootProperties;
+import org.jetbrains.jps.model.java.JavaSourceRootType;
+import org.jetbrains.jps.model.java.JpsJavaExtensionService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -65,10 +70,7 @@ public class UpdateAPITask implements Runnable {
                     @Override
                     public void run() {
                         try {
-                            Module module = ModuleManager.getInstance(project).getModules()[0];
-                            VirtualFile folder = ModuleRootManager.getInstance(module).getSourceRoots(false)[0];
-                            PsiDirectory out = PsiManager.getInstance(project).findDirectory(folder);
-                            ApiTransformer.getInstance().transformToLeekScript(modelManager, out);
+                            ApiTransformer.getInstance().transformToLeekScript(modelManager, findOrCreateGenSourceRoot());
                         } catch (Exception e) {
                             e.printStackTrace();
                             Notifications.Bus.notify(new Notification("LeekScript", "LeekWars APPI", "Can't write API to " + LeekWarsApi.LEEKWARS_API_FILE, NotificationType.ERROR));
@@ -77,6 +79,31 @@ public class UpdateAPITask implements Runnable {
                 });
             }
         });
+    }
+
+    private PsiDirectory findOrCreateGenSourceRoot() throws IOException {
+        Module module = ModuleManager.getInstance(project).getModules()[0];
+        VirtualFile genRoot = LeekWarsApi.getGenRoot(project);
+
+        if (genRoot == null) {
+            ModifiableRootModel model = ModuleRootManager.getInstance(module).getModifiableModel();
+
+            ContentEntry contentEntry = model.getContentEntries()[0];
+
+            if (contentEntry.getFile() != null) {
+                VirtualFile genDirectory = contentEntry.getFile().createChildDirectory(this, "gen");
+                JavaSourceRootProperties properties = JpsJavaExtensionService.getInstance().createSourceRootProperties("", true);
+                genRoot = contentEntry.addSourceFolder(genDirectory, JavaSourceRootType.SOURCE, properties).getFile();
+                model.commit();
+                module.getProject().save();
+            }
+        }
+
+        if (genRoot == null) {
+            throw new IOException("Could not generate gen source root");
+        }
+
+        return PsiManager.getInstance(project).findDirectory(genRoot);
     }
 
     private void parseDocumentation(Document documentation) {

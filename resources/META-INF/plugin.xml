@@ -1,28 +1,13 @@
 <idea-plugin version="2">
   <id>com.plopiplop.leekwars</id>
-  <name>LeekScript support</name>
+  <name>LeekScript</name>
   <version>1.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">MyCompany</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+      Support for the LeekScript language (http://leekwars.com).
     ]]></description>
 
-  <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-  </change-notes>
-
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
   <idea-version since-build="131"/>
-
-  <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
 
   <extensions defaultExtensionNs="com.intellij">
       <fileTypeFactory implementation="com.plopiplop.leekwars.language.LSFileTypeFactory"/>
@@ -38,6 +23,7 @@
       <lang.psiStructureViewFactory language="LeekScript" implementationClass="com.plopiplop.leekwars.lang.LSPsiStructureViewFactory"/>
       <completion.contributor language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSCompletionContributor"/>
       <lang.refactoringSupport language="LeekScript" implementationClass="com.plopiplop.leekwars.refactoring.LSRefactoringSupportProvider"/>
+      <editorNotificationProvider implementation="com.plopiplop.leekwars.editor.MissingApiNotificationProvider"/>
 
       <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
       <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>

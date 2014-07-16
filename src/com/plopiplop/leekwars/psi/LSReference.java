@@ -1,16 +1,15 @@
 package com.plopiplop.leekwars.psi;
 
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementResolveResult;
-import com.intellij.psi.PsiPolyVariantReferenceBase;
-import com.intellij.psi.ResolveResult;
+import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
+import com.plopiplop.leekwars.ApiNotFoundException;
 import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.condeInsight.resolve.FindDeclarationVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 
 public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
@@ -22,7 +21,14 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
     @Override
     public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
         PsiElement declaration = resolve();
-        if (declaration != null && declaration.getContainingFile().equals(LeekWarsApi.getApiPsiFile(myElement))) {
+        PsiFile apiPsiFile;
+        try {
+            apiPsiFile = LeekWarsApi.getApiPsiFile(myElement.getProject());
+        } catch (ApiNotFoundException e) {
+            apiPsiFile = null;
+        }
+
+        if (declaration != null && declaration.getContainingFile().equals(apiPsiFile)) {
             throw new IncorrectOperationException("API variables and functions cannot be renamed");
         }
         PsiElement newIdentifier = PsiUtils.createIdentifierFromText(myElement.getProject(), newElementName);
@@ -92,7 +98,15 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
     private List<PsiElement> visitApiFile() {
         FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
-        LeekWarsApi.getApiPsiFile(myElement).accept(visitor);
+        PsiFile apiFile;
+
+        try {
+            apiFile = LeekWarsApi.getApiPsiFile(myElement.getProject());
+        } catch (ApiNotFoundException e) {
+            return Collections.emptyList();
+        }
+
+        apiFile.accept(visitor);
 
         return visitor.getDeclarations();
     }
