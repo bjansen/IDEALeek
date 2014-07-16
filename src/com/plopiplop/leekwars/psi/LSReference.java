@@ -3,6 +3,7 @@ package com.plopiplop.leekwars.psi;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReferenceBase;
+import com.intellij.util.IncorrectOperationException;
 import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.condeInsight.resolve.FindDeclarationVisitor;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +13,19 @@ public class LSReference extends PsiReferenceBase<PsiElement> {
 
     public LSReference(PsiElement element, TextRange range) {
         super(element, range);
+    }
+
+    @Override
+    public PsiElement handleElementRename(String newElementName) throws IncorrectOperationException {
+        PsiElement declaration = resolve();
+        if (declaration != null && declaration.getContainingFile().equals(LeekWarsApi.getApiPsiFile(myElement))) {
+            throw new IncorrectOperationException("API variables and functions cannot be renamed");
+        }
+        PsiElement newIdentifier = PsiUtils.createIdentifierFromText(myElement.getProject(), newElementName);
+
+        myElement.replace(newIdentifier);
+
+        return myElement;
     }
 
     @Nullable

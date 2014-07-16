@@ -37,6 +37,7 @@
       <annotator language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.annotator.LSAnnotator"/>
       <lang.psiStructureViewFactory language="LeekScript" implementationClass="com.plopiplop.leekwars.lang.LSPsiStructureViewFactory"/>
       <completion.contributor language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSCompletionContributor"/>
+      <lang.refactoringSupport language="LeekScript" implementationClass="com.plopiplop.leekwars.refactoring.LSRefactoringSupportProvider"/>
 
       <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
       <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>
