@@ -130,7 +130,10 @@ functionBody ::= sourceElements?
 eos ::= ';'
 
 arguments ::= '(' argumentList? ')'
-argumentList ::= singleExpression (',' singleExpression)*
+argumentList ::= singleExpressionPart (',' singleExpressionPart)* {recoverWhile=singleExpressionRecover}
+private singleExpressionRecover ::= !(')')
+private singleExpressionPart ::= singleExpression {recoverWhile=singleExpressionPartRecover}
+private singleExpressionPartRecover ::= !(')' | ',')
 
 formalParameterList ::= parameter (',' parameter)*
 parameter ::= identifier
