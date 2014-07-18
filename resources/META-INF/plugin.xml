@@ -44,6 +44,9 @@
     <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update LeekWars API">
         <add-to-group group-id="ToolsMenu"/>
     </action>
+    <action class="com.plopiplop.leekwars.actions.DownloadScriptsAction" id="LeekScript.DownloadScripts" text="Download LeekWars scripts">
+        <add-to-group group-id="ToolsMenu"/>
+    </action>
   </actions>
 
 </idea-plugin>

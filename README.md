@@ -3,6 +3,14 @@ IntelleekJ
 
 This plugin adds support for the LeekScript language in IntelliJ (see [http://leekwars.com](http://leekwars.com)).
 
+Usage
+=====
+
+* Configure access to the LeekWars server in `Preferences -> LeekScript` (username & password, optional proxy configuration...)
+* Retrieve the list of available functions/constants using `Tools -> Update LeekWars API`
+* Retrieve your existing scripts using `Tools -> Download LeekWars scripts`
+* Start developing with pleasure™
+
 Features
 ========
 
@@ -10,6 +18,7 @@ Features
 * Basic lexer/parser (error recovery can be enhanced though)
 * Syntax highlighting, find usages, brace matching, code folding, structure view, code commenting
 * Retrieve functions, weapons and chips from LeekWars and aggregate them in a special script named `leekwars-api.lks`
+* Retrieve existing scripts from the LeekWars server
 * Code completion
 * Refactoring : rename variable/function
 
@@ -18,6 +27,7 @@ Planned features
 * Import/save scripts from/to leekwars.com
 * "Include" a file into another (for example to share code between team members)
 * Javadoc-like popup (very limited at the moment)
+* Code formatting
 
 Current limitations
 ===================

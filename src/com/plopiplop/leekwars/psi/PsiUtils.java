@@ -16,11 +16,11 @@ public class PsiUtils {
     }
 
     public static PsiElement createIdentifierFromText(Project project, String identifier) {
-        PsiFile dummyFile = createDummyFile(project, "var " + identifier + ";");
+        PsiFile dummyFile = createDummyFile(project, "dummy.lks", "var " + identifier + ";");
         return ((LSVariableStatementImpl) dummyFile.getFirstChild()).getVariableDeclarationList().get(0).getIdentifier();
     }
 
-    private static PsiFile createDummyFile(Project project, String text) {
-        return PsiFileFactory.getInstance(project).createFileFromText("dummy.lks", LSFileType.INSTANCE, text);
+    public static PsiFile createDummyFile(Project project, String name, String text) {
+        return PsiFileFactory.getInstance(project).createFileFromText(name, LSFileType.INSTANCE, text);
     }
 }

@@ -19,22 +19,32 @@ public class LeekWarsServer {
     private static final String LOGIN_PATH = "/index.php?page=login_form";
     private static final String MARKET_URL = "/market";
     private static final String DOCUMENTATION_URL = "/documentation";
+    private static final String EDITOR_URL = "/editor";
 
     private String cookie;
+    private String token;
 
     public static LeekWarsServer getInstance() {
         return INSTANCE;
     }
 
     public Document getMarket() throws IOException, PluginNotConfiguredException {
-        return getPage(MARKET_URL);
+        return getPage(MARKET_URL, null);
     }
 
     public Document getDocumentation() throws IOException, PluginNotConfiguredException {
-        return getPage(DOCUMENTATION_URL);
+        return getPage(DOCUMENTATION_URL, null);
     }
 
-    private Document getPage(String url) throws IOException, PluginNotConfiguredException {
+    public Document getEditor() throws IOException, PluginNotConfiguredException {
+        return getPage(EDITOR_URL, null);
+    }
+
+    public Document downloadScript(String id) throws IOException, PluginNotConfiguredException {
+        return getPage("/index.php?page=editor_update", String.format("id=%s&load=true&token=%s", id, getToken()));
+    }
+
+    private Document getPage(String url, String postData) throws IOException, PluginNotConfiguredException {
         if (!LSSettings.getInstance().isValid()) {
             throw new PluginNotConfiguredException();
         }
@@ -45,6 +55,17 @@ public class LeekWarsServer {
         HttpURLConnection connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl(url));
         connection.setRequestProperty("Cookie", cookie);
         addAuth(connection);
+
+        if (postData != null) {
+            connection.setDoOutput(true);
+            connection.setRequestMethod("POST");
+
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            out.writeBytes(postData);
+            out.flush();
+            out.close();
+
+        }
         connection.connect();
 
         Document document = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
@@ -115,5 +136,13 @@ public class LeekWarsServer {
 
             connection.setRequestProperty("Authorization", "Basic " + auth);
         }
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

@@ -1,11 +1,14 @@
 package com.plopiplop.leekwars.transformer;
 
+import com.google.common.io.Files;
 import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.plopiplop.leekwars.model.ModelManager;
 
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +34,19 @@ public class ApiTransformer {
         context.put("functions", manager.getFunctions());
 
         PsiFile existingApi = out.findFile(LEEKWARS_API_FILE);
+        String fileName = LEEKWARS_API_FILE;
 
         if (existingApi != null) {
-            existingApi.delete();
+            fileName = LEEKWARS_API_FILE + ".tmp";
         }
 
-        FileTemplateUtil.createFromTemplate(templateManager.getInternalTemplate(LEEKWARS_API_FILE), LEEKWARS_API_FILE, context, out, getClass().getClassLoader());
+        FileTemplateUtil.createFromTemplate(templateManager.getInternalTemplate(LEEKWARS_API_FILE), fileName, context, out, getClass().getClassLoader());
+
+        if (existingApi != null) {
+            File tmpFile = new File(out.getVirtualFile().getPath(), fileName + ".lks");
+            String content = Files.toString(tmpFile, Charset.forName("UTF-8"));
+            existingApi.getViewProvider().getDocument().setText(content);
+            tmpFile.delete();
+        }
     }
 }

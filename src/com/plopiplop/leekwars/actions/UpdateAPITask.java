@@ -73,7 +73,7 @@ public class UpdateAPITask implements Runnable {
                             ApiTransformer.getInstance().transformToLeekScript(modelManager, findOrCreateGenSourceRoot());
                         } catch (Exception e) {
                             e.printStackTrace();
-                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars APPI", "Can't write API to " + LeekWarsApi.LEEKWARS_API_FILE, NotificationType.ERROR));
+                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars API", "Can't write API to " + LeekWarsApi.LEEKWARS_API_FILE, NotificationType.ERROR));
                         }
                     }
                 });
