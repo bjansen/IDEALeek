@@ -1,52 +1,55 @@
 <idea-plugin version="2">
-  <id>com.plopiplop.leekwars</id>
-  <name>LeekScript</name>
-  <version>1.0</version>
+    <id>com.plopiplop.leekwars</id>
+    <name>LeekScript</name>
+    <version>1.0</version>
 
-  <description><![CDATA[
+    <description><![CDATA[
       Support for the LeekScript language (http://leekwars.com).
     ]]></description>
 
-  <idea-version since-build="131"/>
+    <idea-version since-build="131"/>
 
-  <extensions defaultExtensionNs="com.intellij">
-      <fileTypeFactory implementation="com.plopiplop.leekwars.language.LSFileTypeFactory"/>
-      <lang.parserDefinition language="LeekScript" implementationClass="com.plopiplop.leekwars.psi.LSParserDefinition"/>
-      <lang.syntaxHighlighterFactory key="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSSyntaxHighlighterFactory"/>
-      <lang.foldingBuilder language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSFoldingBuilder"/>
-      <lang.commenter language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSCommenter"/>
-      <lang.braceMatcher language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSBraceMatcher"/>
-      <quoteHandler fileType="LeekScript" className="com.plopiplop.leekwars.editor.LSQuoteHandler"/>
-      <lang.documentationProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.doc.LSDocumentationProvider"/>
-      <lang.findUsagesProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.resolve.LSFindUsagesProvider"/>
-      <annotator language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.annotator.LSAnnotator"/>
-      <lang.psiStructureViewFactory language="LeekScript" implementationClass="com.plopiplop.leekwars.lang.LSPsiStructureViewFactory"/>
-      <completion.contributor language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSCompletionContributor"/>
-      <lang.refactoringSupport language="LeekScript" implementationClass="com.plopiplop.leekwars.refactoring.LSRefactoringSupportProvider"/>
-      <editorNotificationProvider implementation="com.plopiplop.leekwars.editor.MissingApiNotificationProvider"/>
-      <codeInsight.parameterInfo language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSFunctionParameterInfoHandler"/>
+    <extensions defaultExtensionNs="com.intellij">
+        <fileTypeFactory implementation="com.plopiplop.leekwars.language.LSFileTypeFactory"/>
+        <lang.parserDefinition language="LeekScript" implementationClass="com.plopiplop.leekwars.psi.LSParserDefinition"/>
+        <lang.syntaxHighlighterFactory key="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSSyntaxHighlighterFactory"/>
+        <lang.foldingBuilder language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSFoldingBuilder"/>
+        <lang.commenter language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSCommenter"/>
+        <lang.braceMatcher language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSBraceMatcher"/>
+        <quoteHandler fileType="LeekScript" className="com.plopiplop.leekwars.editor.LSQuoteHandler"/>
+        <lang.documentationProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.doc.LSDocumentationProvider"/>
+        <lang.findUsagesProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.resolve.LSFindUsagesProvider"/>
+        <annotator language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.annotator.LSAnnotator"/>
+        <lang.psiStructureViewFactory language="LeekScript" implementationClass="com.plopiplop.leekwars.lang.LSPsiStructureViewFactory"/>
+        <completion.contributor language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSCompletionContributor"/>
+        <lang.refactoringSupport language="LeekScript" implementationClass="com.plopiplop.leekwars.refactoring.LSRefactoringSupportProvider"/>
+        <editorNotificationProvider implementation="com.plopiplop.leekwars.editor.MissingApiNotificationProvider"/>
+        <codeInsight.parameterInfo language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSFunctionParameterInfoHandler"/>
 
-      <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
-      <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>
-  </extensions>
+        <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
+        <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>
+    </extensions>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <!-- Add your application components here -->
+    </application-components>
 
-  <project-components>
-    <component>
-        <implementation-class>com.plopiplop.leekwars.model.ModelManager</implementation-class>
-    </component>
-  </project-components>
+    <project-components>
+        <component>
+            <implementation-class>com.plopiplop.leekwars.model.ModelManager</implementation-class>
+        </component>
+    </project-components>
 
-  <actions>
-    <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update LeekWars API">
-        <add-to-group group-id="ToolsMenu"/>
-    </action>
-    <action class="com.plopiplop.leekwars.actions.DownloadScriptsAction" id="LeekScript.DownloadScripts" text="Download LeekWars scripts">
-        <add-to-group group-id="ToolsMenu"/>
-    </action>
-  </actions>
+    <actions>
+        <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update LeekWars API">
+            <add-to-group group-id="ToolsMenu"/>
+        </action>
+        <action class="com.plopiplop.leekwars.actions.DownloadScriptsAction" id="LeekScript.DownloadScripts" text="Download LeekWars scripts">
+            <add-to-group group-id="ToolsMenu"/>
+        </action>
+        <action class="com.plopiplop.leekwars.actions.UploadScriptAction" id="LeekScript.UploadScript" text="Upload script to LeekWars">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
 
 </idea-plugin>

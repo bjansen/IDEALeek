@@ -69,7 +69,7 @@ public class DownloadScriptsTask implements Runnable {
         }
     }
 
-    private void parseScriptTags(Document editor) {
+    public void parseScriptTags(Document editor) {
         Elements scripts = editor.select("head script");
 
         for (Element script : scripts) {

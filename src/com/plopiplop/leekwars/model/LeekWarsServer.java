@@ -1,15 +1,18 @@
 package com.plopiplop.leekwars.model;
 
+import com.google.common.io.CharStreams;
+import com.google.gson.Gson;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.net.HttpConfigurable;
+import com.plopiplop.leekwars.actions.CompilationException;
+import com.plopiplop.leekwars.actions.DownloadScriptsTask;
 import com.plopiplop.leekwars.options.LSSettings;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import org.apache.commons.net.util.Base64;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class LeekWarsServer {
     private static final String MARKET_URL = "/market";
     private static final String DOCUMENTATION_URL = "/documentation";
     private static final String EDITOR_URL = "/editor";
+    private static final String EDITOR_UPDATE_URL = "/index.php?page=editor_update";
 
     private String cookie;
     private String token;
@@ -41,10 +45,39 @@ public class LeekWarsServer {
     }
 
     public Document downloadScript(String id) throws IOException, PluginNotConfiguredException {
-        return getPage("/index.php?page=editor_update", String.format("id=%s&load=true&token=%s", id, getToken()));
+        return getPage(EDITOR_UPDATE_URL, String.format("id=%s&load=true&token=%s", id, getToken()));
+    }
+
+    public void uploadScript(String id, String name, String content) throws CompilationException, IOException, PluginNotConfiguredException {
+        // Needed to get the token first
+        if (cookie == null || !cookie.contains("farmer_id")) {
+            connectToLeekWars();
+        }
+
+        String params = String.format("id=%s&compile=true&token=%s&code=%s", id, getToken(), content);
+
+        HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params);
+        String result = CharStreams.toString(new InputStreamReader(connection.getInputStream()));
+        CompilationException compilationResult = new Gson().fromJson(result, CompilationException.class);
+
+        params = String.format("id=%s&save=true&token=%s&name=%s", id, getToken(), name);
+        getConnection(EDITOR_UPDATE_URL, params);
+
+        if (!compilationResult.getSuccess()) {
+            throw compilationResult;
+        }
     }
 
     private Document getPage(String url, String postData) throws IOException, PluginNotConfiguredException {
+        HttpURLConnection connection = getConnection(url, postData);
+
+        Document document = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
+        document.outputSettings().prettyPrint(false);
+
+        return document;
+    }
+
+    private HttpURLConnection getConnection(String url, String postData) throws PluginNotConfiguredException, IOException {
         if (!LSSettings.getInstance().isValid()) {
             throw new PluginNotConfiguredException();
         }
@@ -54,24 +87,24 @@ public class LeekWarsServer {
         }
         HttpURLConnection connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl(url));
         connection.setRequestProperty("Cookie", cookie);
+        connection.setDoInput(true);
         addAuth(connection);
 
         if (postData != null) {
             connection.setDoOutput(true);
             connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
             DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-            out.writeBytes(postData);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            writer.write(postData);
             out.flush();
+            writer.close();
             out.close();
-
         }
         connection.connect();
 
-        Document document = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
-        document.outputSettings().prettyPrint(false);
-
-        return document;
+        return connection;
     }
 
     private void connectToLeekWars() throws IOException, PluginNotConfiguredException {
@@ -110,6 +143,9 @@ public class LeekWarsServer {
             // farmer_id and farmer_hash
             cookie += "; " + fields.get(0).substring(0, fields.get(0).indexOf(';'));
             cookie += "; " + fields.get(1).substring(0, fields.get(1).indexOf(';'));
+
+            // Get the token
+            new DownloadScriptsTask(null).parseScriptTags(getPage("/", null));
         } else {
             Document doc = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
             if (doc.body().text().contains("Les identifiants sont incorrects")) {
