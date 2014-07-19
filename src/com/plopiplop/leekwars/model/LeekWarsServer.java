@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 
 public class LeekWarsServer {
@@ -54,7 +55,7 @@ public class LeekWarsServer {
             connectToLeekWars();
         }
 
-        String params = String.format("id=%s&compile=true&token=%s&code=%s", id, getToken(), content);
+        String params = String.format("id=%s&compile=true&token=%s&code=%s", id, getToken(), URLEncoder.encode(content, "UTF-8"));
 
         HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params);
         String result = CharStreams.toString(new InputStreamReader(connection.getInputStream()));
