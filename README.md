@@ -21,10 +21,12 @@ Features
 * Retrieve existing scripts from the LeekWars server
 * Code completion
 * Refactoring : rename variable/function
+* Import/save **existing** scripts from/to leekwars.com
 
 Planned features
 ================
-* Import/save scripts from/to leekwars.com
+* Create new scripts (on the server)
+* Rename existing scripts (on the server)
 * "Include" a file into another (for example to share code between team members)
 * Javadoc-like popup (very limited at the moment)
 * Code formatting
