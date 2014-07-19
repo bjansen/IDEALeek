@@ -58,6 +58,11 @@ public class LeekWarsServer {
 
         HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params);
         String result = CharStreams.toString(new InputStreamReader(connection.getInputStream()));
+
+        if (result.equals("bad token")) {
+            new DownloadScriptsTask(null).parseScriptTags(getPage("/", null));
+            uploadScript(id, name, content);
+        }
         CompilationException compilationResult = new Gson().fromJson(result, CompilationException.class);
 
         params = String.format("id=%s&save=true&token=%s&name=%s", id, getToken(), name);
