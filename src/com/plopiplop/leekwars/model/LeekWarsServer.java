@@ -58,7 +58,7 @@ public class LeekWarsServer {
         String params = String.format("id=%s&compile=true&token=%s&code=%s", id, getToken(), URLEncoder.encode(content, "UTF-8"));
 
         HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params);
-        String result = CharStreams.toString(new InputStreamReader(connection.getInputStream()));
+        String result = CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
 
         if (result.equals("bad token")) {
             new DownloadScriptsTask(null).parseScriptTags(getPage("/", null));
