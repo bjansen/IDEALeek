@@ -1,4 +1,4 @@
-IntelleekJ
+IDEALeek
 ==========
 
 This plugin adds support for the LeekScript language in IntelliJ (see [http://leekwars.com](http://leekwars.com)).
