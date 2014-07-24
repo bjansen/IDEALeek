@@ -5,22 +5,20 @@ import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveResult;
-import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
-import com.plopiplop.leekwars.psi.LSMethodCall;
-import com.plopiplop.leekwars.psi.LSReference;
-import com.plopiplop.leekwars.psi.LSTypes;
+import com.intellij.psi.util.PsiTreeUtil;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 public class LSAnnotator implements Annotator {
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
         if (element.getNode().getElementType() == LSTypes.IDENTIFIER && isNotLama(element)) {
-            PsiReference reference = element.getParent().getReference();
+            LSReference reference = (LSReference) element.getParent().getReference();
 
             if (reference != null) {
-                ResolveResult[] resolveResults = ((LSReference) reference).multiResolve(false);
+                ResolveResult[] resolveResults = reference.multiResolve(false);
 
                 if (resolveResults.length == 0) {
                     Annotation annotation = holder.createErrorAnnotation(element, "Cannot revolve symbol '" + element.getText() + "'");
@@ -31,9 +29,25 @@ public class LSAnnotator implements Annotator {
                     if (!hasExactSignature(methodCall, resolveResults)) {
                         holder.createErrorAnnotation(methodCall.getArguments(), "Cannot find function '" + element.getText() + "()' with given parameters");
                     }
+                } else {
+                    ResolveResult[] allRefs = reference.resolve(true);
+
+                    if (allRefs.length > 1) {
+                        // TODO global var and local var (in function) should not be marked as duplicates
+                        holder.createErrorAnnotation(element, "Duplicate function or variable declaration '" + element.getText() + "'");
+                    } else if (PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class) != null) {
+                        LSVariableStatement statement = PsiTreeUtil.getParentOfType(allRefs[0].getElement(), LSVariableStatement.class);
+
+                        if (statement != null && statement.getParent() instanceof PsiFile && !statement.isGlobal()) {
+                            holder.createErrorAnnotation(element, "Local variable '" + element.getText() + "' is not reachable inside function");
+                        }
+                    }
                 }
             }
 
+            if (PsiUtils.isGlobalInFunction(element)) {
+                holder.createErrorAnnotation(element, "Global variables are not allowed inside function");
+            }
             // TODO find unused variables/functions?
         }
     }

@@ -23,4 +23,14 @@ public class PsiUtils {
     public static PsiFile createDummyFile(Project project, String name, String text) {
         return PsiFileFactory.getInstance(project).createFileFromText(name, LSFileType.INSTANCE, text);
     }
+
+    public static boolean isInFunction(PsiElement element) {
+        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class) != null;
+    }
+
+    public static boolean isGlobalInFunction(PsiElement element) {
+        LSVariableStatement statement = PsiTreeUtil.getParentOfType(element, LSVariableStatement.class);
+
+        return statement != null && statement.isGlobal() && isInFunction(element);
+    }
 }

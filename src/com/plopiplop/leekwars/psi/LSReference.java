@@ -9,8 +9,7 @@ import com.plopiplop.leekwars.condeInsight.resolve.FindDeclarationVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
@@ -41,7 +40,12 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
     @NotNull
     @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
+        return resolve(false);
+    }
+
+    public ResolveResult[] resolve(boolean resolveEverywhere) {
         PsiElement parentBlock = myElement;
+        Set<PsiElement> elements = new LinkedHashSet<>();
 
         do {
             parentBlock = PsiUtils.findParentBlock(parentBlock);
@@ -49,16 +53,20 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
             FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
             parentBlock.accept(visitor);
 
-            if (!visitor.getDeclarations().isEmpty()) {
+            elements.addAll(visitor.getDeclarations());
+
+            if (!resolveEverywhere && !elements.isEmpty()) {
                 return toResolveResult(visitor.getDeclarations());
             }
         } while (parentBlock != myElement.getContainingFile());
 
-        return toResolveResult(visitApiFile());
+        elements.addAll(visitApiFile());
+
+        return toResolveResult(elements);
     }
 
     @NotNull
-    private ResolveResult[] toResolveResult(List<PsiElement> elements) {
+    private ResolveResult[] toResolveResult(Collection<PsiElement> elements) {
         ResolveResult[] results;
 
         if (myElement.getParent() instanceof LSMethodCall) {
@@ -72,15 +80,17 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
         }
 
         results = new ResolveResult[elements.size()];
-        for (int i = 0, size = elements.size(); i < size; i++) {
-            results[i] = new PsiElementResolveResult(elements.get(i));
+
+        int i = 0;
+        for (PsiElement element : elements) {
+            results[i++] = new PsiElementResolveResult(element);
         }
 
         return results;
     }
 
     @Nullable
-    private PsiElement findExactMethodSignature(List<PsiElement> elements) {
+    private PsiElement findExactMethodSignature(Collection<PsiElement> elements) {
         LSMethodCall methodCall = (LSMethodCall) myElement.getParent();
 
         for (PsiElement element : elements) {

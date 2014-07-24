@@ -20,6 +20,9 @@ public class FindDeclarationVisitor extends LSVisitor {
     public void visitFile(PsiFile file) {
         for (PsiElement psiElement : file.getChildren()) {
             if (psiElement instanceof LSVariableStatement) {
+                if (!((LSVariableStatement) psiElement).isGlobal() && PsiUtils.isInFunction(element)) {
+                    continue; // can't resolve to var declared outside of functions
+                }
                 visitVariableStatement((LSVariableStatement) psiElement);
             } else if (psiElement instanceof LSFunctionDeclaration) {
                 if (((LSFunctionDeclaration) psiElement).getIdentifier().getText().equals(element.getText())) {
