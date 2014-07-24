@@ -26,7 +26,7 @@ public class LSSyntaxHighlighter extends SyntaxHighlighterBase {
 
     private static final List<IElementType> KEYWORDS = Arrays.asList(
             LSTypes.KW_FUNCTION, LSTypes.KW_VAR, LSTypes.KW_GLOBAL, LSTypes.KW_IF, LSTypes.KW_ELSE,
-            LSTypes.KW_WHILE, LSTypes.KW_FOR, LSTypes.KW_NULL, LSTypes.KW_UNDEFINED,
+            LSTypes.KW_WHILE, LSTypes.KW_FOR, LSTypes.KW_NULL, LSTypes.KW_DO,
             LSTypes.KW_TRUE, LSTypes.KW_FALSE, LSTypes.KW_RETURN, LSTypes.KW_BREAK
     );
 

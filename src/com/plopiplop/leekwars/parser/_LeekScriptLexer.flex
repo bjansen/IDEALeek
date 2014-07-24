@@ -38,9 +38,9 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "if"                     { return KW_IF; }
   "else"                   { return KW_ELSE; }
   "while"                  { return KW_WHILE; }
+  "do"                     { return KW_DO; }
   "for"                    { return KW_FOR; }
   "null"                   { return KW_NULL; }
-  "undefined"              { return KW_UNDEFINED; }
   "true"                   { return KW_TRUE; }
   "false"                  { return KW_FALSE; }
   "return"                 { return KW_RETURN; }

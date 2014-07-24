@@ -29,9 +29,9 @@
     kw_if='if'
     kw_else='else'
     kw_while='while'
+    kw_do='do'
     kw_for='for'
     kw_null='null'
-    kw_undefined='undefined'
     kw_true='true'
     kw_false='false'
     kw_return='return'
@@ -79,6 +79,7 @@ private statement ::=
     |   expressionStatement
     |   ifStatement
     |   whileStatement
+    |   doWhileStatement
     |   forStatement
     |   returnStatement
     |   breakStatement
@@ -88,23 +89,24 @@ functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' '{' f
 block ::= '{' statementList? '}'
 statementList ::= statement+
 
-variableStatement ::= modifier variableDeclarationList eos {methods = [isGlobal]}
+variableStatement ::= modifier variableDeclarationList eos {methods = [isGlobal] pin=2}
 private variableDeclarationList ::= variableDeclaration (',' variableDeclaration)*
 variableDeclaration ::= identifier initialiser? {methods=[getPresentation]}
 initialiser ::= '=' singleExpression
 
 emptyStatement ::= ';'
-expressionStatement ::= expressionSequence
+expressionStatement ::= expressionSequence eos {pin=1}
 expressionSequence ::= singleExpression (',' singleExpression)*
 
 ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock?
 thenBlock ::= statement
 elseBlock ::= 'else' statement
 whileStatement ::= 'while' '(' expressionSequence ')' statement
+doWhileStatement ::= 'do' statement 'while' '(' expressionSequence ')' eos  {pin=6}
 forStatement ::= 'for' '(' (forInitializerDeclaration | expressionSequence?) ';' expressionSequence? ';' expressionSequence? ')' statement
 forInitializerDeclaration ::= 'var' variableDeclarationList
-returnStatement ::= 'return' expressionSequence? eos
-breakStatement ::= 'break' eos
+returnStatement ::= 'return' expressionSequence? eos {pin=2}
+breakStatement ::= 'break' eos  {pin=1}
 
 singleExpression ::=
         'function' identifier? '(' formalParameterList ')' '{' functionBody '}'
@@ -145,7 +147,7 @@ postfixOperator ::= '++' | '--'
 prefixOperator ::= postfixOperator | '+' | '-' | '~' | '!'
 mathOperator ::= '+' | '-' | '*' | '/' | '%'
 
-literal ::= 'null' | 'undefined' | 'true' | 'false' | string | number
+literal ::= 'null' | 'true' | 'false' | string | number
 
 arrayLiteral ::= '[' elementList? ']'
 elementList ::= singleExpression (',' singleExpression)*
