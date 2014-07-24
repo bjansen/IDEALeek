@@ -10,9 +10,4 @@ public class LSTokenType extends IElementType {
     public LSTokenType(@NotNull @NonNls String debugName) {
         super(debugName, LeekScriptLanguage.INSTANCE);
     }
-
-    @Override
-    public String toString() {
-        return "LSTokenType." + super.toString();
-    }
 }
