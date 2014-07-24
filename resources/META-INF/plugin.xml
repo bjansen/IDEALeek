@@ -28,6 +28,9 @@
 
         <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
         <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>
+
+        <defaultLiveTemplatesProvider implementation="com.plopiplop.leekwars.templates.LSLiveTemplatesProvider"/>
+        <liveTemplateContext implementation="com.plopiplop.leekwars.templates.LSContextType"/>
     </extensions>
 
     <application-components>
