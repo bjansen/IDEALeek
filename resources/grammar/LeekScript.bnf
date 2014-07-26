@@ -13,8 +13,8 @@
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
 
-  implements("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall)")="com.plopiplop.leekwars.psi.LSNamedElement"
-  mixin("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
+  implements("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElement"
+  mixin("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
 
   tokens=[
     identifier='regexp:(\p{Alpha}|_)\w*'
@@ -31,6 +31,7 @@
     kw_while='while'
     kw_do='do'
     kw_for='for'
+    kw_in='in'
     kw_null='null'
     kw_true='true'
     kw_false='false'
@@ -43,6 +44,7 @@
     op_divide='/'
     op_modulo='%'
     op_semicolon=';'
+    op_colon=':'
     op_lparen='('
     op_rparen=')'
     op_lbracket='['
@@ -104,8 +106,8 @@ elseBlock ::= 'else' statement
 whileStatement ::= whileCondition statement
 whileCondition ::= 'while' '(' expressionSequence ')' {pin=1}
 doWhileStatement ::= 'do' statement whileCondition eos  {pin=1}
-forStatement ::= 'for' '(' (forInitializerDeclaration | expressionSequence?) ';' expressionSequence? ';' expressionSequence? ')' statement
-forInitializerDeclaration ::= 'var' variableDeclarationList
+forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' statement {pin=1}
+forInitializer ::= 'var'? identifier
 returnStatement ::= 'return' expressionSequence? eos {pin=2}
 breakStatement ::= 'break' eos  {pin=1}
 

@@ -61,10 +61,9 @@ public class FindCompletionVisitor extends LSVisitor {
                 visitVariableStatement(variableStatement);
             }
         }
-        if (statement.getForInitializerDeclaration() != null) {
-            for (LSVariableDeclaration declaration : statement.getForInitializerDeclaration().getVariableDeclarationList()) {
-                namedElements.add(declaration);
-            }
+
+        for (LSForInitializer initializer : statement.getForInitializerList()) {
+            namedElements.add(initializer);
         }
     }
 

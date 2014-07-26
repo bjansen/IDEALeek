@@ -108,8 +108,8 @@ public class FindDeclarationVisitor extends LSVisitor {
 
     @Override
     public void visitForStatement(@NotNull LSForStatement statement) {
-        if (statement.getForInitializerDeclaration() != null) {
-            visitForInitializerDeclaration(statement.getForInitializerDeclaration());
+        for (LSForInitializer initializer : statement.getForInitializerList()) {
+            visitForInitializer(initializer);
         }
         if (statement.getBlock() != null) {
             visitBlock(statement.getBlock());
@@ -117,9 +117,10 @@ public class FindDeclarationVisitor extends LSVisitor {
     }
 
     @Override
-    public void visitForInitializerDeclaration(@NotNull LSForInitializerDeclaration initializer) {
-        for (LSVariableDeclaration declaration : initializer.getVariableDeclarationList()) {
-            visitVariableDeclaration(declaration);
+    public void visitForInitializer(@NotNull LSForInitializer initializer) {
+        boolean isDeclaration = initializer.getKwVar() != null;
+        if (isDeclaration && initializer.getIdentifier().getText().equals(element.getText()) && PsiUtils.isDeclaredBefore(initializer, element)) {
+            declarations.add(initializer);
         }
     }
 

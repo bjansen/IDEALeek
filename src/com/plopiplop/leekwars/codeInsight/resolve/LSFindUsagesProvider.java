@@ -37,7 +37,7 @@ public class LSFindUsagesProvider implements FindUsagesProvider {
         } else if (element.getParent() instanceof LSVariableStatement) {
             String scope = ((LSVariableStatement) element.getParent()).isGlobal() ? "Global" : "Local";
             return scope + " variable";
-        } else if (element.getParent() instanceof LSForInitializerDeclaration) {
+        } else if (element.getParent() instanceof LSForInitializer) {
             return "Local variable";
         } else if (element instanceof LSParameter) {
             return "Function parameter";

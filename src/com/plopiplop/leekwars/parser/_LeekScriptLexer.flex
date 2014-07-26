@@ -40,6 +40,7 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "while"                  { return KW_WHILE; }
   "do"                     { return KW_DO; }
   "for"                    { return KW_FOR; }
+  "in"                     { return KW_IN; }
   "null"                   { return KW_NULL; }
   "true"                   { return KW_TRUE; }
   "false"                  { return KW_FALSE; }
@@ -51,6 +52,7 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "/"                      { return OP_DIVIDE; }
   "%"                      { return OP_MODULO; }
   ";"                      { return OP_SEMICOLON; }
+  ":"                      { return OP_COLON; }
   "("                      { return OP_LPAREN; }
   ")"                      { return OP_RPAREN; }
   "["                      { return OP_LBRACKET; }
