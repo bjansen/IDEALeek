@@ -1,4 +1,4 @@
-package com.plopiplop.leekwars.condeInsight.completion;
+package com.plopiplop.leekwars.codeInsight.completion;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;

@@ -1,4 +1,4 @@
-package com.plopiplop.leekwars.condeInsight.annotator;
+package com.plopiplop.leekwars.codeInsight.annotator;
 
 import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.annotation.Annotation;

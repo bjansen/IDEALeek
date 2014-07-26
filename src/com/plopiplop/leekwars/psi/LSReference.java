@@ -5,7 +5,7 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import com.plopiplop.leekwars.ApiNotFoundException;
 import com.plopiplop.leekwars.LeekWarsApi;
-import com.plopiplop.leekwars.condeInsight.resolve.FindDeclarationVisitor;
+import com.plopiplop.leekwars.codeInsight.resolve.FindDeclarationVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

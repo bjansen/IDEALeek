@@ -1,4 +1,4 @@
-package com.plopiplop.leekwars.condeInsight.resolve;
+package com.plopiplop.leekwars.codeInsight.resolve;
 
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;

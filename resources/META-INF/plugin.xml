@@ -18,13 +18,13 @@
         <lang.braceMatcher language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.LSBraceMatcher"/>
         <quoteHandler fileType="LeekScript" className="com.plopiplop.leekwars.editor.LSQuoteHandler"/>
         <lang.documentationProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.doc.LSDocumentationProvider"/>
-        <lang.findUsagesProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.resolve.LSFindUsagesProvider"/>
-        <annotator language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.annotator.LSAnnotator"/>
+        <lang.findUsagesProvider language="LeekScript" implementationClass="com.plopiplop.leekwars.codeInsight.resolve.LSFindUsagesProvider"/>
+        <annotator language="LeekScript" implementationClass="com.plopiplop.leekwars.codeInsight.annotator.LSAnnotator"/>
         <lang.psiStructureViewFactory language="LeekScript" implementationClass="com.plopiplop.leekwars.lang.LSPsiStructureViewFactory"/>
-        <completion.contributor language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSCompletionContributor"/>
+        <completion.contributor language="LeekScript" implementationClass="com.plopiplop.leekwars.codeInsight.completion.LSCompletionContributor"/>
         <lang.refactoringSupport language="LeekScript" implementationClass="com.plopiplop.leekwars.refactoring.LSRefactoringSupportProvider"/>
         <editorNotificationProvider implementation="com.plopiplop.leekwars.editor.MissingApiNotificationProvider"/>
-        <codeInsight.parameterInfo language="LeekScript" implementationClass="com.plopiplop.leekwars.condeInsight.completion.LSFunctionParameterInfoHandler"/>
+        <codeInsight.parameterInfo language="LeekScript" implementationClass="com.plopiplop.leekwars.codeInsight.completion.LSFunctionParameterInfoHandler"/>
 
         <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
         <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>

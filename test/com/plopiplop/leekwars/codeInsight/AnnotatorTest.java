@@ -1,4 +1,4 @@
-package com.plopiplop.leekwars.condeInsight;
+package com.plopiplop.leekwars.codeInsight;
 
 public class AnnotatorTest extends LSCodeInsightTestSupport {
 

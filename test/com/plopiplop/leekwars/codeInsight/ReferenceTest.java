@@ -1,4 +1,4 @@
-package com.plopiplop.leekwars.condeInsight;
+package com.plopiplop.leekwars.codeInsight;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
