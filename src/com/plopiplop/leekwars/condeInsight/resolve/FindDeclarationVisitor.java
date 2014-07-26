@@ -2,6 +2,7 @@ package com.plopiplop.leekwars.condeInsight.resolve;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -91,7 +92,16 @@ public class FindDeclarationVisitor extends LSVisitor {
     public void visitWhileStatement(@NotNull LSWhileStatement statement) {
         LSBlock innerBlock = statement.getBlock();
 
-        if (innerBlock != null) {
+        if (innerBlock != null && PsiTreeUtil.getParentOfType(element, LSWhileCondition.class) == null) {
+            visitBlock(innerBlock);
+        }
+    }
+
+    @Override
+    public void visitDoWhileStatement(@NotNull LSDoWhileStatement statement) {
+        LSBlock innerBlock = statement.getBlock();
+
+        if (innerBlock != null && PsiTreeUtil.getParentOfType(element, LSWhileCondition.class) == null) {
             visitBlock(innerBlock);
         }
     }
@@ -115,7 +125,7 @@ public class FindDeclarationVisitor extends LSVisitor {
 
     @Override
     public void visitVariableDeclaration(@NotNull LSVariableDeclaration declaration) {
-        if (declaration.getIdentifier().getText().equals(element.getText())) {
+        if (declaration.getIdentifier().getText().equals(element.getText()) && PsiUtils.isDeclaredBefore(declaration, element)) {
             declarations.add(declaration);
         }
     }

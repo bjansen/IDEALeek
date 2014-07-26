@@ -12,7 +12,7 @@ public class PsiUtils {
 
     public static PsiElement findParentBlock(PsiElement element) {
         return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class, LSThenBlock.class,
-                LSElseBlock.class, LSWhileStatement.class, LSForStatement.class, LSFile.class);
+                LSElseBlock.class, LSWhileStatement.class, LSForStatement.class, LSFile.class, LSDoWhileStatement.class);
     }
 
     public static PsiElement createIdentifierFromText(Project project, String identifier) {
@@ -32,5 +32,12 @@ public class PsiUtils {
         LSVariableStatement statement = PsiTreeUtil.getParentOfType(element, LSVariableStatement.class);
 
         return statement != null && statement.isGlobal() && isInFunction(element);
+    }
+
+    public static boolean isDeclaredBefore(PsiElement element1, PsiElement element2) {
+        if (element1.getContainingFile().equals(element2.getContainingFile())) {
+            return element1.getTextOffset() <= element2.getTextOffset();
+        }
+        return true;
     }
 }

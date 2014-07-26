@@ -1,0 +1,26 @@
+do {
+    debug(foo);
+
+    var foo = 1;
+
+    debug(foo);
+} while (foo > 1);
+
+debug(foo);
+
+while (bar) {
+    debug(bar);
+
+    var bar = true;
+
+    debug(bar);
+}
+
+for (test = 0; test < 10; test++) {
+    debug(test);
+    var test = 1;
+    debug(test);
+}
+for (var test = 0; test < 10; test++) {
+    debug(test);
+}

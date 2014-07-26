@@ -102,7 +102,7 @@ ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock?
 thenBlock ::= statement
 elseBlock ::= 'else' statement
 whileStatement ::= whileCondition statement
-private whileCondition ::= 'while' '(' expressionSequence ')' {pin=1}
+whileCondition ::= 'while' '(' expressionSequence ')' {pin=1}
 doWhileStatement ::= 'do' statement whileCondition eos  {pin=1}
 forStatement ::= 'for' '(' (forInitializerDeclaration | expressionSequence?) ';' expressionSequence? ';' expressionSequence? ')' statement
 forInitializerDeclaration ::= 'var' variableDeclarationList
