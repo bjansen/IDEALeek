@@ -1,3 +1,5 @@
+package com.plopiplop.leekwars.condeInsight;
+
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceService;

@@ -1,3 +1,5 @@
+package com.plopiplop.leekwars.condeInsight;
+
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import com.plopiplop.leekwars.psi.LSFile;
 

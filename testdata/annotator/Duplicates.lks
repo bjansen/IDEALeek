@@ -1,0 +1,23 @@
+function <error descr="Duplicate function or variable declaration 'coin'">coin</error>() {
+}
+
+function <error descr="Duplicate function or variable declaration 'coin'">coin</error>() {
+}
+
+var <error descr="Duplicate function or variable declaration 'coin'">coin</error> = null;
+
+function <error descr="Duplicate function or variable declaration 'func1'">func1</error>() {
+}
+
+function <error descr="Duplicate function or variable declaration 'func1'">func1</error>(arg) {
+}
+
+function <error descr="Duplicate function or variable declaration 'func2'">func2</error>(arg) {
+}
+
+function <error descr="Duplicate function or variable declaration 'func2'">func2</error>(arg) {
+}
+
+function bar() {
+    var <error descr="Duplicate function or variable declaration 'bar'">bar</error> = 1;
+}

@@ -8,6 +8,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveResult;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +33,7 @@ public class LSAnnotator implements Annotator {
                 } else {
                     ResolveResult[] allRefs = reference.resolve(true);
 
-                    if (allRefs.length > 1) {
+                    if (allRefs.length > 1 && !isOverloadedFunctionInApi(allRefs)) {
                         // TODO global var and local var (in function) should not be marked as duplicates
                         holder.createErrorAnnotation(element, "Duplicate function or variable declaration '" + element.getText() + "'");
                     } else if (PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class) != null) {
@@ -50,6 +51,16 @@ public class LSAnnotator implements Annotator {
             }
             // TODO find unused variables/functions?
         }
+    }
+
+    private boolean isOverloadedFunctionInApi(ResolveResult[] results) {
+        for (ResolveResult result : results) {
+            if (!result.getElement().getContainingFile().getName().equals(LeekWarsApi.LEEKWARS_API_FILE)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean hasExactSignature(LSMethodCall methodCall, ResolveResult[] results) {
