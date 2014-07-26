@@ -4,6 +4,7 @@ import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.ResolveResult;
@@ -48,6 +49,11 @@ public class LSAnnotator implements Annotator {
 
             if (PsiUtils.isGlobalInFunction(element)) {
                 holder.createErrorAnnotation(element, "Global variables are not allowed inside function");
+            }
+
+            if (element.getParent() instanceof LSParameter && ((LSParameter) element.getParent()).getOpReference() != null) {
+                Annotation annotation = holder.createInfoAnnotation(element.getParent(), null);
+                annotation.setTextAttributes(CodeInsightColors.ANNOTATION_NAME_ATTRIBUTES);
             }
             // TODO find unused variables/functions?
         }

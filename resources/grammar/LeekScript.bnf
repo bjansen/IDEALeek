@@ -38,6 +38,8 @@
     kw_return='return'
     kw_break='break'
 
+    op_inc='++'
+    op_dec='--'
     op_plus='+'
     op_minus='-'
     op_times='*'
@@ -66,6 +68,7 @@
     op_not_equals='!='
     op_binary_or='|'
     op_binary_and='&'
+    op_reference='@'
   ]
 }
 
@@ -112,8 +115,8 @@ returnStatement ::= 'return' expressionSequence? eos {pin=2}
 breakStatement ::= 'break' eos  {pin=1}
 
 singleExpression ::=
-        'function' identifier? '(' formalParameterList ')' '{' functionBody '}'
-    |   simpleExpression comparator singleExpression
+//        'function' identifier? '(' formalParameterList ')' '{' functionBody '}'
+        simpleExpression comparator singleExpression
     |   simpleExpression booleanOperator singleExpression
     |   simpleExpression mathOperator singleExpression
     |   variableReference '=' singleExpression
@@ -141,7 +144,7 @@ private singleExpressionPart ::= singleExpression {recoverWhile=singleExpression
 private singleExpressionPartRecover ::= !(')' | ',')
 
 formalParameterList ::= parameter (',' parameter)*
-parameter ::= identifier
+parameter ::= '@'? identifier
 
 comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
 booleanOperator ::= '&&' | '||' | '&' | '|'

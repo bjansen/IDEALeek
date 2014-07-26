@@ -46,6 +46,8 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "false"                  { return KW_FALSE; }
   "return"                 { return KW_RETURN; }
   "break"                  { return KW_BREAK; }
+  "++"                     { return OP_INC; }
+  "--"                     { return OP_DEC; }
   "+"                      { return OP_PLUS; }
   "-"                      { return OP_MINUS; }
   "*"                      { return OP_TIMES; }
@@ -74,6 +76,7 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "!="                     { return OP_NOT_EQUALS; }
   "|"                      { return OP_BINARY_OR; }
   "&"                      { return OP_BINARY_AND; }
+  "@"                      { return OP_REFERENCE; }
 
   {IDENTIFIER}             { return IDENTIFIER; }
   {NUMBER}                 { return NUMBER; }
