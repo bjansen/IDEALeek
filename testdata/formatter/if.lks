@@ -1,0 +1,1 @@
+var a=true;if(a){debug("true");}else{debug("false");}if(false)debug(true);

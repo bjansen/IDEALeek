@@ -25,6 +25,7 @@
         <lang.refactoringSupport language="LeekScript" implementationClass="com.plopiplop.leekwars.refactoring.LSRefactoringSupportProvider"/>
         <editorNotificationProvider implementation="com.plopiplop.leekwars.editor.MissingApiNotificationProvider"/>
         <codeInsight.parameterInfo language="LeekScript" implementationClass="com.plopiplop.leekwars.codeInsight.completion.LSFunctionParameterInfoHandler"/>
+        <lang.formatter language="LeekScript" implementationClass="com.plopiplop.leekwars.editor.formatter.LSFormattingModelBuilder"/>
 
         <applicationConfigurable id="LeekScript" displayName="LeekScript" instance="com.plopiplop.leekwars.options.LeekScriptConfigurable"/>
         <applicationService serviceImplementation="com.plopiplop.leekwars.options.LSSettings"/>

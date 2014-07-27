@@ -46,14 +46,10 @@ public class FindDeclarationVisitor extends LSVisitor {
 
     @Override
     public void visitFunctionDeclaration(@NotNull LSFunctionDeclaration decl) {
-        List<LSVariableStatement> variableStatements = decl.getFunctionBody().getVariableStatementList();
+        visitBlock(decl.getBlock());
 
         if (decl.getIdentifier().getText().equals(element.getText())) {
             declarations.add(decl);
-        }
-
-        for (LSVariableStatement variableStatement : variableStatements) {
-            visitVariableStatement(variableStatement);
         }
 
         if (decl.getFormalParameterList() != null) {

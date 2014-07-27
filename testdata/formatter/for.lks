@@ -1,0 +1,1 @@
+for(var i=0;i<3;i++){debug(i);}for(var a:var b in array){debug(a+"=>"+b);}

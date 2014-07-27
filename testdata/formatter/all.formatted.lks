@@ -1,0 +1,10 @@
+var a = 2;
+if (a < 3) {
+    debug(a);
+    while (true) {
+        debug(true);
+    }
+}
+function coin(a, b, c) {
+    debug(a <= b >= c == true);
+}

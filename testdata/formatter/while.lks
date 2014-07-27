@@ -1,0 +1,1 @@
+while(a==true){debug(a);}do{debug(a);}while(a==true);debug(true);while(a)debug(a);

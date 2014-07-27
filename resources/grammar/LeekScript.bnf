@@ -89,7 +89,7 @@ private statement ::=
     |   returnStatement
     |   breakStatement
 
-functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' '{' functionBody '}' {methods=[getSignature getNbArguments getPresentation]}
+functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation]}
 
 block ::= '{' statementList? '}'
 statementList ::= statement+
@@ -133,7 +133,6 @@ simpleExpression ::=
 
 variableReference ::= identifier '[' expressionSequence ']' | identifier
 methodCall ::= identifier arguments {methods=[getNbArguments]}
-functionBody ::= sourceElements?
 
 eos ::= ';'
 
@@ -146,12 +145,12 @@ private singleExpressionPartRecover ::= !(')' | ',')
 formalParameterList ::= parameter (',' parameter)*
 parameter ::= '@'? identifier
 
-comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
-booleanOperator ::= '&&' | '||' | '&' | '|'
+private comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
+private booleanOperator ::= '&&' | '||' | '&' | '|'
 modifier ::= 'var' | 'global'
 postfixOperator ::= '++' | '--'
 prefixOperator ::= postfixOperator | '+' | '-' | '~' | '!'
-mathOperator ::= '+' | '-' | '*' | '/' | '%'
+private mathOperator ::= '+' | '-' | '*' | '/' | '%'
 
 literal ::= 'null' | 'true' | 'false' | string | number
 
