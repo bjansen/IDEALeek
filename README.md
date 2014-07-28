@@ -3,6 +3,8 @@ IDEALeek
 
 This plugin adds support for the LeekScript language in IntelliJ (see [http://leekwars.com](http://leekwars.com)).
 
+[![Build Status](https://travis-ci.org/bjansen/IDEALeek.svg?branch=master)](https://travis-ci.org/bjansen/IDEALeek)
+
 Usage
 =====
 
