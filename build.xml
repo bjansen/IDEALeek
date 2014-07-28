@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="IDEALeek" default="all">
+
+    <property file="build.properties"/>
+    <dirname property="plugin.basedir" file="${ant.file}"/>
+    <property name="plugin.output.dir" value="${plugin.basedir}/out/production/antleek"/>
+    <property name="plugin.testoutput.dir" value="${plugin.basedir}/out/test/antleek"/>
+    <property name="jdk.bin" value="${jdk.home}/bin"/>
+
+    <condition property="jdk.home" value="${java.home}/..">
+        <not>
+            <isset property="jdk.home"/>
+        </not>
+    </condition>
+
+    <path id="jdk.classpath">
+        <fileset dir="${jdk.home}">
+            <include name="lib/ant-javafx.jar"/>
+            <include name="lib/dt.jar"/>
+            <include name="lib/javafx-doclet.jar"/>
+            <include name="lib/javafx-mx.jar"/>
+            <include name="lib/jconsole.jar"/>
+            <include name="lib/sa-jdi.jar"/>
+            <include name="lib/tools.jar"/>
+            <include name="jre/lib/charsets.jar"/>
+            <include name="jre/lib/deploy.jar"/>
+            <include name="jre/lib/htmlconverter.jar"/>
+            <include name="jre/lib/javaws.jar"/>
+            <include name="jre/lib/jce.jar"/>
+            <include name="jre/lib/jfr.jar"/>
+            <include name="jre/lib/jfxrt.jar"/>
+            <include name="jre/lib/JObjC.jar"/>
+            <include name="jre/lib/jsse.jar"/>
+            <include name="jre/lib/management-agent.jar"/>
+            <include name="jre/lib/plugin.jar"/>
+            <include name="jre/lib/resources.jar"/>
+            <include name="jre/lib/rt.jar"/>
+            <include name="jre/lib/ext/dnsns.jar"/>
+            <include name="jre/lib/ext/localedata.jar"/>
+            <include name="jre/lib/ext/sunec.jar"/>
+            <include name="jre/lib/ext/sunjce_provider.jar"/>
+            <include name="jre/lib/ext/sunpkcs11.jar"/>
+            <include name="jre/lib/ext/zipfs.jar"/>
+        </fileset>
+        <pathelement location="${idea.home}/lib/junit-4.11.jar"/>
+        <pathelement location="${plugin.basedir}/lib/jsoup-1.7.3.jar"/>
+        <fileset dir="${idea.home}" includes="**/*.jar">
+            <exclude name="lib/ant/lib/**"/>
+        </fileset>
+    </path>
+
+    <path id="grammarkit.classpath">
+        <pathelement location="${plugin.basedir}/gramamrkit/light-psi-all.jar"/>
+    </path>
+
+    <path id="plugin.sourcepath">
+        <dirset dir="${plugin.basedir}">
+            <include name="gen"/>
+            <include name="src"/>
+            <include name="resources"/>
+        </dirset>
+    </path>
+
+    <path id="plugin.testsourcepath">
+        <dirset dir="${plugin.basedir}">
+            <include name="test"/>
+            <include name="testdata"/>
+        </dirset>
+    </path>
+
+    <path id="plugin.classpath">
+        <dirset dir="${plugin.output.dir}"/>
+    </path>
+
+    <target name="clean">
+        <echo message="Base dir is ${plugin.basedir}"/>
+        <!--<delete dir="gen/com"/>-->
+        <delete dir="${plugin.output.dir}"/>
+        <delete dir="${plugin.testoutput.dir}"/>
+    </target>
+
+    <target name="grammarkit" depends="clean">
+        <java jar="${plugin.basedir}/grammarkit/grammar-kit.jar" fork="true">
+            <classpath refid="grammarkit.classpath"/>
+            <arg line="${plugin.basedir}\gen ${plugin.basedir}\resources\grammar\LeekScript.bnf"/>
+        </java>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${plugin.output.dir}"/>
+        <javac source="1.7" target="1.7" destdir="${plugin.output.dir}">
+            <classpath refid="jdk.classpath"/>
+            <src refid="plugin.sourcepath"/>
+        </javac>
+        <copy todir="${plugin.output.dir}">
+            <fileset dir="${plugin.basedir}/resources">
+                <exclude name="**/grammar/"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="compile.tests" depends="compile">
+        <mkdir dir="${plugin.testoutput.dir}"/>
+        <javac source="1.7" target="1.7" destdir="${plugin.testoutput.dir}">
+            <classpath refid="jdk.classpath"/>
+            <src refid="plugin.testsourcepath"/>
+            <classpath refid="plugin.classpath"/>
+        </javac>
+        <copy todir="${plugin.testoutput.dir}">
+            <fileset dir="${plugin.basedir}/testdata"/>
+        </copy>
+    </target>
+
+    <target name="test" depends="compile.tests">
+        <junit printsummary="yes" haltonfailure="false" showoutput="yes" failureproperty="failureFound"
+               fork="yes" forkmode="once" reloading="no">
+            <jvmarg value="-Didea.home.path=${idea.home}"/>
+            <jvmarg value="-Xbootclasspath/a:${idea.home}/lib/boot.jar"/>
+            <jvmarg value="-Dfile.encoding=UTF-8"/>
+            <jvmarg value="-ea"/>
+            <jvmarg value="-Didea.plugins.path=${idea.home}/plugins"/>
+            <jvmarg value="-Didea.launcher.bin.path=${idea.home}/bin"/>
+            <classpath location=".">
+                <pathelement location="${idea.home}/lib/junit-4.11.jar" />
+                <fileset dir="${idea.home}" includes="**/*.jar">
+                    <exclude name="lib/ant/lib/*"/>
+                </fileset>
+                <fileset dir="${java.home}/../lib" includes="**/*.jar" />
+                <path refid="plugin.classpath"/>
+                <pathelement location="${plugin.testoutput.dir}"/>
+            </classpath>
+            <formatter type="brief" usefile="false"/>
+            <batchtest>
+                <fileset dir="${plugin.basedir}/test">
+                    <exclude name="**/*TestSupport*" />
+                    <include name="**/*Test*" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="check.test" if="failureFound" depends="test">
+        <fail message="Test failure."/>
+    </target>
+
+    <target name="all" depends="clean,compile,check.test" description="build all"/>
+</project>
