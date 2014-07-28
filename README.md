@@ -22,6 +22,7 @@ Features
 * Code completion
 * Refactoring : rename variable/function
 * Import/save **existing** scripts from/to leekwars.com
+* Code formatting
 
 Planned features
 ================
@@ -29,7 +30,6 @@ Planned features
 * Rename existing scripts (on the server)
 * "Include" a file into another (for example to share code between team members)
 * Javadoc-like popup (very limited at the moment)
-* Code formatting
 
 Current limitations
 ===================
