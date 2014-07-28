@@ -5,6 +5,7 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceService;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.psi.LSFile;
+import com.plopiplop.leekwars.psi.LSForInitializer;
 import com.plopiplop.leekwars.psi.LSNamedElement;
 import com.plopiplop.leekwars.psi.LSVariableDeclaration;
 
@@ -74,10 +75,10 @@ public class ReferenceTest extends LSCodeInsightTestSupport {
         assertRefdAtCaret(file, 221, LSVariableDeclaration.class);
 
         moveCaret(0, 2);
-        assertRefdAtCaret(file, 259, LSVariableDeclaration.class);
+        assertRefdAtCaret(file, 259, LSForInitializer.class);
 
         moveCaret(1, 1);
-        assertRefdAtCaret(file, 259, LSVariableDeclaration.class);
+        assertRefdAtCaret(file, 259, LSForInitializer.class);
     }
 
     private void assertNoRef(LSFile file) {

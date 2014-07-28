@@ -1,15 +1,18 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
+import com.plopiplop.leekwars.psi.LSSimpleExpression;
+import com.plopiplop.leekwars.psi.LSSingleExpression;
+import com.plopiplop.leekwars.psi.LSVariableReference;
+import com.plopiplop.leekwars.psi.LSVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import static com.plopiplop.leekwars.psi.LSTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.plopiplop.leekwars.psi.*;
 
 public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSingleExpression {
 
@@ -42,6 +45,12 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public PsiElement getOpAndEq() {
+      return findChildByType(OP_AND_EQ);
+  }
+
+    @Override
+    @Nullable
   public PsiElement getOpAssign() {
     return findChildByType(OP_ASSIGN);
   }
@@ -72,6 +81,12 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public PsiElement getOpDivideEq() {
+      return findChildByType(OP_DIVIDE_EQ);
+  }
+
+    @Override
+    @Nullable
   public PsiElement getOpEquals() {
     return findChildByType(OP_EQUALS);
   }
@@ -132,6 +147,12 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public PsiElement getOpMinusEq() {
+      return findChildByType(OP_MINUS_EQ);
+  }
+
+    @Override
+    @Nullable
   public PsiElement getOpModulo() {
     return findChildByType(OP_MODULO);
   }
@@ -144,12 +165,24 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public PsiElement getOpOrEq() {
+      return findChildByType(OP_OR_EQ);
+  }
+
+    @Override
+    @Nullable
   public PsiElement getOpPlus() {
     return findChildByType(OP_PLUS);
   }
 
   @Override
   @Nullable
+  public PsiElement getOpPlusEq() {
+      return findChildByType(OP_PLUS_EQ);
+  }
+
+    @Override
+    @Nullable
   public PsiElement getOpTernary() {
     return findChildByType(OP_TERNARY);
   }
@@ -158,6 +191,12 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
   @Nullable
   public PsiElement getOpTimes() {
     return findChildByType(OP_TIMES);
+  }
+
+    @Override
+    @Nullable
+    public PsiElement getOpTimesEq() {
+        return findChildByType(OP_TIMES_EQ);
   }
 
 }
