@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 import com.plopiplop.leekwars.psi.impl.*;
 
 public interface LSTypes {
@@ -63,6 +63,7 @@ public interface LSTypes {
   IElementType KW_WHILE = new LSTokenType("while");
   IElementType MULTILINE_COMMENT = new LSTokenType("multiline_comment");
   IElementType NUMBER = new LSTokenType("number");
+    IElementType OP_AND_EQ = new LSTokenType("&=");
   IElementType OP_ASSIGN = new LSTokenType("=");
   IElementType OP_BINARY_AND = new LSTokenType("&");
   IElementType OP_BINARY_OR = new LSTokenType("|");
@@ -70,6 +71,7 @@ public interface LSTypes {
   IElementType OP_COMMA = new LSTokenType(",");
   IElementType OP_DEC = new LSTokenType("--");
   IElementType OP_DIVIDE = new LSTokenType("/");
+    IElementType OP_DIVIDE_EQ = new LSTokenType("/=");
   IElementType OP_EQUALS = new LSTokenType("==");
   IElementType OP_GE = new LSTokenType(">=");
   IElementType OP_GT = new LSTokenType(">");
@@ -84,10 +86,13 @@ public interface LSTypes {
   IElementType OP_LPAREN = new LSTokenType("(");
   IElementType OP_LT = new LSTokenType("<");
   IElementType OP_MINUS = new LSTokenType("-");
+    IElementType OP_MINUS_EQ = new LSTokenType("-=");
   IElementType OP_MODULO = new LSTokenType("%");
   IElementType OP_NOT = new LSTokenType("!");
   IElementType OP_NOT_EQUALS = new LSTokenType("!=");
+    IElementType OP_OR_EQ = new LSTokenType("|=");
   IElementType OP_PLUS = new LSTokenType("+");
+    IElementType OP_PLUS_EQ = new LSTokenType("+=");
   IElementType OP_RBRACE = new LSTokenType("}");
   IElementType OP_RBRACKET = new LSTokenType("]");
   IElementType OP_REFERENCE = new LSTokenType("@");
@@ -95,6 +100,7 @@ public interface LSTypes {
   IElementType OP_SEMICOLON = new LSTokenType(";");
   IElementType OP_TERNARY = new LSTokenType("?");
   IElementType OP_TIMES = new LSTokenType("*");
+    IElementType OP_TIMES_EQ = new LSTokenType("*=");
   IElementType STRING = new LSTokenType("string");
 
   class Factory {

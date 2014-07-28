@@ -55,6 +55,12 @@
     op_lbrace='{'
     op_rbrace='}'
     op_comma=','
+    op_plus_eq='+='
+    op_minus_eq='-='
+    op_times_eq='*='
+    op_divide_eq='/='
+    op_and_eq='&='
+    op_or_eq='|='
     op_assign='='
     op_not='!'
     op_logical_or='||'
@@ -106,7 +112,7 @@ emptyStatement ::= ';'
 expressionStatement ::= expressionSequence eos {pin=1}
 expressionSequence ::= singleExpression (',' singleExpression)*
 
-ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock?
+ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock? {pin=1}
 thenBlock ::= statement
 elseBlock ::= 'else' statement
 whileStatement ::= whileCondition statement
@@ -124,7 +130,7 @@ singleExpression ::=
     |   simpleExpression booleanOperator singleExpression
     |   simpleExpression mathOperator singleExpression
     |   simpleExpression '?' simpleExpression ':' simpleExpression
-    |   variableReference '=' singleExpression
+    |   variableReference assignmentOperator singleExpression
     |   simpleExpression
 
 simpleExpression ::=
@@ -156,7 +162,7 @@ modifier ::= 'var' | 'global'
 postfixOperator ::= '++' | '--'
 prefixOperator ::= postfixOperator | '+' | '-' | '~' | '!'
 private mathOperator ::= '+' | '-' | '*' | '/' | '%'
-
+private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
 literal ::= 'null' | 'true' | 'false' | string | number
 
 arrayLiteral ::= '[' elementList? ']'
