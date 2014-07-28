@@ -37,6 +37,7 @@
     kw_false='false'
     kw_return='return'
     kw_break='break'
+    kw_continue='continue'
 
     op_inc='++'
     op_dec='--'
@@ -69,6 +70,7 @@
     op_binary_or='|'
     op_binary_and='&'
     op_reference='@'
+    op_ternary='?'
   ]
 }
 
@@ -88,6 +90,7 @@ private statement ::=
     |   forStatement
     |   returnStatement
     |   breakStatement
+    |   continueStatement
 
 functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation]}
 
@@ -113,12 +116,14 @@ forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpr
 forInitializer ::= 'var'? identifier
 returnStatement ::= 'return' expressionSequence? eos {pin=2}
 breakStatement ::= 'break' eos  {pin=1}
+continueStatement ::= 'continue' eos  {pin=1}
 
 singleExpression ::=
 //        'function' identifier? '(' formalParameterList ')' '{' functionBody '}'
         simpleExpression comparator singleExpression
     |   simpleExpression booleanOperator singleExpression
     |   simpleExpression mathOperator singleExpression
+    |   simpleExpression '?' simpleExpression ':' simpleExpression
     |   variableReference '=' singleExpression
     |   simpleExpression
 
@@ -131,7 +136,7 @@ simpleExpression ::=
     |   literal
     |   arrayLiteral
 
-variableReference ::= identifier '[' expressionSequence ']' | identifier
+variableReference ::= identifier ('[' expressionSequence ']')*
 methodCall ::= identifier arguments {methods=[getNbArguments]}
 
 eos ::= ';'
