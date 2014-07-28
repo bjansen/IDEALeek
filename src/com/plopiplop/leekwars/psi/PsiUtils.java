@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.language.LSFileType;
 import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
@@ -39,5 +40,19 @@ public class PsiUtils {
             return element1.getTextOffset() <= element2.getTextOffset();
         }
         return true;
+    }
+
+    public static boolean isInLoop(PsiElement element) {
+        return PsiTreeUtil.getParentOfType(element, LSWhileStatement.class, LSDoWhileStatement.class, LSForStatement.class) != null;
+    }
+
+    public static PsiElement getPrevNonWhiteSpaceSibling(PsiElement element) {
+        PsiElement prevSibling = element.getPrevSibling();
+
+        while (prevSibling != null && prevSibling instanceof PsiWhiteSpace) {
+            prevSibling = prevSibling.getPrevSibling();
+        }
+
+        return prevSibling;
     }
 }

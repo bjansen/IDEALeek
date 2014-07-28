@@ -103,10 +103,10 @@ functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block
 block ::= '{' statementList? '}'
 statementList ::= statement+
 
-variableStatement ::= modifier variableDeclarationList eos {methods = [isGlobal] pin=2}
+variableStatement ::= modifier variableDeclarationList eos {methods = [isGlobal] pin=1}
 private variableDeclarationList ::= variableDeclaration (',' variableDeclaration)*
-variableDeclaration ::= identifier initialiser? {methods=[getPresentation]}
-initialiser ::= '=' singleExpression
+variableDeclaration ::= identifier initialiser? {methods=[getPresentation] pin=1}
+initialiser ::= '=' singleExpression {pin=1}
 
 emptyStatement ::= ';'
 expressionStatement ::= expressionSequence eos {pin=1}
