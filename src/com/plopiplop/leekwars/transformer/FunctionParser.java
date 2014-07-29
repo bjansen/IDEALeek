@@ -23,6 +23,9 @@ public class FunctionParser {
 
         function.name = element.select("h2 span.function-name").text();
 
+        if (function.name.equals("include")) {
+            return null; // For now we use our own includes
+        }
         if (function.name.startsWith("WEAPON_") || function.name.startsWith("CHIP_")) {
             return null;
         } else if (element.select("div.content").isEmpty()) {
