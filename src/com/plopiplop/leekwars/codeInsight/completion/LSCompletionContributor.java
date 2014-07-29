@@ -14,11 +14,14 @@ import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.plopiplop.leekwars.ApiNotFoundException;
 import com.plopiplop.leekwars.LeekWarsApi;
+import com.plopiplop.leekwars.language.LSIcons;
 import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LSCompletionContributor extends CompletionContributor {
 
@@ -49,16 +52,41 @@ public class LSCompletionContributor extends CompletionContributor {
             @Override
             protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
                 PsiElement element = parameters.getOriginalPosition();
-                findCompletions(element, result);
-                try {
-                    findCompletions(LeekWarsApi.getApiPsiFile(parameters.getOriginalFile().getProject()), result);
-                } catch (ApiNotFoundException e) {
-                    // Not available is leekwars API is not found
-                }
 
-                addKeywords(element, result);
+                if (element != null && element.getParent() instanceof LSReferenceString) {
+                    findFileCompletions(element, result);
+                } else {
+                    findCompletions(element, result);
+
+                    for (PsiElement includedFile : PsiUtils.getIncludedFilesBefore(element)) {
+                        findCompletions(includedFile, result);
+                    }
+
+                    try {
+                        findCompletions(LeekWarsApi.getApiPsiFile(parameters.getOriginalFile().getProject()), result);
+                    } catch (ApiNotFoundException e) {
+                        // Not available is leekwars API is not found
+                    }
+
+                    addKeywords(element, result);
+                }
             }
         });
+    }
+
+    private void findFileCompletions(PsiElement element, CompletionResultSet result) {
+        Pattern pattern = Pattern.compile("(.*)__\\d+.lks");
+
+        for (PsiFile psiFile : element.getContainingFile().getParent().getFiles()) {
+            if (!psiFile.equals(element.getContainingFile())) {
+                Matcher matcher = pattern.matcher(psiFile.getName());
+
+                if (matcher.matches()) {
+                    String name = matcher.group(1);
+                    result.addElement(LookupElementBuilder.create(name).withIcon(LSIcons.FILE));
+                }
+            }
+        }
     }
 
     private void addKeywords(PsiElement element, CompletionResultSet result) {
@@ -84,6 +112,7 @@ public class LSCompletionContributor extends CompletionContributor {
 
         if (PsiTreeUtil.getParentOfType(element, LSBlock.class) == null) {
             result.addElement(keyword("function", ADD_SPACE_HANDLER));
+            result.addElement(keyword("include", ParenthesesInsertHandler.getInstance(true, false, false, true, true)));
         }
 
         result.addElement(keyword("while", ParenthesesInsertHandler.getInstance(true, true, false, true, true)));

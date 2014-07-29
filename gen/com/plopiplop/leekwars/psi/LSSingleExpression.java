@@ -1,8 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
+import java.util.List;
+import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.Nullable;
 
 public interface LSSingleExpression extends PsiElement {
 
@@ -18,7 +19,7 @@ public interface LSSingleExpression extends PsiElement {
   @Nullable
   PsiElement getOpAndEq();
 
-    @Nullable
+  @Nullable
   PsiElement getOpAssign();
 
   @Nullable
@@ -36,7 +37,7 @@ public interface LSSingleExpression extends PsiElement {
   @Nullable
   PsiElement getOpDivideEq();
 
-    @Nullable
+  @Nullable
   PsiElement getOpEquals();
 
   @Nullable
@@ -69,7 +70,7 @@ public interface LSSingleExpression extends PsiElement {
   @Nullable
   PsiElement getOpMinusEq();
 
-    @Nullable
+  @Nullable
   PsiElement getOpModulo();
 
   @Nullable
@@ -78,19 +79,19 @@ public interface LSSingleExpression extends PsiElement {
   @Nullable
   PsiElement getOpOrEq();
 
-    @Nullable
+  @Nullable
   PsiElement getOpPlus();
 
   @Nullable
   PsiElement getOpPlusEq();
 
-    @Nullable
+  @Nullable
   PsiElement getOpTernary();
 
   @Nullable
   PsiElement getOpTimes();
 
-    @Nullable
-    PsiElement getOpTimesEq();
+  @Nullable
+  PsiElement getOpTimesEq();
 
 }

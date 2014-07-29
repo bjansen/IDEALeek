@@ -60,6 +60,7 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
             }
         } while (parentBlock != myElement.getContainingFile());
 
+        elements.addAll(visitIncludedFiles());
         elements.addAll(visitApiFile());
 
         return toResolveResult(elements);
@@ -104,6 +105,18 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
         }
 
         return null;
+    }
+
+    private List<PsiElement> visitIncludedFiles() {
+        List<PsiElement> resolvedElements = new ArrayList<>();
+
+        for (PsiElement includedFile : PsiUtils.getIncludedFilesBefore(myElement)) {
+            FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);
+            includedFile.accept(visitor);
+            resolvedElements.addAll(visitor.getDeclarations());
+        }
+
+        return resolvedElements;
     }
 
     private List<PsiElement> visitApiFile() {

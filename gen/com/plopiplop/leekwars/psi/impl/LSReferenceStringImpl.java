@@ -10,28 +10,27 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.plopiplop.leekwars.psi.LSTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.plopiplop.leekwars.psi.*;
+import com.intellij.psi.PsiReference;
 
-public class LSInitialiserImpl extends ASTWrapperPsiElement implements LSInitialiser {
+public class LSReferenceStringImpl extends ASTWrapperPsiElement implements LSReferenceString {
 
-  public LSInitialiserImpl(ASTNode node) {
+  public LSReferenceStringImpl(ASTNode node) {
     super(node);
   }
 
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitInitialiser(this);
+    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitReferenceString(this);
     else super.accept(visitor);
   }
 
   @Override
-  @Nullable
-  public LSSingleExpression getSingleExpression() {
-    return findChildByClass(LSSingleExpression.class);
+  @NotNull
+  public PsiElement getString() {
+    return findNotNullChildByType(STRING);
   }
 
-  @Override
-  @NotNull
-  public PsiElement getOpAssign() {
-    return findNotNullChildByType(OP_ASSIGN);
+  public PsiReference getReference() {
+    return LSPsiImplUtil.getReference(this);
   }
 
 }

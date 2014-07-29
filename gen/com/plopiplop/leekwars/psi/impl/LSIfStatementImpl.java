@@ -1,15 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import java.util.List;
+import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.plopiplop.leekwars.psi.*;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
+import com.intellij.psi.util.PsiTreeUtil;
 import static com.plopiplop.leekwars.psi.LSTypes.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.plopiplop.leekwars.psi.*;
 
 public class LSIfStatementImpl extends ASTWrapperPsiElement implements LSIfStatement {
 
@@ -31,13 +31,13 @@ public class LSIfStatementImpl extends ASTWrapperPsiElement implements LSIfState
   @Override
   @Nullable
   public LSExpressionSequence getExpressionSequence() {
-      return findChildByClass(LSExpressionSequence.class);
+    return findChildByClass(LSExpressionSequence.class);
   }
 
   @Override
   @Nullable
   public LSThenBlock getThenBlock() {
-      return findChildByClass(LSThenBlock.class);
+    return findChildByClass(LSThenBlock.class);
   }
 
   @Override
@@ -49,13 +49,13 @@ public class LSIfStatementImpl extends ASTWrapperPsiElement implements LSIfState
   @Override
   @Nullable
   public PsiElement getOpLparen() {
-      return findChildByType(OP_LPAREN);
+    return findChildByType(OP_LPAREN);
   }
 
   @Override
   @Nullable
   public PsiElement getOpRparen() {
-      return findChildByType(OP_RPAREN);
+    return findChildByType(OP_RPAREN);
   }
 
 }

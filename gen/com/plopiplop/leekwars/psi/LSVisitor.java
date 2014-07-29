@@ -79,6 +79,10 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+  public void visitInclude(@NotNull LSInclude o) {
+    visitPsiElement(o);
+  }
+
   public void visitInitialiser(@NotNull LSInitialiser o) {
     visitPsiElement(o);
   }
@@ -104,6 +108,10 @@ public class LSVisitor extends PsiElementVisitor {
   }
 
   public void visitPrefixOperator(@NotNull LSPrefixOperator o) {
+    visitPsiElement(o);
+  }
+
+  public void visitReferenceString(@NotNull LSReferenceString o) {
     visitPsiElement(o);
   }
 

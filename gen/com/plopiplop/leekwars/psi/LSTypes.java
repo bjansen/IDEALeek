@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.PsiElement;
+import com.intellij.lang.ASTNode;
 import com.plopiplop.leekwars.psi.impl.*;
 
 public interface LSTypes {
@@ -26,6 +26,7 @@ public interface LSTypes {
   IElementType FOR_STATEMENT = new LSElementType("FOR_STATEMENT");
   IElementType FUNCTION_DECLARATION = new LSElementType("FUNCTION_DECLARATION");
   IElementType IF_STATEMENT = new LSElementType("IF_STATEMENT");
+  IElementType INCLUDE = new LSElementType("INCLUDE");
   IElementType INITIALISER = new LSElementType("INITIALISER");
   IElementType LITERAL = new LSElementType("LITERAL");
   IElementType METHOD_CALL = new LSElementType("METHOD_CALL");
@@ -33,6 +34,7 @@ public interface LSTypes {
   IElementType PARAMETER = new LSElementType("PARAMETER");
   IElementType POSTFIX_OPERATOR = new LSElementType("POSTFIX_OPERATOR");
   IElementType PREFIX_OPERATOR = new LSElementType("PREFIX_OPERATOR");
+  IElementType REFERENCE_STRING = new LSElementType("REFERENCE_STRING");
   IElementType RETURN_STATEMENT = new LSElementType("RETURN_STATEMENT");
   IElementType SIMPLE_EXPRESSION = new LSElementType("SIMPLE_EXPRESSION");
   IElementType SINGLE_EXPRESSION = new LSElementType("SINGLE_EXPRESSION");
@@ -56,6 +58,7 @@ public interface LSTypes {
   IElementType KW_GLOBAL = new LSTokenType("global");
   IElementType KW_IF = new LSTokenType("if");
   IElementType KW_IN = new LSTokenType("in");
+  IElementType KW_INCLUDE = new LSTokenType("include");
   IElementType KW_NULL = new LSTokenType("null");
   IElementType KW_RETURN = new LSTokenType("return");
   IElementType KW_TRUE = new LSTokenType("true");
@@ -63,7 +66,7 @@ public interface LSTypes {
   IElementType KW_WHILE = new LSTokenType("while");
   IElementType MULTILINE_COMMENT = new LSTokenType("multiline_comment");
   IElementType NUMBER = new LSTokenType("number");
-    IElementType OP_AND_EQ = new LSTokenType("&=");
+  IElementType OP_AND_EQ = new LSTokenType("&=");
   IElementType OP_ASSIGN = new LSTokenType("=");
   IElementType OP_BINARY_AND = new LSTokenType("&");
   IElementType OP_BINARY_OR = new LSTokenType("|");
@@ -71,7 +74,7 @@ public interface LSTypes {
   IElementType OP_COMMA = new LSTokenType(",");
   IElementType OP_DEC = new LSTokenType("--");
   IElementType OP_DIVIDE = new LSTokenType("/");
-    IElementType OP_DIVIDE_EQ = new LSTokenType("/=");
+  IElementType OP_DIVIDE_EQ = new LSTokenType("/=");
   IElementType OP_EQUALS = new LSTokenType("==");
   IElementType OP_GE = new LSTokenType(">=");
   IElementType OP_GT = new LSTokenType(">");
@@ -86,13 +89,13 @@ public interface LSTypes {
   IElementType OP_LPAREN = new LSTokenType("(");
   IElementType OP_LT = new LSTokenType("<");
   IElementType OP_MINUS = new LSTokenType("-");
-    IElementType OP_MINUS_EQ = new LSTokenType("-=");
+  IElementType OP_MINUS_EQ = new LSTokenType("-=");
   IElementType OP_MODULO = new LSTokenType("%");
   IElementType OP_NOT = new LSTokenType("!");
   IElementType OP_NOT_EQUALS = new LSTokenType("!=");
-    IElementType OP_OR_EQ = new LSTokenType("|=");
+  IElementType OP_OR_EQ = new LSTokenType("|=");
   IElementType OP_PLUS = new LSTokenType("+");
-    IElementType OP_PLUS_EQ = new LSTokenType("+=");
+  IElementType OP_PLUS_EQ = new LSTokenType("+=");
   IElementType OP_RBRACE = new LSTokenType("}");
   IElementType OP_RBRACKET = new LSTokenType("]");
   IElementType OP_REFERENCE = new LSTokenType("@");
@@ -100,7 +103,7 @@ public interface LSTypes {
   IElementType OP_SEMICOLON = new LSTokenType(";");
   IElementType OP_TERNARY = new LSTokenType("?");
   IElementType OP_TIMES = new LSTokenType("*");
-    IElementType OP_TIMES_EQ = new LSTokenType("*=");
+  IElementType OP_TIMES_EQ = new LSTokenType("*=");
   IElementType STRING = new LSTokenType("string");
 
   class Factory {
@@ -160,6 +163,9 @@ public interface LSTypes {
       else if (type == IF_STATEMENT) {
         return new LSIfStatementImpl(node);
       }
+      else if (type == INCLUDE) {
+        return new LSIncludeImpl(node);
+      }
       else if (type == INITIALISER) {
         return new LSInitialiserImpl(node);
       }
@@ -180,6 +186,9 @@ public interface LSTypes {
       }
       else if (type == PREFIX_OPERATOR) {
         return new LSPrefixOperatorImpl(node);
+      }
+      else if (type == REFERENCE_STRING) {
+        return new LSReferenceStringImpl(node);
       }
       else if (type == RETURN_STATEMENT) {
         return new LSReturnStatementImpl(node);

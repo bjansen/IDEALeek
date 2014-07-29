@@ -4,10 +4,14 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.language.LSFileType;
 import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PsiUtils {
 
@@ -54,5 +58,31 @@ public class PsiUtils {
         }
 
         return prevSibling;
+    }
+
+    public static List<PsiElement> getIncludedFilesBefore(PsiElement element) {
+        List<PsiElement> files = new ArrayList<>();
+        int offset = element.getNode().getStartOffset();
+
+        for (LSInclude include : ((LSFile) element.getContainingFile()).findChildrenByClass(LSInclude.class)) {
+            if (include.getStartOffsetInParent() > offset) {
+                continue;
+            }
+
+            LSReferenceString refString = include.getReferenceString();
+
+            if (refString != null) {
+                PsiReference reference = refString.getReference();
+                if (reference != null) {
+                    PsiElement resolve = reference.resolve();
+
+                    if (resolve != null) {
+                        files.add(resolve);
+                    }
+                }
+            }
+        }
+
+        return files;
     }
 }

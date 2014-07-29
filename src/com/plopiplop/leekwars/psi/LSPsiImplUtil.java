@@ -1,6 +1,7 @@
 package com.plopiplop.leekwars.psi;
 
 import com.intellij.navigation.ItemPresentation;
+import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -91,5 +92,12 @@ public class LSPsiImplUtil {
 
     public static boolean isGlobal(LSVariableStatement statement) {
         return statement.getModifier().getKwGlobal() != null;
+    }
+
+    public static PsiReference getReference(final LSReferenceString string) {
+        if (string.getParent() instanceof LSInclude) {
+            return new LSFileReference(string);
+        }
+        return null;
     }
 }

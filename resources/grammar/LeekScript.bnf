@@ -38,6 +38,7 @@
     kw_return='return'
     kw_break='break'
     kw_continue='continue'
+    kw_include='include'
 
     op_inc='++'
     op_dec='--'
@@ -83,7 +84,7 @@
 program ::= sourceElements? <<eof>>
 
 private sourceElements ::= sourceElement+
-private sourceElement ::= functionDeclaration | statement | multiline_comment
+private sourceElement ::= functionDeclaration | statement | include | multiline_comment
 
 private statement ::=
         block
@@ -98,6 +99,8 @@ private statement ::=
     |   breakStatement
     |   continueStatement
 
+include ::= 'include' '(' referenceString ')' eos {pin=1}
+referenceString ::= string {methods=[getReference]}
 functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation]}
 
 block ::= '{' statementList? '}'

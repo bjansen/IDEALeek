@@ -6,6 +6,7 @@ import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.LeekWarsApi;
@@ -55,6 +56,12 @@ public class LSAnnotator implements Annotator {
 
             syntaxAnnotator.annotate(element, reference, holder);
             // TODO find unused variables/functions?
+        } else if (element instanceof LSReferenceString) {
+            PsiReference reference = element.getReference();
+
+            if (reference == null || reference.resolve() == null) {
+                holder.createErrorAnnotation(element, "AI not found");
+            }
         }
     }
 
