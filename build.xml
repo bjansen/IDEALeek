@@ -49,10 +49,6 @@
         </fileset>
     </path>
 
-    <path id="grammarkit.classpath">
-        <pathelement location="${plugin.basedir}/gramamrkit/light-psi-all.jar"/>
-    </path>
-
     <path id="plugin.sourcepath">
         <dirset dir="${plugin.basedir}">
             <include name="gen"/>
@@ -77,13 +73,6 @@
         <!--<delete dir="gen/com"/>-->
         <delete dir="${plugin.output.dir}"/>
         <delete dir="${plugin.testoutput.dir}"/>
-    </target>
-
-    <target name="grammarkit" depends="clean">
-        <java jar="${plugin.basedir}/grammarkit/grammar-kit.jar" fork="true">
-            <classpath refid="grammarkit.classpath"/>
-            <arg line="${plugin.basedir}\gen ${plugin.basedir}\resources\grammar\LeekScript.bnf"/>
-        </java>
     </target>
 
     <target name="compile">

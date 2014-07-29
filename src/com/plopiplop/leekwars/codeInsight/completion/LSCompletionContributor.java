@@ -33,6 +33,17 @@ public class LSCompletionContributor extends CompletionContributor {
         }
     };
 
+    private static final InsertHandler<LookupElement> ADD_SPACE_HANDLER = new InsertHandler<LookupElement>() {
+        @Override
+        public void handleInsert(InsertionContext context, LookupElement item) {
+            final Editor editor = context.getEditor();
+            final Document document = editor.getDocument();
+            context.commitDocument();
+            document.insertString(context.getTailOffset(), " ");
+            editor.getCaretModel().moveToOffset(context.getTailOffset());
+        }
+    };
+
     public LSCompletionContributor() {
         extend(CompletionType.BASIC, PlatformPatterns.psiElement(), new CompletionProvider<CompletionParameters>() {
             @Override
@@ -68,21 +79,21 @@ public class LSCompletionContributor extends CompletionContributor {
             result.addElement(keyword("return", SEMICOLON_HANDLER));
         }
 
-        result.addElement(keyword("var", AddSpaceInsertHandler.INSTANCE));
-        result.addElement(keyword("global", AddSpaceInsertHandler.INSTANCE));
+        result.addElement(keyword("var", ADD_SPACE_HANDLER));
+        result.addElement(keyword("global", ADD_SPACE_HANDLER));
 
         if (PsiTreeUtil.getParentOfType(element, LSBlock.class) == null) {
-            result.addElement(keyword("function", AddSpaceInsertHandler.INSTANCE));
+            result.addElement(keyword("function", ADD_SPACE_HANDLER));
         }
 
         result.addElement(keyword("while", ParenthesesInsertHandler.getInstance(true, true, false, true, true)));
         result.addElement(keyword("if", ParenthesesInsertHandler.getInstance(true, true, false, true, true)));
         result.addElement(keyword("for", ParenthesesInsertHandler.getInstance(true, true, false, true, true)));
-        result.addElement(keyword("do", AddSpaceInsertHandler.INSTANCE));
+        result.addElement(keyword("do", ADD_SPACE_HANDLER));
 
         LSExpressionStatement statement = PsiTreeUtil.getParentOfType(element, LSExpressionStatement.class);
         if (statement != null && PsiUtils.getPrevNonWhiteSpaceSibling(statement) instanceof LSIfStatement) {
-            result.addElement(keyword("else", AddSpaceInsertHandler.INSTANCE));
+            result.addElement(keyword("else", ADD_SPACE_HANDLER));
         }
     }
 
