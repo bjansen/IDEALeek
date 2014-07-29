@@ -14,6 +14,7 @@ import com.intellij.openapi.util.EmptyRunnable;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.ui.content.MessageView;
 import com.plopiplop.leekwars.model.LeekWarsServer;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
@@ -50,6 +51,7 @@ public class UploadScriptTask implements Runnable {
 
                         if (parts.length == 2) {
                             try {
+                                reportException(null, file);
                                 LeekWarsServer.getInstance().uploadScript(parts[1], parts[0], psiFile.getText());
                                 Notifications.Bus.notify(new Notification("LeekScript", "LeekWars Script", "Script uploaded", NotificationType.INFORMATION));
                             } catch (final CompilationException e) {
@@ -75,10 +77,14 @@ public class UploadScriptTask implements Runnable {
                 ApplicationManager.getApplication().runWriteAction(new Runnable() {
                     @Override
                     public void run() {
-                        CompilerTask task = new CompilerTask(project, "LeekScript", false, false, false, true);
-                        task.start(EmptyRunnable.getInstance(), null);
-                        task.addMessage(new CompilerMessageImpl(project, CompilerMessageCategory.ERROR, e.getMessage(), file, e.getLine(), e.getCharacter(), null));
-                        e.printStackTrace();
+                        if (e == null) {
+                            MessageView.SERVICE.getInstance(project).getContentManager().removeAllContents(false);
+                        } else {
+                            CompilerTask task = new CompilerTask(project, "LeekScript", false, false, false, true);
+                            task.start(EmptyRunnable.getInstance(), null);
+                            task.addMessage(new CompilerMessageImpl(project, CompilerMessageCategory.ERROR, e.getMessage(), file, e.getLine(), e.getCharacter(), null));
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
