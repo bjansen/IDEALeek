@@ -1,7 +1,6 @@
 package com.plopiplop.leekwars.model;
 
 import com.google.common.io.CharStreams;
-import com.google.gson.Gson;
 import com.intellij.openapi.vfs.CharsetToolkit;
 import com.intellij.util.net.HttpConfigurable;
 import com.plopiplop.leekwars.actions.CompilationException;
@@ -64,10 +63,8 @@ public class LeekWarsServer {
             new DownloadScriptsTask(null).parseScriptTags(getPage("/", null));
             uploadScript(id, name, content);
         }
-        CompilationException compilationResult = new Gson().fromJson(result, CompilationException.class);
 
-        params = String.format("id=%s&save=true&token=%s&name=%s", id, getToken(), name);
-        getConnection(EDITOR_UPDATE_URL, params);
+        CompilationException compilationResult = new CompilationException(result);
 
         if (!compilationResult.getSuccess()) {
             throw compilationResult;

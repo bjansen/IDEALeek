@@ -45,13 +45,13 @@
     </project-components>
 
     <actions>
-        <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update LeekWars API">
+        <action class="com.plopiplop.leekwars.actions.UpdateAPIAction" id="LeekScript.UpdateAPI" text="Update LeekWars API" icon="/icons/leek.png">
             <add-to-group group-id="ToolsMenu"/>
         </action>
-        <action class="com.plopiplop.leekwars.actions.DownloadScriptsAction" id="LeekScript.DownloadScripts" text="Download LeekWars scripts">
+        <action class="com.plopiplop.leekwars.actions.DownloadScriptsAction" id="LeekScript.DownloadScripts" text="Download LeekWars scripts" icon="/icons/leek.png">
             <add-to-group group-id="ToolsMenu"/>
         </action>
-        <action class="com.plopiplop.leekwars.actions.UploadScriptAction" id="LeekScript.UploadScript" text="Upload script to LeekWars">
+        <action class="com.plopiplop.leekwars.actions.UploadScriptAction" id="LeekScript.UploadScript" text="Upload script to LeekWars" icon="/icons/leek.png">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>
