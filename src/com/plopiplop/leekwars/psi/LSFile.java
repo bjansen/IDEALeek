@@ -8,8 +8,11 @@ import com.plopiplop.leekwars.language.LeekScriptLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import java.util.regex.Pattern;
 
 public class LSFile extends PsiFileBase {
+    public static final Pattern LKS_FILE_PATTERN = Pattern.compile("(.*)__(\\d+).lks");
+
     public LSFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, LeekScriptLanguage.INSTANCE);
     }

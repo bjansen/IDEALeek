@@ -42,6 +42,9 @@
         <component>
             <implementation-class>com.plopiplop.leekwars.model.ModelManager</implementation-class>
         </component>
+        <component>
+            <implementation-class>com.plopiplop.leekwars.vfs.LSVfsListener</implementation-class>
+        </component>
     </project-components>
 
     <actions>

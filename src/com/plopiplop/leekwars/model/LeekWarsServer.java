@@ -1,7 +1,11 @@
 package com.plopiplop.leekwars.model;
 
 import com.google.common.io.CharStreams;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 import com.intellij.openapi.vfs.CharsetToolkit;
+import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.net.HttpConfigurable;
 import com.plopiplop.leekwars.actions.CompilationException;
 import com.plopiplop.leekwars.actions.DownloadScriptsTask;
@@ -56,23 +60,75 @@ public class LeekWarsServer {
 
         String params = String.format("id=%s&compile=true&token=%s&code=%s", id, getToken(), URLEncoder.encode(content, "UTF-8"));
 
-        HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params);
+        HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params, true);
         String result = CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
 
-        if (result.equals("bad token")) {
+        if (result.equals("\ufeffbad token")) {
             new DownloadScriptsTask(null).parseScriptTags(getPage("/", null));
             uploadScript(id, name, content);
         }
 
+        if (result.equals("\ufeff\n")) {
+            throw new IncorrectOperationException("Received empty response, uploaded script may have an invalid ID");
+        }
+
         CompilationException compilationResult = new CompilationException(result);
+
+        params = String.format("id=%s&save=true&color=0&token=%s&name=%s", id, getToken(), URLEncoder.encode(name, "UTF-8"));
+        connection = getConnection(EDITOR_UPDATE_URL, params, true);
+        result = CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
+        if (!result.equals("\uFEFFtrue\n")) {
+            throw new IOException("Expected result \"true\" but was " + result);
+        }
 
         if (!compilationResult.getSuccess()) {
             throw compilationResult;
         }
     }
 
+    public String createScript(String name, String content) throws IOException, PluginNotConfiguredException, CompilationException {
+        // Needed to get the token first
+        if (cookie == null || !cookie.contains("farmer_id")) {
+            connectToLeekWars();
+        }
+
+        String params = String.format("create=true&token=%s", getToken());
+        HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params, false);
+
+        String location = connection.getHeaderField("Location");
+
+        if (location != null && location.startsWith("/editor/")) {
+            String id = location.substring("/editor/".length());
+
+            // FIXME if it throws an exception, we don't rename the file and a duplicate AI will be uploaded next time
+            uploadScript(id, name, content);
+
+            return id;
+        }
+
+        return null;
+    }
+
+    public void deleteScript(String scriptId) {
+        // Needed to get the token first
+        try {
+            if (cookie == null || !cookie.contains("farmer_id")) {
+                connectToLeekWars();
+            }
+
+            String params = String.format("id=%s&remove=true&token=%s", scriptId, getToken());
+            HttpURLConnection connection = getConnection("/editor_update", params, true);
+            CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
+        } catch (IOException e) {
+            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
+            e.printStackTrace();
+        } catch (PluginNotConfiguredException e) {
+            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
+        }
+    }
+
     private Document getPage(String url, String postData) throws IOException, PluginNotConfiguredException {
-        HttpURLConnection connection = getConnection(url, postData);
+        HttpURLConnection connection = getConnection(url, postData, true);
 
         Document document = Jsoup.parse(connection.getInputStream(), CharsetToolkit.UTF8, LSSettings.getInstance().getSiteUrl());
         document.outputSettings().prettyPrint(false);
@@ -80,7 +136,7 @@ public class LeekWarsServer {
         return document;
     }
 
-    private HttpURLConnection getConnection(String url, String postData) throws PluginNotConfiguredException, IOException {
+    private HttpURLConnection getConnection(String url, String postData, boolean followRedirects) throws PluginNotConfiguredException, IOException {
         if (!LSSettings.getInstance().isValid()) {
             throw new PluginNotConfiguredException();
         }
@@ -91,6 +147,7 @@ public class LeekWarsServer {
         HttpURLConnection connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl(url));
         connection.setRequestProperty("Cookie", cookie);
         connection.setDoInput(true);
+        connection.setInstanceFollowRedirects(followRedirects);
         addAuth(connection);
 
         if (postData != null) {

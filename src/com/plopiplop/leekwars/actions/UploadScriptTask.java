@@ -20,6 +20,7 @@ import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
 
 public class UploadScriptTask implements Runnable {
     private final Project project;
@@ -44,25 +45,56 @@ public class UploadScriptTask implements Runnable {
                 PsiManager manager = PsiManager.getInstance(project);
 
                 for (final VirtualFile file : files) {
-                    PsiFile psiFile = manager.findFile(file);
+                    final PsiFile psiFile = manager.findFile(file);
 
                     if (psiFile instanceof LSFile) {
-                        String[] parts = file.getNameWithoutExtension().split("__");
+                        Matcher matcher = LSFile.LKS_FILE_PATTERN.matcher(file.getName());
+                        String id;
+                        final String name;
 
-                        if (parts.length == 2) {
-                            try {
-                                reportException(null, file);
-                                LeekWarsServer.getInstance().uploadScript(parts[1], parts[0], psiFile.getText());
-                                Notifications.Bus.notify(new Notification("LeekScript", "LeekWars Script", "Script uploaded", NotificationType.INFORMATION));
-                            } catch (final CompilationException e) {
-                                reportException(e, file);
-                            } catch (PluginNotConfiguredException e) {
-                                // TODO refactor everywhere these catch are used
-                                Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
-                            } catch (IOException e) {
-                                Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
-                                e.printStackTrace();
+                        if (matcher.matches()) {
+                            id = matcher.group(2);
+                            name = matcher.group(1);
+                        } else {
+                            id = null;
+                            name = psiFile.getVirtualFile().getNameWithoutExtension();
+                        }
+
+                        try {
+                            reportException(null, file);
+
+                            if (id == null) {
+                                final String finalId = LeekWarsServer.getInstance().createScript(name, psiFile.getText());
+
+                                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    psiFile.getVirtualFile().rename(this, name + "__" + finalId + ".lks");
+                                                } catch (IOException e) {
+                                                    // TODO
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            } else {
+                                LeekWarsServer.getInstance().uploadScript(id, name, psiFile.getText());
                             }
+                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars Script", "Script uploaded", NotificationType.INFORMATION));
+                        } catch (final CompilationException e) {
+                            reportException(e, file);
+                        } catch (PluginNotConfiguredException e) {
+                            // TODO refactor everywhere these catch are used
+                            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
+                        } catch (IOException e) {
+                            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
+                            e.printStackTrace();
                         }
                     }
                 }

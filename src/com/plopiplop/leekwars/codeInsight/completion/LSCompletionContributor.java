@@ -21,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LSCompletionContributor extends CompletionContributor {
 
@@ -75,11 +74,9 @@ public class LSCompletionContributor extends CompletionContributor {
     }
 
     private void findFileCompletions(PsiElement element, CompletionResultSet result) {
-        Pattern pattern = Pattern.compile("(.*)__\\d+.lks");
-
         for (PsiFile psiFile : element.getContainingFile().getParent().getFiles()) {
             if (!psiFile.equals(element.getContainingFile())) {
-                Matcher matcher = pattern.matcher(psiFile.getName());
+                Matcher matcher = LSFile.LKS_FILE_PATTERN.matcher(psiFile.getName());
 
                 if (matcher.matches()) {
                     String name = matcher.group(1);
