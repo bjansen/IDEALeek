@@ -8,6 +8,7 @@ This plugin adds support for the LeekScript language in IntelliJ (see [http://le
 Usage
 =====
 
+* Create a new *non-empty* project (a Java project is a good start) with at least a `src` folder
 * Configure access to the LeekWars server in `Preferences -> LeekScript` (username & password, optional proxy configuration...)
 * Retrieve the list of available functions/constants using `Tools -> Update LeekWars API`
 * Retrieve your existing scripts using `Tools -> Download LeekWars scripts`
