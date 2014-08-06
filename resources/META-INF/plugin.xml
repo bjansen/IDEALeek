@@ -32,6 +32,8 @@
 
         <defaultLiveTemplatesProvider implementation="com.plopiplop.leekwars.templates.LSLiveTemplatesProvider"/>
         <liveTemplateContext implementation="com.plopiplop.leekwars.templates.LSContextType"/>
+
+        <moduleType id="LEEKSCRIPT_MODULE" implementationClass="com.plopiplop.leekwars.project.LSModuleType"/>
     </extensions>
 
     <application-components>
