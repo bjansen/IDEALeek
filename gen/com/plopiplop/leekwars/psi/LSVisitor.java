@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import org.jetbrains.annotations.*;
-import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiElementVisitor;
+import org.jetbrains.annotations.NotNull;
 
 public class LSVisitor extends PsiElementVisitor {
 
@@ -84,6 +84,14 @@ public class LSVisitor extends PsiElementVisitor {
   }
 
   public void visitInitialiser(@NotNull LSInitialiser o) {
+      visitPsiElement(o);
+  }
+
+    public void visitKeyval(@NotNull LSKeyval o) {
+        visitPsiElement(o);
+    }
+
+    public void visitKeyvalList(@NotNull LSKeyvalList o) {
     visitPsiElement(o);
   }
 

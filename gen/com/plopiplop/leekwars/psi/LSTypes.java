@@ -28,6 +28,8 @@ public interface LSTypes {
   IElementType IF_STATEMENT = new LSElementType("IF_STATEMENT");
   IElementType INCLUDE = new LSElementType("INCLUDE");
   IElementType INITIALISER = new LSElementType("INITIALISER");
+    IElementType KEYVAL = new LSElementType("KEYVAL");
+    IElementType KEYVAL_LIST = new LSElementType("KEYVAL_LIST");
   IElementType LITERAL = new LSElementType("LITERAL");
   IElementType METHOD_CALL = new LSElementType("METHOD_CALL");
   IElementType MODIFIER = new LSElementType("MODIFIER");
@@ -171,6 +173,10 @@ public interface LSTypes {
       }
       else if (type == INITIALISER) {
         return new LSInitialiserImpl(node);
+       } else if (type == KEYVAL) {
+           return new LSKeyvalImpl(node);
+       } else if (type == KEYVAL_LIST) {
+           return new LSKeyvalListImpl(node);
       }
       else if (type == LITERAL) {
         return new LSLiteralImpl(node);

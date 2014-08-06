@@ -171,5 +171,7 @@ private mathOperator ::= '+' | '-' | '*' | '/' | '%'
 private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
 literal ::= 'null' | 'true' | 'false' | string | number
 
-arrayLiteral ::= '[' elementList? ']'
+arrayLiteral ::= '[' (keyvalList | elementList)? ']'
 elementList ::= singleExpression (',' singleExpression)*
+keyvalList ::= keyval (',' keyval)*
+keyval ::= singleExpression ':' singleExpression
