@@ -63,9 +63,12 @@
     op_and_eq='&='
     op_or_eq='|='
     op_assign='='
-    op_not='!'
+    op_exclamation_mark='!'
+    op_not='not'
     op_logical_or='||'
     op_logical_and='&&'
+    op_or='or'
+    op_and='and'
     op_le='<='
     op_lt='<'
     op_ge='>='
@@ -160,10 +163,10 @@ formalParameterList ::= parameter (',' parameter)*
 parameter ::= '@'? identifier
 
 private comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
-private booleanOperator ::= '&&' | '||' | '&' | '|'
+private booleanOperator ::= '&&' | '||' | '&' | '|' | 'and' | 'or'
 modifier ::= 'var' | 'global'
 postfixOperator ::= '++' | '--'
-prefixOperator ::= postfixOperator | '+' | '-' | '~' | '!'
+prefixOperator ::= postfixOperator | '+' | '-' |  '!' | 'not'
 private mathOperator ::= '+' | '-' | '*' | '/' | '%'
 private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
 literal ::= 'null' | 'true' | 'false' | string | number

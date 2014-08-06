@@ -71,9 +71,12 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "&="                     { return OP_AND_EQ; }
   "|="                     { return OP_OR_EQ; }
   "="                      { return OP_ASSIGN; }
-  "!"                      { return OP_NOT; }
+  "!"                      { return OP_EXCLAMATION_MARK; }
+  "not"                    { return OP_NOT; }
   "||"                     { return OP_LOGICAL_OR; }
   "&&"                     { return OP_LOGICAL_AND; }
+  "or"                     { return OP_OR; }
+  "and"                    { return OP_AND; }
   "<="                     { return OP_LE; }
   "<"                      { return OP_LT; }
   ">="                     { return OP_GE; }

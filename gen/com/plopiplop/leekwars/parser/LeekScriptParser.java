@@ -1,15 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.parser;
 
+import com.intellij.lang.ASTNode;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import com.intellij.openapi.diagnostic.Logger;
-import static com.plopiplop.leekwars.psi.LSTypes.*;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.tree.IElementType;
+
+import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class LeekScriptParser implements PsiParser {
@@ -258,7 +258,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '&&' | '||' | '&' | '|'
+  // '&&' | '||' | '&' | '|' | 'and' | 'or'
   static boolean booleanOperator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "booleanOperator")) return false;
     boolean result_;
@@ -267,6 +267,8 @@ public class LeekScriptParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, OP_LOGICAL_OR);
     if (!result_) result_ = consumeToken(builder_, OP_BINARY_AND);
     if (!result_) result_ = consumeToken(builder_, OP_BINARY_OR);
+      if (!result_) result_ = consumeToken(builder_, OP_AND);
+      if (!result_) result_ = consumeToken(builder_, OP_OR);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
@@ -760,7 +762,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // postfixOperator | '+' | '-' | '~' | '!'
+  // postfixOperator | '+' | '-' |  '!' | 'not'
   public static boolean prefixOperator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "prefixOperator")) return false;
     boolean result_;
@@ -768,7 +770,7 @@ public class LeekScriptParser implements PsiParser {
     result_ = postfixOperator(builder_, level_ + 1);
     if (!result_) result_ = consumeToken(builder_, OP_PLUS);
     if (!result_) result_ = consumeToken(builder_, OP_MINUS);
-    if (!result_) result_ = consumeToken(builder_, "~");
+      if (!result_) result_ = consumeToken(builder_, OP_EXCLAMATION_MARK);
     if (!result_) result_ = consumeToken(builder_, OP_NOT);
     exit_section_(builder_, level_, marker_, PREFIX_OPERATOR, result_, false, null);
     return result_;

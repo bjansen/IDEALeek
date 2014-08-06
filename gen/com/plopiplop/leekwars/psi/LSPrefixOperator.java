@@ -1,14 +1,16 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.Nullable;
 
 public interface LSPrefixOperator extends PsiElement {
 
   @Nullable
   LSPostfixOperator getPostfixOperator();
+
+    @Nullable
+    PsiElement getOpExclamationMark();
 
   @Nullable
   PsiElement getOpMinus();

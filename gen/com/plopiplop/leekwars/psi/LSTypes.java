@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.tree.IElementType;
 import com.plopiplop.leekwars.psi.impl.*;
 
 public interface LSTypes {
@@ -66,6 +66,7 @@ public interface LSTypes {
   IElementType KW_WHILE = new LSTokenType("while");
   IElementType MULTILINE_COMMENT = new LSTokenType("multiline_comment");
   IElementType NUMBER = new LSTokenType("number");
+    IElementType OP_AND = new LSTokenType("and");
   IElementType OP_AND_EQ = new LSTokenType("&=");
   IElementType OP_ASSIGN = new LSTokenType("=");
   IElementType OP_BINARY_AND = new LSTokenType("&");
@@ -76,6 +77,7 @@ public interface LSTypes {
   IElementType OP_DIVIDE = new LSTokenType("/");
   IElementType OP_DIVIDE_EQ = new LSTokenType("/=");
   IElementType OP_EQUALS = new LSTokenType("==");
+    IElementType OP_EXCLAMATION_MARK = new LSTokenType("!");
   IElementType OP_GE = new LSTokenType(">=");
   IElementType OP_GT = new LSTokenType(">");
   IElementType OP_IDENTITY_EQUALS = new LSTokenType("===");
@@ -91,8 +93,9 @@ public interface LSTypes {
   IElementType OP_MINUS = new LSTokenType("-");
   IElementType OP_MINUS_EQ = new LSTokenType("-=");
   IElementType OP_MODULO = new LSTokenType("%");
-  IElementType OP_NOT = new LSTokenType("!");
+    IElementType OP_NOT = new LSTokenType("not");
   IElementType OP_NOT_EQUALS = new LSTokenType("!=");
+    IElementType OP_OR = new LSTokenType("or");
   IElementType OP_OR_EQ = new LSTokenType("|=");
   IElementType OP_PLUS = new LSTokenType("+");
   IElementType OP_PLUS_EQ = new LSTokenType("+=");
