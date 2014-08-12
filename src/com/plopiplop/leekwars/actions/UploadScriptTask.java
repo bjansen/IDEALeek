@@ -101,8 +101,7 @@ public class UploadScriptTask implements Runnable {
                         try {
                             psiFile.getVirtualFile().rename(this, name + "__" + newId + ".lks");
                         } catch (IOException e) {
-                            // TODO
-                            e.printStackTrace();
+                            throw new RuntimeException(e);
                         }
                     }
                 });

@@ -34,6 +34,8 @@
         <liveTemplateContext implementation="com.plopiplop.leekwars.templates.LSContextType"/>
 
         <moduleType id="LEEKSCRIPT_MODULE" implementationClass="com.plopiplop.leekwars.project.LSModuleType"/>
+
+        <errorHandler implementation="com.plopiplop.leekwars.error.LSErrorReportSubmitter"/>
     </extensions>
 
     <application-components>

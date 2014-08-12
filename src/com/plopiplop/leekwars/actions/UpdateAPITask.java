@@ -70,8 +70,8 @@ public class UpdateAPITask implements Runnable {
                         try {
                             ApiTransformer.getInstance().transformToLeekScript(modelManager, findOrCreateGenSourceRoot());
                         } catch (Exception e) {
-                            e.printStackTrace();
                             Notifications.Bus.notify(new Notification("LeekScript", "LeekWars API", "Can't write API to " + LeekWarsApi.LEEKWARS_API_FILE, NotificationType.ERROR));
+                            throw new RuntimeException(e);
                         }
                     }
                 });

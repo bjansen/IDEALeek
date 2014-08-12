@@ -46,7 +46,7 @@ public class LeekWarsServer {
             action.doAction();
         } catch (IOException e) {
             Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } catch (PluginNotConfiguredException e) {
             Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
         }
