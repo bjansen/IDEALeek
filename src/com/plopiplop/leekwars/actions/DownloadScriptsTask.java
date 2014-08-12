@@ -1,8 +1,5 @@
 package com.plopiplop.leekwars.actions;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -13,6 +10,7 @@ import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.plopiplop.leekwars.model.LeekWarsServer;
+import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.PsiUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -40,33 +38,30 @@ public class DownloadScriptsTask implements Runnable {
 
     @Override
     public void run() {
-        Document editor;
+        LeekWarsServer.callAction(new ServerAction() {
+            @Override
+            public void doAction() throws PluginNotConfiguredException, IOException {
+                Document editor = LeekWarsServer.getInstance().getEditor();
+                parseScriptTags(editor);
 
-        try {
-            editor = LeekWarsServer.getInstance().getEditor();
-            parseScriptTags(editor);
-
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                downloadFiles();
-                            } catch (IOException | PluginNotConfiguredException e) {
-                                e.printStackTrace();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                LeekWarsServer.callAction(new ServerAction() {
+                                    @Override
+                                    public void doAction() throws PluginNotConfiguredException, IOException {
+                                        downloadFiles();
+                                    }
+                                });
                             }
-                        }
-                    });
-                }
-            });
-        } catch (IOException e) {
-            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
-            e.printStackTrace();
-        } catch (PluginNotConfiguredException e) {
-            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
-        }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public void parseScriptTags(Document editor) {

@@ -16,6 +16,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.ui.content.MessageView;
 import com.plopiplop.leekwars.model.LeekWarsServer;
+import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
 
@@ -49,7 +50,7 @@ public class UploadScriptTask implements Runnable {
 
                     if (psiFile instanceof LSFile) {
                         Matcher matcher = LSFile.LKS_FILE_PATTERN.matcher(file.getName());
-                        String id;
+                        final String id;
                         final String name;
 
                         if (matcher.matches()) {
@@ -60,44 +61,51 @@ public class UploadScriptTask implements Runnable {
                             name = psiFile.getVirtualFile().getNameWithoutExtension();
                         }
 
+                        reportException(null, file);
+
+                        uploadFile(file, psiFile, id, name);
+                    }
+                }
+            }
+        });
+    }
+
+    private void uploadFile(final VirtualFile file, final PsiFile psiFile, final String id, final String name) {
+        LeekWarsServer.callAction(new ServerAction() {
+            @Override
+            public void doAction() throws PluginNotConfiguredException, IOException {
+                try {
+                    if (id == null) {
+                        String newId = LeekWarsServer.getInstance().createScript(name, psiFile.getText());
+
+                        renameTempFile(psiFile, name, newId);
+                    } else {
+                        LeekWarsServer.getInstance().uploadScript(id, name, psiFile.getText());
+                    }
+
+                    Notifications.Bus.notify(new Notification("LeekScript", "LeekWars Script", "Script uploaded", NotificationType.INFORMATION));
+                } catch (CompilationException e) {
+                    reportException(e, file);
+                }
+            }
+        });
+    }
+
+    private void renameTempFile(final PsiFile psiFile, final String name, final String newId) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                    @Override
+                    public void run() {
                         try {
-                            reportException(null, file);
-
-                            if (id == null) {
-                                final String finalId = LeekWarsServer.getInstance().createScript(name, psiFile.getText());
-
-                                ApplicationManager.getApplication().invokeLater(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                try {
-                                                    psiFile.getVirtualFile().rename(this, name + "__" + finalId + ".lks");
-                                                } catch (IOException e) {
-                                                    // TODO
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-
-                            } else {
-                                LeekWarsServer.getInstance().uploadScript(id, name, psiFile.getText());
-                            }
-                            Notifications.Bus.notify(new Notification("LeekScript", "LeekWars Script", "Script uploaded", NotificationType.INFORMATION));
-                        } catch (final CompilationException e) {
-                            reportException(e, file);
-                        } catch (PluginNotConfiguredException e) {
-                            // TODO refactor everywhere these catch are used
-                            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
+                            psiFile.getVirtualFile().rename(this, name + "__" + newId + ".lks");
                         } catch (IOException e) {
-                            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
+                            // TODO
                             e.printStackTrace();
                         }
                     }
-                }
+                });
             }
         });
     }

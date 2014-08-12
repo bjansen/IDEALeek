@@ -36,6 +36,22 @@ public class LeekWarsServer {
         return INSTANCE;
     }
 
+    /**
+     * Wrapper for a call to a server action which handles exceptions.
+     *
+     * @param action the action to call
+     */
+    public static void callAction(ServerAction action) {
+        try {
+            action.doAction();
+        } catch (IOException e) {
+            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
+            e.printStackTrace();
+        } catch (PluginNotConfiguredException e) {
+            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
+        }
+    }
+
     public Document getMarket() throws IOException, PluginNotConfiguredException {
         return getPage(MARKET_URL, null);
     }
@@ -109,22 +125,15 @@ public class LeekWarsServer {
         return null;
     }
 
-    public void deleteScript(String scriptId) {
+    public void deleteScript(String scriptId) throws IOException, PluginNotConfiguredException {
         // Needed to get the token first
-        try {
-            if (cookie == null || !cookie.contains("farmer_id")) {
-                connectToLeekWars();
-            }
-
-            String params = String.format("id=%s&remove=true&token=%s", scriptId, getToken());
-            HttpURLConnection connection = getConnection("/editor_update", params, true);
-            CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
-        } catch (IOException e) {
-            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
-            e.printStackTrace();
-        } catch (PluginNotConfiguredException e) {
-            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
+        if (cookie == null || !cookie.contains("farmer_id")) {
+            connectToLeekWars();
         }
+
+        String params = String.format("id=%s&remove=true&token=%s", scriptId, getToken());
+        HttpURLConnection connection = getConnection("/editor_update", params, true);
+        CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
     }
 
     private Document getPage(String url, String postData) throws IOException, PluginNotConfiguredException {

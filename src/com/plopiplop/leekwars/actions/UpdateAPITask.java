@@ -45,24 +45,22 @@ public class UpdateAPITask implements Runnable {
 
     @Override
     public void run() {
-        Document market;
-        Document documentation;
 
-        try {
-            market = LeekWarsServer.getInstance().getMarket();
-            documentation = LeekWarsServer.getInstance().getDocumentation();
-        } catch (IOException e) {
-            Notifications.Bus.notify(new Notification("LeekScript", "Error", "Can't reach LeekWars server :(", NotificationType.ERROR));
-            e.printStackTrace();
-            return;
-        } catch (PluginNotConfiguredException e) {
-            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
-            return;
-        }
+        LeekWarsServer.callAction(new ServerAction() {
+            @Override
+            public void doAction() throws PluginNotConfiguredException, IOException {
+                Document market = LeekWarsServer.getInstance().getMarket();
+                Document documentation = LeekWarsServer.getInstance().getDocumentation();
 
-        parseMarket(market);
-        parseDocumentation(documentation);
+                parseMarket(market);
+                parseDocumentation(documentation);
 
+                writeApiFile();
+            }
+        });
+    }
+
+    private void writeApiFile() {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {

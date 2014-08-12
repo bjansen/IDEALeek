@@ -8,6 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import com.plopiplop.leekwars.actions.CompilationException;
 import com.plopiplop.leekwars.model.LeekWarsServer;
+import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
 import org.jetbrains.annotations.NotNull;
@@ -45,14 +46,19 @@ public class LSVfsListener extends AbstractProjectComponent {
             int result = JOptionPane.showConfirmDialog(null, "Would you like to delete this AI on the LeekWars server as well?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
 
             if (result == JOptionPane.YES_OPTION) {
-                String id = matcher.group(2);
+                final String id = matcher.group(2);
 
-                LeekWarsServer.getInstance().deleteScript(id);
+                LeekWarsServer.callAction(new ServerAction() {
+                    @Override
+                    public void doAction() throws PluginNotConfiguredException, IOException {
+                        LeekWarsServer.getInstance().deleteScript(id);
+                    }
+                });
             }
         }
     }
 
-    private void propertyChanged(@NotNull VirtualFilePropertyEvent event) {
+    private void propertyChanged(@NotNull final VirtualFilePropertyEvent event) {
         if (event.getPropertyName().equals(VirtualFile.PROP_NAME)) {
             String oldName = event.getOldValue().toString();
             Matcher matcher = LSFile.LKS_FILE_PATTERN.matcher(oldName);
@@ -60,15 +66,20 @@ public class LSVfsListener extends AbstractProjectComponent {
             if (matcher.matches()) {
                 int oldId = Integer.parseInt(matcher.group(2));
 
-                matcher = LSFile.LKS_FILE_PATTERN.matcher(event.getNewValue().toString());
+                final Matcher newMatcher = LSFile.LKS_FILE_PATTERN.matcher(event.getNewValue().toString());
 
-                if (matcher.matches() && Integer.parseInt(matcher.group(2)) == oldId) {
-                    try {
-                        LeekWarsServer.getInstance().uploadScript(matcher.group(2), matcher.group(1), new String(event.getFile().contentsToByteArray()));
-                    } catch (CompilationException | IOException | PluginNotConfiguredException e) {
-                        // TODO
-                        e.printStackTrace();
-                    }
+                if (newMatcher.matches() && Integer.parseInt(newMatcher.group(2)) == oldId) {
+
+                    LeekWarsServer.callAction(new ServerAction() {
+                        @Override
+                        public void doAction() throws PluginNotConfiguredException, IOException {
+                            try {
+                                LeekWarsServer.getInstance().uploadScript(newMatcher.group(2), newMatcher.group(1), new String(event.getFile().contentsToByteArray()));
+                            } catch (CompilationException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 } else {
                     Notifications.Bus.notify(new Notification("LeekScript", "Script renaming", "The script's ID was altered, synchronization with the LeekWars server will be lost", NotificationType.WARNING));
                 }
