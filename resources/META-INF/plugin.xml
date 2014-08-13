@@ -2,6 +2,7 @@
     <id>com.plopiplop.leekwars</id>
     <name>LeekScript</name>
     <version>1.0</version>
+    <vendor>bjansen</vendor>
 
     <description><![CDATA[
       Support for the LeekScript language (http://leekwars.com).
