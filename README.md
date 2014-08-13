@@ -5,14 +5,25 @@ This plugin adds support for the LeekScript language in IntelliJ (see [http://le
 
 [![Build Status](https://travis-ci.org/bjansen/IDEALeek.svg?branch=master)](https://travis-ci.org/bjansen/IDEALeek)
 
+Installation
+============
+
+This plugin is available on JetBrains' [plugins website](http://plugins.jetbrains.com/plugin/7531?pr=idea).
+To install it directly from your IDE, open `File > Settings > Plugins` and click the button named `Browse repositories`. Type `leekscript` in the search bar and click the big green button named `Install plugin`. Restart your IDE and you're ready to go!
+
+
 Usage
 =====
 
-* Create a new *non-empty* project (a Java project is a good start) with at least a `src` folder
-* Configure access to the LeekWars server in `Preferences -> LeekScript` (username & password, optional proxy configuration...)
-* Retrieve the list of available functions/constants using `Tools -> Update LeekWars API`
-* Retrieve your existing scripts using `Tools -> Download LeekWars scripts`
+Once the plugin is installed and the IDE restarted:
+
+* create a new `LeekScript` project under `File > New Project`
+* in step 1, configure your login/password for leekwars.com
+* optionally, if you are using a proxy to connect to Leek Wars, change the default URL and specify the proxy's authentication settings as needed
+* in step 2, choose a project name and location and click finish
 * Start developing with pleasure™
+
+The plugin will automatically fetch all your existing scripts, as well as a file named `leekwars-api.lks` which contains every function and constant available in the API.
 
 Features
 ========
@@ -26,12 +37,10 @@ Features
 * Refactoring : rename variable/function
 * Import/save **existing** scripts from/to leekwars.com
 * Code formatting
+* Create/rename/delete scripts on the server
 
 Planned features
 ================
-* Create new scripts (on the server)
-* Rename existing scripts (on the server)
-* "Include" a file into another (for example to share code between team members)
 * Javadoc-like popup (very limited at the moment)
 
 Current limitations
