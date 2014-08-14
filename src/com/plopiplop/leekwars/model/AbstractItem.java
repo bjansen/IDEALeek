@@ -6,6 +6,7 @@ public class AbstractItem {
     public String level;
     public String description;
     public String price;
+    public String value;
 
     /**
      * @return {@link AbstractItem#id}
@@ -40,5 +41,12 @@ public class AbstractItem {
      */
     public String getPrice() {
         return price;
+    }
+
+    /**
+     * @return {@link AbstractItem#value}
+     */
+    public String getValue() {
+        return value;
     }
 }

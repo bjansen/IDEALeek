@@ -17,7 +17,7 @@ public class WeaponParser extends AbstractItemParser<Weapon> {
     public Weapon parse(Element element) {
         Weapon weapon = new Weapon();
 
-        parse(weapon, element);
+        parse(weapon, element.select(".item-preview").first());
 
         weapon.price = element.select("div.buy-button span").text();
 

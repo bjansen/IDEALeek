@@ -120,15 +120,22 @@ public class UpdateAPITask implements Runnable {
     }
 
     private void parseMarket(Document market) {
-        Elements elements = market.select("#preview div.item");
+        Elements elements = market.select("#preview div.preview-item");
 
         List<Weapon> weapons = new ArrayList<>();
         List<Chip> chips = new ArrayList<>();
 
         for (Element element : elements) {
-            if (element.attr("id").startsWith("weapon-")) {
+            Elements constant = element.select(".item-preview .constant");
+
+            if (constant.isEmpty()) {
+                System.out.println("WARN: skipping market item " + element.html());
+                continue;
+            }
+            String elementText = constant.first().text();
+            if (elementText.startsWith("WEAPON_")) {
                 weapons.add(WeaponParser.getInstance().parse(element));
-            } else if (element.attr("id").startsWith("chip-")) {
+            } else if (elementText.startsWith("CHIP_")) {
                 chips.add(ChipParser.getInstance().parse(element));
             }
         }

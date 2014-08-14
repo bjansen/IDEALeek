@@ -24,3 +24,5 @@ install:
   - echo "Creating build.properties file for ant."
   - echo "idea.home=$(pwd)/idea-IC" > build.properties
 script: ant
+env:
+  secure: "JzptRMU0Ul+AcvHKBQDj++HCnvYMLj5rxaW8VPM6VJG1MC8SOfEMHO1P9yRyPLP5jaw0WPI88BfPaI1LhSr3YPTiOgwCZWWbwtImJVvFdyVJm9ZCbsDExJcIVp5WDX0x0hI3m5QL+JVL4Yf9Bb6EkCD0EwA2XNDrO1hfHmWE5t8="

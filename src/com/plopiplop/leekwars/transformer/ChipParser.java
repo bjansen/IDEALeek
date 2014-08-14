@@ -18,7 +18,7 @@ public class ChipParser extends AbstractItemParser<Chip> {
     public Chip parse(Element element) {
         Chip chip = new Chip();
 
-        parse(chip, element.child(0));
+        parse(chip, element.select(".item-preview").first());
 
         chip.price = element.select("div.buy-button span").text();
 
