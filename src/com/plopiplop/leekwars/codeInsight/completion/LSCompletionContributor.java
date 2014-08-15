@@ -101,7 +101,7 @@ public class LSCompletionContributor extends CompletionContributor {
         }
 
         if (PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class) != null) {
-            result.addElement(keyword("return", SEMICOLON_HANDLER));
+            result.addElement(keyword("return", null));
         }
 
         result.addElement(keyword("var", ADD_SPACE_HANDLER));

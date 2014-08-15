@@ -59,7 +59,7 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
     public Icon getIcon(int flags) {
         if (this instanceof LSFunctionDeclaration) {
             return PlatformIcons.FUNCTION_ICON;
-        } else if (this instanceof LSVariableDeclaration) {
+        } else if (this instanceof LSVariableDeclaration || this instanceof LSForInitializer) {
             return PlatformIcons.VARIABLE_ICON;
         } else if (this instanceof LSParameter) {
             return PlatformIcons.PARAMETER_ICON;

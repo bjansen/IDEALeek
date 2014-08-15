@@ -46,23 +46,28 @@ public class FindCompletionVisitor extends LSVisitor {
 
     @Override
     public void visitWhileStatement(@NotNull LSWhileStatement statement) {
-        if (statement.getBlock() != null && statement.getBlock().getStatementList() != null) {
-            for (LSVariableStatement variableStatement : statement.getBlock().getStatementList().getVariableStatementList()) {
-                visitVariableStatement(variableStatement);
-            }
+        if (statement.getBlock() != null) {
+            visitBlock(statement.getBlock());
         }
     }
 
     @Override
     public void visitForStatement(@NotNull LSForStatement statement) {
-        if (statement.getBlock() != null && statement.getBlock().getStatementList() != null) {
-            for (LSVariableStatement variableStatement : statement.getBlock().getStatementList().getVariableStatementList()) {
-                visitVariableStatement(variableStatement);
-            }
+        if (statement.getBlock() != null) {
+            visitBlock(statement.getBlock());
         }
 
         for (LSForInitializer initializer : statement.getForInitializerList()) {
             namedElements.add(initializer);
+        }
+    }
+
+    @Override
+    public void visitBlock(@NotNull LSBlock block) {
+        if (block.getStatementList() != null) {
+            for (LSVariableStatement variableStatement : block.getStatementList().getVariableStatementList()) {
+                visitVariableStatement(variableStatement);
+            }
         }
     }
 
