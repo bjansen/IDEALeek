@@ -141,14 +141,14 @@ singleExpression ::=
 
 simpleExpression ::=
         variableReference postfixOperator
-    |   methodCall
+//    |   methodCall
     |   prefixOperator singleExpression
     |   variableReference
     |   '(' expressionSequence ')'
     |   literal
     |   arrayLiteral
 
-variableReference ::= identifier ('[' expressionSequence ']')*
+variableReference ::= (methodCall | identifier) ('[' expressionSequence ']')*
 methodCall ::= identifier arguments {methods=[getNbArguments]}
 
 eos ::= ';'
