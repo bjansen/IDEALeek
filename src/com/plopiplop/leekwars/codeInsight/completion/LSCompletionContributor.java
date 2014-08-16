@@ -7,6 +7,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.patterns.PlatformPatterns;
+import com.intellij.psi.PsiComment;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNamedElement;
@@ -51,6 +52,12 @@ public class LSCompletionContributor extends CompletionContributor {
             @Override
             protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
                 PsiElement element = parameters.getOriginalPosition();
+
+                if (element instanceof PsiComment || (element != null && element.getNode().getElementType() == LSTypes.MULTILINE_COMMENT)) {
+                    if (parameters.getInvocationCount() < 2) {
+                        return;
+                    }
+                }
 
                 if (element != null && element.getParent() instanceof LSReferenceString) {
                     findFileCompletions(element, result);
