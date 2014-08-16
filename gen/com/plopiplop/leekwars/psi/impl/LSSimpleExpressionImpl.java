@@ -1,15 +1,16 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static com.plopiplop.leekwars.psi.LSTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.plopiplop.leekwars.psi.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
 
 public class LSSimpleExpressionImpl extends ASTWrapperPsiElement implements LSSimpleExpression {
 
@@ -38,12 +39,6 @@ public class LSSimpleExpressionImpl extends ASTWrapperPsiElement implements LSSi
   @Nullable
   public LSLiteral getLiteral() {
     return findChildByClass(LSLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public LSMethodCall getMethodCall() {
-    return findChildByClass(LSMethodCall.class);
   }
 
   @Override
