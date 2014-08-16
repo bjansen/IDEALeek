@@ -1,16 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
+import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static com.plopiplop.leekwars.psi.LSTypes.*;
-import com.plopiplop.leekwars.psi.LSNamedElementImpl;
 import com.plopiplop.leekwars.psi.*;
-import com.intellij.navigation.ItemPresentation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSFunctionDeclaration {
 
@@ -24,9 +23,9 @@ public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSF
   }
 
   @Override
-  @NotNull
+  @Nullable
   public LSBlock getBlock() {
-    return findNotNullChildByClass(LSBlock.class);
+      return findChildByClass(LSBlock.class);
   }
 
   @Override
@@ -36,9 +35,9 @@ public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSF
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+      return findChildByType(IDENTIFIER);
   }
 
   @Override
@@ -48,15 +47,15 @@ public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSF
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpLparen() {
-    return findNotNullChildByType(OP_LPAREN);
+      return findChildByType(OP_LPAREN);
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getOpRparen() {
-    return findNotNullChildByType(OP_RPAREN);
+      return findChildByType(OP_RPAREN);
   }
 
   public String getSignature() {

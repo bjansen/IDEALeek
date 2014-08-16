@@ -26,7 +26,8 @@ public class FindDeclarationVisitor extends LSVisitor {
                 }
                 visitVariableStatement((LSVariableStatement) psiElement);
             } else if (psiElement instanceof LSFunctionDeclaration) {
-                if (((LSFunctionDeclaration) psiElement).getIdentifier().getText().equals(element.getText())) {
+                PsiElement identifier = ((LSFunctionDeclaration) psiElement).getIdentifier();
+                if (identifier != null && identifier.getText().equals(element.getText())) {
                     declarations.add(psiElement);
                 }
             }
@@ -46,9 +47,12 @@ public class FindDeclarationVisitor extends LSVisitor {
 
     @Override
     public void visitFunctionDeclaration(@NotNull LSFunctionDeclaration decl) {
-        visitBlock(decl.getBlock());
+        if (decl.getBlock() != null) {
+            visitBlock(decl.getBlock());
+        }
 
-        if (decl.getIdentifier().getText().equals(element.getText())) {
+        PsiElement identifier = decl.getIdentifier();
+        if (identifier != null && identifier.getText().equals(element.getText())) {
             declarations.add(decl);
         }
 

@@ -104,7 +104,7 @@ private statement ::=
 
 include ::= 'include' '(' referenceString ')' eos {pin=1}
 referenceString ::= string {methods=[getReference]}
-functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation]}
+functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation] pin=1}
 
 block ::= '{' statementList? '}'
 statementList ::= statement+
@@ -120,8 +120,8 @@ expressionSequence ::= singleExpression (',' singleExpression)*
 
 ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock? {pin=1}
 thenBlock ::= statement
-elseBlock ::= 'else' statement
-whileStatement ::= whileCondition statement
+elseBlock ::= 'else' statement {pin=1}
+whileStatement ::= whileCondition statement {pin=1}
 whileCondition ::= 'while' '(' expressionSequence ')' {pin=1}
 doWhileStatement ::= 'do' statement whileCondition eos  {pin=1}
 forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' statement {pin=1}

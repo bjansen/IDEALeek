@@ -35,7 +35,9 @@ public class FindCompletionVisitor extends LSVisitor {
 
     @Override
     public void visitFunctionDeclaration(@NotNull LSFunctionDeclaration function) {
-        visitBlock(function.getBlock());
+        if (function.getBlock() != null) {
+            visitBlock(function.getBlock());
+        }
 
         if (function.getFormalParameterList() != null) {
             for (LSParameter parameter : function.getFormalParameterList().getParameterList()) {

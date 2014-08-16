@@ -30,7 +30,8 @@ public class LSFoldingBuilder extends FoldingBuilderEx {
                 @Override
                 public String getPlaceholderText() {
                     String formalParams = literalExpression.getFormalParameterList() == null ? "" : literalExpression.getFormalParameterList().getText();
-                    return "function " + literalExpression.getIdentifier().getText() + "(" + formalParams + ")";
+                    String name = literalExpression.getIdentifier() == null ? "?" : literalExpression.getIdentifier().getText();
+                    return "function " + name + "(" + formalParams + ")";
                 }
             });
         }
