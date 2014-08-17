@@ -79,9 +79,10 @@ public class LeekWarsServer {
         HttpURLConnection connection = getConnection(EDITOR_UPDATE_URL, params, true);
         String result = CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
 
-        if (result.equals("\ufeffbad token")) {
+        if (result.equals("bad token")) {
             new DownloadScriptsTask(null).parseScriptTags(getPage("/", null));
             uploadScript(id, name, content);
+            return;
         }
 
         if (result.equals("\ufeff\n")) {
