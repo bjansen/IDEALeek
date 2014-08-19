@@ -1,14 +1,12 @@
 package com.plopiplop.leekwars.psi;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.language.LSFileType;
 import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,18 @@ public class PsiUtils {
     public static PsiElement createIdentifierFromText(Project project, String identifier) {
         PsiFile dummyFile = createDummyFile(project, "dummy.lks", "var " + identifier + ";");
         return ((LSVariableStatementImpl) dummyFile.getFirstChild()).getVariableDeclarationList().get(0).getIdentifier();
+    }
+
+    public static LSVariableStatement createVariableFromText(Project project, @NotNull String identifier, @Nullable String initializer) {
+        String text = "var " + identifier;
+
+        if (initializer != null) {
+            text += "=" + initializer;
+        }
+        text += ";";
+
+        PsiFile dummyFile = createDummyFile(project, "dummy.lks", text);
+        return (LSVariableStatement) dummyFile.getFirstChild();
     }
 
     public static PsiFile createDummyFile(Project project, String name, String text) {
