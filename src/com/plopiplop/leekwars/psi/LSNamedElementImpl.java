@@ -23,7 +23,8 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
 
     @Override
     public String getName() {
-        return getNameIdentifier().getText();
+        PsiElement identifier = getNameIdentifier();
+        return identifier == null ? null : identifier.getText();
     }
 
     @Nullable
@@ -41,6 +42,9 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
     public PsiReference getReference() {
         PsiElement id = getNameIdentifier();
 
+        if (id == null) {
+            return null;
+        }
         return new LSReference(id, new TextRange(0, id.getTextLength()));
     }
 
