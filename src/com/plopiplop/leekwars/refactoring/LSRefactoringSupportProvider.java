@@ -6,7 +6,6 @@ import com.intellij.refactoring.RefactoringActionHandler;
 import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
 import com.plopiplop.leekwars.psi.LSVariableDeclaration;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class LSRefactoringSupportProvider extends RefactoringSupportProvider {
     @Override
@@ -23,7 +22,7 @@ public class LSRefactoringSupportProvider extends RefactoringSupportProvider {
         return element instanceof LSFunctionDeclaration;
     }
 
-    @Nullable
+    @NotNull
     @Override
     public RefactoringActionHandler getIntroduceVariableHandler() {
         return new LSIntroduceVariableHandler();

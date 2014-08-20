@@ -1,0 +1,6 @@
+function coin() {
+    var myVar = true;
+    while (myVar) {
+
+    }
+}

@@ -1,0 +1,5 @@
+function coin() {
+    if (true == false) {
+
+    }
+}
