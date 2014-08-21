@@ -3,29 +3,14 @@ package com.plopiplop.leekwars.codeInsight.resolve;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.LSBlock;
-import com.plopiplop.leekwars.psi.LSDoWhileStatement;
-import com.plopiplop.leekwars.psi.LSElseBlock;
-import com.plopiplop.leekwars.psi.LSForInitializer;
-import com.plopiplop.leekwars.psi.LSForStatement;
-import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
-import com.plopiplop.leekwars.psi.LSFunctionExpression;
-import com.plopiplop.leekwars.psi.LSParameter;
-import com.plopiplop.leekwars.psi.LSStatementList;
-import com.plopiplop.leekwars.psi.LSThenBlock;
-import com.plopiplop.leekwars.psi.LSVariableDeclaration;
-import com.plopiplop.leekwars.psi.LSVariableStatement;
-import com.plopiplop.leekwars.psi.LSVisitor;
-import com.plopiplop.leekwars.psi.LSWhileCondition;
-import com.plopiplop.leekwars.psi.LSWhileStatement;
-import com.plopiplop.leekwars.psi.PsiUtils;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FindDeclarationVisitor extends LSVisitor {
-    private List<PsiElement> declarations = new ArrayList<>();
+    private List<PsiElement> declarations = new ArrayList<PsiElement>();
     private PsiElement element;
 
     public FindDeclarationVisitor(PsiElement element) {

@@ -29,7 +29,7 @@ public class ApiTransformer {
 
     public void transformToLeekScript(ModelManager manager, PsiDirectory out) throws Exception {
         FileTemplateManager templateManager = FileTemplateManager.getInstance();
-        Map<String, Object> context = new HashMap<>();
+        Map<String, Object> context = new HashMap<String, Object>();
         context.put("weapons", manager.getWeapons());
         context.put("chips", manager.getChips());
         context.put("functions", manager.getFunctions());

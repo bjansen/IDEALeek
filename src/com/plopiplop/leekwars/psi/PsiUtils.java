@@ -1,11 +1,7 @@
 package com.plopiplop.leekwars.psi;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileFactory;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.*;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.language.LSFileType;
 import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
@@ -75,7 +71,7 @@ public class PsiUtils {
     }
 
     public static List<PsiElement> getIncludedFilesBefore(PsiElement element) {
-        List<PsiElement> files = new ArrayList<>();
+        List<PsiElement> files = new ArrayList<PsiElement>();
         int offset = element.getNode().getStartOffset();
 
         for (LSInclude include : ((LSFile) element.getContainingFile()).findChildrenByClass(LSInclude.class)) {

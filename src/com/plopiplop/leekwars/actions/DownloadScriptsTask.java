@@ -29,7 +29,7 @@ public class DownloadScriptsTask implements Runnable {
     private static final Pattern AI_IDS_REGEX = Pattern.compile("__AI_IDS = \\[([^\\]]+)\\];");
     private static final Pattern AI_NAMES_REGEX = Pattern.compile("__AI_NAMES = \\[([^\\]]+)\\];");
 
-    private Map<String, String> files = new LinkedHashMap<>();
+    private Map<String, String> files = new LinkedHashMap<String, String>();
     private Project project;
 
     public DownloadScriptsTask(Project project) {

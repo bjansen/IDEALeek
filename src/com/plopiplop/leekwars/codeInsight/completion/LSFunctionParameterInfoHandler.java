@@ -52,7 +52,7 @@ public class LSFunctionParameterInfoHandler implements ParameterInfoHandler<LSAr
         LSArguments arguments = PsiTreeUtil.getParentOfType(elementAtOffset, LSArguments.class);
 
         if (arguments != null) {
-            List<LSFunctionDeclaration> declarations = new ArrayList<>();
+            List<LSFunctionDeclaration> declarations = new ArrayList<LSFunctionDeclaration>();
 
             List<PsiNamedElement> apiCandidates = visitApiFile(context.getProject());
             FindCompletionVisitor visitor = new FindCompletionVisitor();

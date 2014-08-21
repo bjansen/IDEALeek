@@ -45,7 +45,7 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
     public ResolveResult[] resolve(boolean resolveEverywhere) {
         PsiElement parentBlock = myElement;
-        Set<PsiElement> elements = new LinkedHashSet<>();
+        Set<PsiElement> elements = new LinkedHashSet<PsiElement>();
 
         do {
             parentBlock = PsiUtils.findParentBlock(parentBlock);
@@ -108,7 +108,7 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
     }
 
     private List<PsiElement> visitIncludedFiles() {
-        List<PsiElement> resolvedElements = new ArrayList<>();
+        List<PsiElement> resolvedElements = new ArrayList<PsiElement>();
 
         for (PsiElement includedFile : PsiUtils.getIncludedFilesBefore(myElement)) {
             FindDeclarationVisitor visitor = new FindDeclarationVisitor(myElement);

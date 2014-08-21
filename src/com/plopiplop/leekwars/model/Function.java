@@ -8,8 +8,8 @@ public class Function {
     public String description;
     public boolean isConstant;
 
-    public Map<String, String> parameters = new LinkedHashMap<>();
-    public Map<String, String> returns = new LinkedHashMap<>();
+    public Map<String, String> parameters = new LinkedHashMap<String, String>();
+    public Map<String, String> returns = new LinkedHashMap<String, String>();
 
     public String getName() {
         return name;

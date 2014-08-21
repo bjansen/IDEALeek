@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FindCompletionVisitor extends LSVisitor {
 
-    List<PsiNamedElement> namedElements = new ArrayList<>();
+    List<PsiNamedElement> namedElements = new ArrayList<PsiNamedElement>();
 
     @Override
     public void visitFile(PsiFile file) {

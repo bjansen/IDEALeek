@@ -38,8 +38,8 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
     @Override
     public Filter[] getFilters() {
         return new Filter[]{
-                new LSFilter<>(LSFunctionDeclaration.class, "function declarations"),
-                new LSFilter<>(LSVariableDeclaration.class, "variable declarations")
+                new LSFilter<LSFunctionDeclaration>(LSFunctionDeclaration.class, "function declarations"),
+                new LSFilter<LSVariableDeclaration>(LSVariableDeclaration.class, "variable declarations")
         };
     }
 
@@ -79,7 +79,7 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
         @NotNull
         @Override
         public TreeElement[] getChildren() {
-            final List<PsiElement> childrenElements = new ArrayList<>();
+            final List<PsiElement> childrenElements = new ArrayList<PsiElement>();
 
             element.acceptChildren(new LSVisitor() {
                 @Override

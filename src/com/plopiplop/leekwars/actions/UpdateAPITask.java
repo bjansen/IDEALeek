@@ -106,7 +106,7 @@ public class UpdateAPITask implements Runnable {
 
     private void parseDocumentation(Document documentation) {
         Elements elements = documentation.select("#functions .function");
-        List<Function> functions = new ArrayList<>();
+        List<Function> functions = new ArrayList<Function>();
 
         for (Element element : elements) {
             Function function = (FunctionParser.getInstance()).parse(element);
@@ -122,8 +122,8 @@ public class UpdateAPITask implements Runnable {
     private void parseMarket(Document market) {
         Elements elements = market.select("#preview div.preview-item");
 
-        List<Weapon> weapons = new ArrayList<>();
-        List<Chip> chips = new ArrayList<>();
+        List<Weapon> weapons = new ArrayList<Weapon>();
+        List<Chip> chips = new ArrayList<Chip>();
 
         for (Element element : elements) {
             Elements constant = element.select(".item-preview .constant");

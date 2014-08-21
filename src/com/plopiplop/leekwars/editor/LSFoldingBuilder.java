@@ -19,7 +19,7 @@ public class LSFoldingBuilder extends FoldingBuilderEx {
     @NotNull
     @Override
     public FoldingDescriptor[] buildFoldRegions(@NotNull PsiElement root, @NotNull Document document, boolean quick) {
-        List<FoldingDescriptor> descriptors = new ArrayList<>();
+        List<FoldingDescriptor> descriptors = new ArrayList<FoldingDescriptor>();
         Collection<LSFunctionDeclaration> declarations = PsiTreeUtil.findChildrenOfType(root, LSFunctionDeclaration.class);
 
         for (final LSFunctionDeclaration literalExpression : declarations) {
