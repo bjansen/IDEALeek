@@ -1,0 +1,3 @@
+var myVar = function(a, b, c) {
+};
+debug(myVar);

@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface LSVariableReference extends LSNamedElement {
 
-  @NotNull
-  List<LSExpressionSequence> getExpressionSequenceList();
-
     @Nullable
     LSMethodCall getMethodCall();
 
+  @NotNull
+  List<LSSingleExpression> getSingleExpressionList();
+
     @Nullable
-  PsiElement getIdentifier();
+    PsiElement getIdentifier();
 
 }

@@ -20,7 +20,12 @@ import com.intellij.refactoring.RefactoringBundle;
 import com.intellij.refactoring.rename.inplace.VariableInplaceRenameHandler;
 import com.intellij.refactoring.util.CommonRefactoringUtil;
 import com.intellij.testFramework.MapDataContext;
-import com.plopiplop.leekwars.psi.*;
+import com.plopiplop.leekwars.psi.LSExpressionStatement;
+import com.plopiplop.leekwars.psi.LSIfStatement;
+import com.plopiplop.leekwars.psi.LSSingleExpression;
+import com.plopiplop.leekwars.psi.LSVariableStatement;
+import com.plopiplop.leekwars.psi.LSWhileStatement;
+import com.plopiplop.leekwars.psi.PsiUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.generate.tostring.util.StringUtil;
 
@@ -91,8 +96,8 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
         if (singleExpression != null) {
             PsiElement parent = singleExpression.getParent();
 
-            if (parent instanceof LSExpressionSequence && parent.getParent() instanceof LSExpressionStatement) {
-                return parent.getParent();
+            if (parent instanceof LSExpressionStatement) {
+                return parent;
             }
 
             return singleExpression;
@@ -108,7 +113,7 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
         if (expression instanceof LSExpressionStatement) {
             LSExpressionStatement statement = (LSExpressionStatement) expression;
 
-            singleExpression = statement.getExpressionSequence().getSingleExpressionList().get(0);
+            singleExpression = statement.getSingleExpression();
         } else if (expression instanceof LSSingleExpression) {
             singleExpression = (LSSingleExpression) expression;
         }

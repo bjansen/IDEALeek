@@ -6,7 +6,6 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.plopiplop.leekwars.psi.LSArrayLiteral;
-import com.plopiplop.leekwars.psi.LSExpressionSequence;
 import com.plopiplop.leekwars.psi.LSLiteral;
 import com.plopiplop.leekwars.psi.LSPostfixOperator;
 import com.plopiplop.leekwars.psi.LSPrefixOperator;
@@ -35,12 +34,6 @@ public class LSSimpleExpressionImpl extends ASTWrapperPsiElement implements LSSi
   @Nullable
   public LSArrayLiteral getArrayLiteral() {
     return findChildByClass(LSArrayLiteral.class);
-  }
-
-  @Override
-  @Nullable
-  public LSExpressionSequence getExpressionSequence() {
-    return findChildByClass(LSExpressionSequence.class);
   }
 
   @Override

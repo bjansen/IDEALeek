@@ -34,7 +34,6 @@ import static com.plopiplop.leekwars.psi.LSTypes.ELEMENT_LIST;
 import static com.plopiplop.leekwars.psi.LSTypes.ELSE_BLOCK;
 import static com.plopiplop.leekwars.psi.LSTypes.EMPTY_STATEMENT;
 import static com.plopiplop.leekwars.psi.LSTypes.EOS;
-import static com.plopiplop.leekwars.psi.LSTypes.EXPRESSION_SEQUENCE;
 import static com.plopiplop.leekwars.psi.LSTypes.EXPRESSION_STATEMENT;
 import static com.plopiplop.leekwars.psi.LSTypes.FORMAL_PARAMETER_LIST;
 import static com.plopiplop.leekwars.psi.LSTypes.FOR_INITIALIZER;
@@ -166,9 +165,6 @@ public class LeekScriptParser implements PsiParser {
     }
     else if (root_ == EOS) {
       result_ = eos(builder_, 0);
-    }
-    else if (root_ == EXPRESSION_SEQUENCE) {
-      result_ = expressionSequence(builder_, 0);
     }
     else if (root_ == EXPRESSION_STATEMENT) {
       result_ = expressionStatement(builder_, 0);
@@ -453,7 +449,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'do' statement whileCondition eos
+  // 'do' (block | statement) whileCondition eos
   public static boolean doWhileStatement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "doWhileStatement")) return false;
     if (!nextTokenIs(builder_, KW_DO)) return false;
@@ -462,12 +458,23 @@ public class LeekScriptParser implements PsiParser {
     Marker marker_ = enter_section_(builder_, level_, _NONE_, null);
     result_ = consumeToken(builder_, KW_DO);
     pinned_ = result_; // pin = 1
-    result_ = result_ && report_error_(builder_, statement(builder_, level_ + 1));
+      result_ = result_ && report_error_(builder_, doWhileStatement_1(builder_, level_ + 1));
     result_ = pinned_ && report_error_(builder_, whileCondition(builder_, level_ + 1)) && result_;
     result_ = pinned_ && eos(builder_, level_ + 1) && result_;
     exit_section_(builder_, level_, marker_, DO_WHILE_STATEMENT, result_, pinned_, null);
     return result_ || pinned_;
   }
+
+    // block | statement
+    private static boolean doWhileStatement_1(PsiBuilder builder_, int level_) {
+        if (!recursion_guard_(builder_, level_, "doWhileStatement_1")) return false;
+        boolean result_;
+        Marker marker_ = enter_section_(builder_);
+        result_ = block(builder_, level_ + 1);
+        if (!result_) result_ = statement(builder_, level_ + 1);
+        exit_section_(builder_, marker_, null, result_);
+        return result_;
+    }
 
   /* ********************************************************** */
   // singleExpression (',' singleExpression)*
@@ -505,7 +512,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'else' statement
+  // 'else' (block | statement)
   public static boolean elseBlock(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "elseBlock")) return false;
     if (!nextTokenIs(builder_, KW_ELSE)) return false;
@@ -514,10 +521,21 @@ public class LeekScriptParser implements PsiParser {
       Marker marker_ = enter_section_(builder_, level_, _NONE_, null);
     result_ = consumeToken(builder_, KW_ELSE);
       pinned_ = result_; // pin = 1
-    result_ = result_ && statement(builder_, level_ + 1);
+      result_ = result_ && elseBlock_1(builder_, level_ + 1);
       exit_section_(builder_, level_, marker_, ELSE_BLOCK, result_, pinned_, null);
       return result_ || pinned_;
   }
+
+    // block | statement
+    private static boolean elseBlock_1(PsiBuilder builder_, int level_) {
+        if (!recursion_guard_(builder_, level_, "elseBlock_1")) return false;
+        boolean result_;
+        Marker marker_ = enter_section_(builder_);
+        result_ = block(builder_, level_ + 1);
+        if (!result_) result_ = statement(builder_, level_ + 1);
+        exit_section_(builder_, marker_, null, result_);
+        return result_;
+    }
 
   /* ********************************************************** */
   // ';'
@@ -544,48 +562,13 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // singleExpression (',' singleExpression)*
-  public static boolean expressionSequence(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "expressionSequence")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_, level_, _NONE_, "<expression sequence>");
-    result_ = singleExpression(builder_, level_ + 1);
-    result_ = result_ && expressionSequence_1(builder_, level_ + 1);
-    exit_section_(builder_, level_, marker_, EXPRESSION_SEQUENCE, result_, false, null);
-    return result_;
-  }
-
-  // (',' singleExpression)*
-  private static boolean expressionSequence_1(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "expressionSequence_1")) return false;
-    int pos_ = current_position_(builder_);
-    while (true) {
-      if (!expressionSequence_1_0(builder_, level_ + 1)) break;
-      if (!empty_element_parsed_guard_(builder_, "expressionSequence_1", pos_)) break;
-      pos_ = current_position_(builder_);
-    }
-    return true;
-  }
-
-  // ',' singleExpression
-  private static boolean expressionSequence_1_0(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "expressionSequence_1_0")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = consumeToken(builder_, OP_COMMA);
-    result_ = result_ && singleExpression(builder_, level_ + 1);
-    exit_section_(builder_, marker_, null, result_);
-    return result_;
-  }
-
-  /* ********************************************************** */
-  // expressionSequence eos
+  // singleExpression eos
   public static boolean expressionStatement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "expressionStatement")) return false;
     boolean result_;
     boolean pinned_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_, "<expression statement>");
-    result_ = expressionSequence(builder_, level_ + 1);
+      result_ = singleExpression(builder_, level_ + 1);
     pinned_ = result_; // pin = 1
     result_ = result_ && eos(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, EXPRESSION_STATEMENT, result_, pinned_, null);
@@ -613,7 +596,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' statement
+  // 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' (block | statement)
   public static boolean forStatement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "forStatement")) return false;
     if (!nextTokenIs(builder_, KW_FOR)) return false;
@@ -626,7 +609,7 @@ public class LeekScriptParser implements PsiParser {
     result_ = pinned_ && report_error_(builder_, forInitializer(builder_, level_ + 1)) && result_;
     result_ = pinned_ && report_error_(builder_, forStatement_3(builder_, level_ + 1)) && result_;
     result_ = pinned_ && report_error_(builder_, consumeToken(builder_, OP_RPAREN)) && result_;
-    result_ = pinned_ && statement(builder_, level_ + 1) && result_;
+      result_ = pinned_ && forStatement_5(builder_, level_ + 1) && result_;
     exit_section_(builder_, level_, marker_, FOR_STATEMENT, result_, pinned_, null);
     return result_ || pinned_;
   }
@@ -685,6 +668,17 @@ public class LeekScriptParser implements PsiParser {
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
+
+    // block | statement
+    private static boolean forStatement_5(PsiBuilder builder_, int level_) {
+        if (!recursion_guard_(builder_, level_, "forStatement_5")) return false;
+        boolean result_;
+        Marker marker_ = enter_section_(builder_);
+        result_ = block(builder_, level_ + 1);
+        if (!result_) result_ = statement(builder_, level_ + 1);
+        exit_section_(builder_, marker_, null, result_);
+        return result_;
+    }
 
   /* ********************************************************** */
   // parameter (',' parameter)*
@@ -774,7 +768,7 @@ public class LeekScriptParser implements PsiParser {
     }
 
     /* ********************************************************** */
-  // 'if' '(' expressionSequence ')' thenBlock elseBlock?
+    // 'if' '(' singleExpression ')' thenBlock elseBlock?
   public static boolean ifStatement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "ifStatement")) return false;
     if (!nextTokenIs(builder_, KW_IF)) return false;
@@ -784,7 +778,7 @@ public class LeekScriptParser implements PsiParser {
     result_ = consumeToken(builder_, KW_IF);
     pinned_ = result_; // pin = 1
     result_ = result_ && report_error_(builder_, consumeToken(builder_, OP_LPAREN));
-    result_ = pinned_ && report_error_(builder_, expressionSequence(builder_, level_ + 1)) && result_;
+      result_ = pinned_ && report_error_(builder_, singleExpression(builder_, level_ + 1)) && result_;
     result_ = pinned_ && report_error_(builder_, consumeToken(builder_, OP_RPAREN)) && result_;
     result_ = pinned_ && report_error_(builder_, thenBlock(builder_, level_ + 1)) && result_;
     result_ = pinned_ && ifStatement_5(builder_, level_ + 1) && result_;
@@ -970,13 +964,12 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '+' | '-' |  '!' | 'not'
+  // '-' |  '!' | 'not'
   public static boolean prefixOperator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "prefixOperator")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_, "<prefix operator>");
-      result_ = consumeToken(builder_, OP_PLUS);
-    if (!result_) result_ = consumeToken(builder_, OP_MINUS);
+      result_ = consumeToken(builder_, OP_MINUS);
       if (!result_) result_ = consumeToken(builder_, OP_EXCLAMATION_MARK);
     if (!result_) result_ = consumeToken(builder_, OP_NOT);
     exit_section_(builder_, level_, marker_, PREFIX_OPERATOR, result_, false, null);
@@ -1015,7 +1008,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'return' expressionSequence? eos
+  // 'return' singleExpression? eos
   public static boolean returnStatement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "returnStatement")) return false;
     if (!nextTokenIs(builder_, KW_RETURN)) return false;
@@ -1030,19 +1023,18 @@ public class LeekScriptParser implements PsiParser {
     return result_ || pinned_;
   }
 
-  // expressionSequence?
+    // singleExpression?
   private static boolean returnStatement_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "returnStatement_1")) return false;
-    expressionSequence(builder_, level_ + 1);
+      singleExpression(builder_, level_ + 1);
     return true;
   }
 
   /* ********************************************************** */
   // variableReference postfixOperator
-  // //    |   methodCall
-  //     |   prefixOperator singleExpression // TODO does not accept functionExpression (and perhaps others?)
+  //     |   prefixOperator singleExpression
   //     |   variableReference
-  //     |   '(' expressionSequence ')'
+  //     |   '(' singleExpression ')'
   //     |   literal
   //     |   arrayLiteral
   public static boolean simpleExpression(PsiBuilder builder_, int level_) {
@@ -1081,13 +1073,13 @@ public class LeekScriptParser implements PsiParser {
     return result_;
   }
 
-  // '(' expressionSequence ')'
+    // '(' singleExpression ')'
   private static boolean simpleExpression_3(PsiBuilder builder_, int level_) {
       if (!recursion_guard_(builder_, level_, "simpleExpression_3")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, OP_LPAREN);
-    result_ = result_ && expressionSequence(builder_, level_ + 1);
+      result_ = result_ && singleExpression(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, OP_RPAREN);
     exit_section_(builder_, marker_, null, result_);
     return result_;
@@ -1264,8 +1256,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // block
-  //     |   variableStatement
+  // variableStatement
   //     |   emptyStatement
   //     |   expressionStatement
   //     |   ifStatement
@@ -1279,8 +1270,7 @@ public class LeekScriptParser implements PsiParser {
     if (!recursion_guard_(builder_, level_, "statement")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = block(builder_, level_ + 1);
-    if (!result_) result_ = variableStatement(builder_, level_ + 1);
+      result_ = variableStatement(builder_, level_ + 1);
     if (!result_) result_ = emptyStatement(builder_, level_ + 1);
     if (!result_) result_ = expressionStatement(builder_, level_ + 1);
     if (!result_) result_ = ifStatement(builder_, level_ + 1);
@@ -1312,12 +1302,13 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // statement
+  // block | statement
   public static boolean thenBlock(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "thenBlock")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_, "<then block>");
-    result_ = statement(builder_, level_ + 1);
+      result_ = block(builder_, level_ + 1);
+      if (!result_) result_ = statement(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, THEN_BLOCK, result_, false, null);
     return result_;
   }
@@ -1381,7 +1372,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (methodCall | identifier) ('[' expressionSequence ']')*
+  // (methodCall | identifier) ('[' singleExpression ']')*
   public static boolean variableReference(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variableReference")) return false;
     if (!nextTokenIs(builder_, IDENTIFIER)) return false;
@@ -1404,7 +1395,7 @@ public class LeekScriptParser implements PsiParser {
         return result_;
     }
 
-  // ('[' expressionSequence ']')*
+    // ('[' singleExpression ']')*
   private static boolean variableReference_1(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variableReference_1")) return false;
     int pos_ = current_position_(builder_);
@@ -1416,13 +1407,13 @@ public class LeekScriptParser implements PsiParser {
     return true;
   }
 
-  // '[' expressionSequence ']'
+    // '[' singleExpression ']'
   private static boolean variableReference_1_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "variableReference_1_0")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, OP_LBRACKET);
-    result_ = result_ && expressionSequence(builder_, level_ + 1);
+      result_ = result_ && singleExpression(builder_, level_ + 1);
     result_ = result_ && consumeToken(builder_, OP_RBRACKET);
     exit_section_(builder_, marker_, null, result_);
     return result_;
@@ -1445,7 +1436,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'while' '(' expressionSequence ')'
+  // 'while' '(' singleExpression ')'
   public static boolean whileCondition(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "whileCondition")) return false;
     if (!nextTokenIs(builder_, KW_WHILE)) return false;
@@ -1455,14 +1446,14 @@ public class LeekScriptParser implements PsiParser {
     result_ = consumeToken(builder_, KW_WHILE);
     pinned_ = result_; // pin = 1
     result_ = result_ && report_error_(builder_, consumeToken(builder_, OP_LPAREN));
-    result_ = pinned_ && report_error_(builder_, expressionSequence(builder_, level_ + 1)) && result_;
+      result_ = pinned_ && report_error_(builder_, singleExpression(builder_, level_ + 1)) && result_;
     result_ = pinned_ && consumeToken(builder_, OP_RPAREN) && result_;
     exit_section_(builder_, level_, marker_, WHILE_CONDITION, result_, pinned_, null);
     return result_ || pinned_;
   }
 
   /* ********************************************************** */
-  // whileCondition statement
+  // whileCondition (block | statement)
   public static boolean whileStatement(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "whileStatement")) return false;
     if (!nextTokenIs(builder_, KW_WHILE)) return false;
@@ -1471,9 +1462,20 @@ public class LeekScriptParser implements PsiParser {
       Marker marker_ = enter_section_(builder_, level_, _NONE_, null);
     result_ = whileCondition(builder_, level_ + 1);
       pinned_ = result_; // pin = 1
-    result_ = result_ && statement(builder_, level_ + 1);
+      result_ = result_ && whileStatement_1(builder_, level_ + 1);
       exit_section_(builder_, level_, marker_, WHILE_STATEMENT, result_, pinned_, null);
       return result_ || pinned_;
+  }
+
+    // block | statement
+    private static boolean whileStatement_1(PsiBuilder builder_, int level_) {
+        if (!recursion_guard_(builder_, level_, "whileStatement_1")) return false;
+        boolean result_;
+        Marker marker_ = enter_section_(builder_);
+        result_ = block(builder_, level_ + 1);
+        if (!result_) result_ = statement(builder_, level_ + 1);
+        exit_section_(builder_, marker_, null, result_);
+        return result_;
   }
 
   final static Parser singleExpressionPartRecover_parser_ = new Parser() {

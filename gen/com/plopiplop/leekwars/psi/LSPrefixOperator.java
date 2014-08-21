@@ -15,7 +15,4 @@ public interface LSPrefixOperator extends PsiElement {
   @Nullable
   PsiElement getOpNot();
 
-  @Nullable
-  PsiElement getOpPlus();
-
 }

@@ -10,9 +10,6 @@ public interface LSSimpleExpression extends PsiElement {
   LSArrayLiteral getArrayLiteral();
 
   @Nullable
-  LSExpressionSequence getExpressionSequence();
-
-  @Nullable
   LSLiteral getLiteral();
 
   @Nullable

@@ -18,24 +18,24 @@ import static com.plopiplop.leekwars.psi.LSTypes.OP_COLON;
 public class LSKeyvalImpl extends ASTWrapperPsiElement implements LSKeyval {
 
     public LSKeyvalImpl(ASTNode node) {
-        super(node);
-    }
+    super(node);
+  }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof LSVisitor) ((LSVisitor) visitor).visitKeyval(this);
-        else super.accept(visitor);
-    }
+  public void accept(@NotNull PsiElementVisitor visitor) {
+      if (visitor instanceof LSVisitor) ((LSVisitor) visitor).visitKeyval(this);
+    else super.accept(visitor);
+  }
 
-    @Override
-    @NotNull
-    public List<LSSingleExpression> getSingleExpressionList() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, LSSingleExpression.class);
-    }
+  @Override
+  @NotNull
+  public List<LSSingleExpression> getSingleExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LSSingleExpression.class);
+  }
 
     @Override
     @NotNull
     public PsiElement getOpColon() {
         return findNotNullChildByType(OP_COLON);
-    }
+  }
 
 }

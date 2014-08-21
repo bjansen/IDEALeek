@@ -1,14 +1,12 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface LSStatementList extends PsiElement {
-
-  @NotNull
-  List<LSBlock> getBlockList();
 
   @NotNull
   List<LSBreakStatement> getBreakStatementList();

@@ -90,8 +90,7 @@ private sourceElements ::= sourceElement+
 private sourceElement ::= functionDeclaration | statement | include | multiline_comment
 
 private statement ::=
-        block
-    |   variableStatement
+        variableStatement
     |   emptyStatement
     |   expressionStatement
     |   ifStatement
@@ -115,18 +114,17 @@ variableDeclaration ::= identifier initialiser? {methods=[getPresentation] pin=1
 initialiser ::= '=' singleExpression {pin=1}
 
 emptyStatement ::= ';'
-expressionStatement ::= expressionSequence eos {pin=1}  // TODO is it really valid in LS?
-expressionSequence ::= singleExpression (',' singleExpression)*
+expressionStatement ::= singleExpression eos {pin=1}
 
-ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock? {pin=1} // TODO should be singleExpression?
-thenBlock ::= statement
-elseBlock ::= 'else' statement {pin=1}
-whileStatement ::= whileCondition statement {pin=1}
-whileCondition ::= 'while' '(' expressionSequence ')' {pin=1} // TODO should be singleExpression?
-doWhileStatement ::= 'do' statement whileCondition eos  {pin=1}
-forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' statement {pin=1}
+ifStatement ::= 'if' '(' singleExpression ')' thenBlock elseBlock? {pin=1}
+thenBlock ::= block | statement
+elseBlock ::= 'else' (block | statement) {pin=1}
+whileStatement ::= whileCondition (block | statement) {pin=1}
+whileCondition ::= 'while' '(' singleExpression ')' {pin=1}
+doWhileStatement ::= 'do' (block | statement) whileCondition eos  {pin=1}
+forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' (block | statement) {pin=1}
 forInitializer ::= 'var'? identifier
-returnStatement ::= 'return' expressionSequence? eos {pin=2} // TODO should be singleExpression?
+returnStatement ::= 'return' singleExpression? eos {pin=2}
 breakStatement ::= 'break' eos  {pin=1}
 continueStatement ::= 'continue' eos  {pin=1}
 
@@ -143,14 +141,13 @@ functionExpression ::= 'function' '(' formalParameterList? ')' block {pin=1}
 
 simpleExpression ::=
         variableReference postfixOperator
-//    |   methodCall
-    |   prefixOperator singleExpression // TODO does not accept functionExpression (and perhaps others?)
+    |   prefixOperator singleExpression
     |   variableReference
-    |   '(' expressionSequence ')'
+    |   '(' singleExpression ')'
     |   literal
     |   arrayLiteral
 
-variableReference ::= (methodCall | identifier) ('[' expressionSequence ']')* // TODO should be singleExpression?
+variableReference ::= (methodCall | identifier) ('[' singleExpression ']')*
 methodCall ::= identifier arguments {methods=[getNbArguments]}
 
 eos ::= ';'
@@ -168,7 +165,7 @@ private comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
 private booleanOperator ::= '&&' | '||' | '&' | '|' | 'and' | 'or'
 modifier ::= 'var' | 'global'
 postfixOperator ::= '++' | '--'
-prefixOperator ::= '+' | '-' |  '!' | 'not'
+prefixOperator ::= '-' |  '!' | 'not'
 private mathOperator ::= '+' | '-' | '*' | '/' | '%'
 private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
 literal ::= 'null' | 'true' | 'false' | string | number

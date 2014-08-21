@@ -17,6 +17,10 @@ public class LSIntroduceVariableHandlerTest extends LSCodeInsightTestSupport {
         performTest("if", 32);
     }
 
+    public void testFunction() {
+        performTest("function", 25);
+    }
+
     public void testWhile() {
         // TODO if the expression contains a variable that's modified in the while body, we should not allow it
         performTest("while", 32);

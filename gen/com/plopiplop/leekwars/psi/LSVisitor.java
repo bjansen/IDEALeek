@@ -51,10 +51,6 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitExpressionSequence(@NotNull LSExpressionSequence o) {
-    visitPsiElement(o);
-  }
-
   public void visitExpressionStatement(@NotNull LSExpressionStatement o) {
     visitPsiElement(o);
   }

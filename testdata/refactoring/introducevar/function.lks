@@ -1,0 +1,2 @@
+debug(function(a, b, c) {
+});

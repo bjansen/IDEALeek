@@ -13,7 +13,6 @@ import org.jetbrains.annotations.Nullable;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_EXCLAMATION_MARK;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_NOT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS;
 
 public class LSPrefixOperatorImpl extends ASTWrapperPsiElement implements LSPrefixOperator {
 
@@ -42,12 +41,6 @@ public class LSPrefixOperatorImpl extends ASTWrapperPsiElement implements LSPref
   @Nullable
   public PsiElement getOpNot() {
     return findChildByType(OP_NOT);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getOpPlus() {
-    return findChildByType(OP_PLUS);
   }
 
 }

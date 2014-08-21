@@ -15,7 +15,6 @@ import com.plopiplop.leekwars.psi.impl.LSElementListImpl;
 import com.plopiplop.leekwars.psi.impl.LSElseBlockImpl;
 import com.plopiplop.leekwars.psi.impl.LSEmptyStatementImpl;
 import com.plopiplop.leekwars.psi.impl.LSEosImpl;
-import com.plopiplop.leekwars.psi.impl.LSExpressionSequenceImpl;
 import com.plopiplop.leekwars.psi.impl.LSExpressionStatementImpl;
 import com.plopiplop.leekwars.psi.impl.LSForInitializerImpl;
 import com.plopiplop.leekwars.psi.impl.LSForStatementImpl;
@@ -58,7 +57,6 @@ public interface LSTypes {
   IElementType ELSE_BLOCK = new LSElementType("ELSE_BLOCK");
   IElementType EMPTY_STATEMENT = new LSElementType("EMPTY_STATEMENT");
   IElementType EOS = new LSElementType("EOS");
-  IElementType EXPRESSION_SEQUENCE = new LSElementType("EXPRESSION_SEQUENCE");
   IElementType EXPRESSION_STATEMENT = new LSElementType("EXPRESSION_STATEMENT");
   IElementType FORMAL_PARAMETER_LIST = new LSElementType("FORMAL_PARAMETER_LIST");
   IElementType FOR_INITIALIZER = new LSElementType("FOR_INITIALIZER");
@@ -187,9 +185,6 @@ public interface LSTypes {
       else if (type == EOS) {
         return new LSEosImpl(node);
       }
-      else if (type == EXPRESSION_SEQUENCE) {
-        return new LSExpressionSequenceImpl(node);
-      }
       else if (type == EXPRESSION_STATEMENT) {
         return new LSExpressionStatementImpl(node);
       }
@@ -204,7 +199,7 @@ public interface LSTypes {
       }
       else if (type == FUNCTION_DECLARATION) {
         return new LSFunctionDeclarationImpl(node);
-      } else if (type == FUNCTION_EXPRESSION) {
+       } else if (type == FUNCTION_EXPRESSION) {
            return new LSFunctionExpressionImpl(node);
        }
       else if (type == IF_STATEMENT) {

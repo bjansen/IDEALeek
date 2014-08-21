@@ -1,9 +1,9 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public interface LSIfStatement extends PsiElement {
 
@@ -11,7 +11,7 @@ public interface LSIfStatement extends PsiElement {
   LSElseBlock getElseBlock();
 
   @Nullable
-  LSExpressionSequence getExpressionSequence();
+  LSSingleExpression getSingleExpression();
 
   @Nullable
   LSThenBlock getThenBlock();

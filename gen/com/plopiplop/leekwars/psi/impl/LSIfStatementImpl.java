@@ -1,15 +1,21 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static com.plopiplop.leekwars.psi.LSTypes.*;
-import com.intellij.extapi.psi.ASTWrapperPsiElement;
-import com.plopiplop.leekwars.psi.*;
+import com.plopiplop.leekwars.psi.LSElseBlock;
+import com.plopiplop.leekwars.psi.LSIfStatement;
+import com.plopiplop.leekwars.psi.LSSingleExpression;
+import com.plopiplop.leekwars.psi.LSThenBlock;
+import com.plopiplop.leekwars.psi.LSVisitor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.plopiplop.leekwars.psi.LSTypes.KW_IF;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
 
 public class LSIfStatementImpl extends ASTWrapperPsiElement implements LSIfStatement {
 
@@ -30,8 +36,8 @@ public class LSIfStatementImpl extends ASTWrapperPsiElement implements LSIfState
 
   @Override
   @Nullable
-  public LSExpressionSequence getExpressionSequence() {
-    return findChildByClass(LSExpressionSequence.class);
+  public LSSingleExpression getSingleExpression() {
+      return findChildByClass(LSSingleExpression.class);
   }
 
   @Override
