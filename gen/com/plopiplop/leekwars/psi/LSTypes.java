@@ -4,7 +4,46 @@ package com.plopiplop.leekwars.psi;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
-import com.plopiplop.leekwars.psi.impl.*;
+import com.plopiplop.leekwars.psi.impl.LSArgumentListImpl;
+import com.plopiplop.leekwars.psi.impl.LSArgumentsImpl;
+import com.plopiplop.leekwars.psi.impl.LSArrayLiteralImpl;
+import com.plopiplop.leekwars.psi.impl.LSBlockImpl;
+import com.plopiplop.leekwars.psi.impl.LSBreakStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSContinueStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSDoWhileStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSElementListImpl;
+import com.plopiplop.leekwars.psi.impl.LSElseBlockImpl;
+import com.plopiplop.leekwars.psi.impl.LSEmptyStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSEosImpl;
+import com.plopiplop.leekwars.psi.impl.LSExpressionSequenceImpl;
+import com.plopiplop.leekwars.psi.impl.LSExpressionStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSForInitializerImpl;
+import com.plopiplop.leekwars.psi.impl.LSForStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSFormalParameterListImpl;
+import com.plopiplop.leekwars.psi.impl.LSFunctionDeclarationImpl;
+import com.plopiplop.leekwars.psi.impl.LSFunctionExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSIfStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSIncludeImpl;
+import com.plopiplop.leekwars.psi.impl.LSInitialiserImpl;
+import com.plopiplop.leekwars.psi.impl.LSKeyvalImpl;
+import com.plopiplop.leekwars.psi.impl.LSKeyvalListImpl;
+import com.plopiplop.leekwars.psi.impl.LSLiteralImpl;
+import com.plopiplop.leekwars.psi.impl.LSMethodCallImpl;
+import com.plopiplop.leekwars.psi.impl.LSModifierImpl;
+import com.plopiplop.leekwars.psi.impl.LSParameterImpl;
+import com.plopiplop.leekwars.psi.impl.LSPostfixOperatorImpl;
+import com.plopiplop.leekwars.psi.impl.LSPrefixOperatorImpl;
+import com.plopiplop.leekwars.psi.impl.LSReferenceStringImpl;
+import com.plopiplop.leekwars.psi.impl.LSReturnStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSSimpleExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSSingleExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSStatementListImpl;
+import com.plopiplop.leekwars.psi.impl.LSThenBlockImpl;
+import com.plopiplop.leekwars.psi.impl.LSVariableDeclarationImpl;
+import com.plopiplop.leekwars.psi.impl.LSVariableReferenceImpl;
+import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSWhileConditionImpl;
+import com.plopiplop.leekwars.psi.impl.LSWhileStatementImpl;
 
 public interface LSTypes {
 
@@ -25,6 +64,7 @@ public interface LSTypes {
   IElementType FOR_INITIALIZER = new LSElementType("FOR_INITIALIZER");
   IElementType FOR_STATEMENT = new LSElementType("FOR_STATEMENT");
   IElementType FUNCTION_DECLARATION = new LSElementType("FUNCTION_DECLARATION");
+    IElementType FUNCTION_EXPRESSION = new LSElementType("FUNCTION_EXPRESSION");
   IElementType IF_STATEMENT = new LSElementType("IF_STATEMENT");
   IElementType INCLUDE = new LSElementType("INCLUDE");
   IElementType INITIALISER = new LSElementType("INITIALISER");
@@ -164,7 +204,9 @@ public interface LSTypes {
       }
       else if (type == FUNCTION_DECLARATION) {
         return new LSFunctionDeclarationImpl(node);
-      }
+      } else if (type == FUNCTION_EXPRESSION) {
+           return new LSFunctionExpressionImpl(node);
+       }
       else if (type == IF_STATEMENT) {
         return new LSIfStatementImpl(node);
       }

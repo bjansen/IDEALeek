@@ -7,10 +7,7 @@ import org.jetbrains.annotations.Nullable;
 public interface LSPrefixOperator extends PsiElement {
 
   @Nullable
-  LSPostfixOperator getPostfixOperator();
-
-    @Nullable
-    PsiElement getOpExclamationMark();
+  PsiElement getOpExclamationMark();
 
   @Nullable
   PsiElement getOpMinus();

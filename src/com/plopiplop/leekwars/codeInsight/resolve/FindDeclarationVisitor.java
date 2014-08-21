@@ -3,7 +3,22 @@ package com.plopiplop.leekwars.codeInsight.resolve;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.*;
+import com.plopiplop.leekwars.psi.LSBlock;
+import com.plopiplop.leekwars.psi.LSDoWhileStatement;
+import com.plopiplop.leekwars.psi.LSElseBlock;
+import com.plopiplop.leekwars.psi.LSForInitializer;
+import com.plopiplop.leekwars.psi.LSForStatement;
+import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
+import com.plopiplop.leekwars.psi.LSFunctionExpression;
+import com.plopiplop.leekwars.psi.LSParameter;
+import com.plopiplop.leekwars.psi.LSStatementList;
+import com.plopiplop.leekwars.psi.LSThenBlock;
+import com.plopiplop.leekwars.psi.LSVariableDeclaration;
+import com.plopiplop.leekwars.psi.LSVariableStatement;
+import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.LSWhileCondition;
+import com.plopiplop.leekwars.psi.LSWhileStatement;
+import com.plopiplop.leekwars.psi.PsiUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -58,6 +73,19 @@ public class FindDeclarationVisitor extends LSVisitor {
 
         if (decl.getFormalParameterList() != null) {
             for (LSParameter parameter : decl.getFormalParameterList().getParameterList()) {
+                visitParameter(parameter);
+            }
+        }
+    }
+
+    @Override
+    public void visitFunctionExpression(@NotNull LSFunctionExpression expr) {
+        if (expr.getBlock() != null) {
+            visitBlock(expr.getBlock());
+        }
+
+        if (expr.getFormalParameterList() != null) {
+            for (LSParameter parameter : expr.getFormalParameterList().getParameterList()) {
                 visitParameter(parameter);
             }
         }

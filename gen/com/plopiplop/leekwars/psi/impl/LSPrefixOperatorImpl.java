@@ -5,13 +5,15 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.plopiplop.leekwars.psi.LSPostfixOperator;
 import com.plopiplop.leekwars.psi.LSPrefixOperator;
 import com.plopiplop.leekwars.psi.LSVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.*;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_EXCLAMATION_MARK;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_NOT;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS;
 
 public class LSPrefixOperatorImpl extends ASTWrapperPsiElement implements LSPrefixOperator {
 
@@ -26,14 +28,8 @@ public class LSPrefixOperatorImpl extends ASTWrapperPsiElement implements LSPref
 
   @Override
   @Nullable
-  public LSPostfixOperator getPostfixOperator() {
-    return findChildByClass(LSPostfixOperator.class);
-  }
-
-    @Override
-    @Nullable
-    public PsiElement getOpExclamationMark() {
-        return findChildByType(OP_EXCLAMATION_MARK);
+  public PsiElement getOpExclamationMark() {
+      return findChildByType(OP_EXCLAMATION_MARK);
   }
 
   @Override

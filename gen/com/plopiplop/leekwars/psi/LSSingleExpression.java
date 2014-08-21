@@ -7,6 +7,9 @@ import org.jetbrains.annotations.Nullable;
 public interface LSSingleExpression extends PsiElement {
 
   @Nullable
+  LSFunctionExpression getFunctionExpression();
+
+    @Nullable
   LSSimpleExpression getSimpleExpression();
 
   @Nullable

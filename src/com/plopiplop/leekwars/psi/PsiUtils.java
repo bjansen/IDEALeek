@@ -1,7 +1,11 @@
 package com.plopiplop.leekwars.psi;
 
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.language.LSFileType;
 import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
@@ -14,7 +18,7 @@ import java.util.List;
 public class PsiUtils {
 
     public static PsiElement findParentBlock(PsiElement element) {
-        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class, LSThenBlock.class,
+        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class, LSFunctionExpression.class, LSThenBlock.class,
                 LSElseBlock.class, LSWhileStatement.class, LSForStatement.class, LSFile.class, LSDoWhileStatement.class);
     }
 
@@ -40,7 +44,7 @@ public class PsiUtils {
     }
 
     public static boolean isInFunction(PsiElement element) {
-        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class) != null;
+        return PsiTreeUtil.getParentOfType(element, LSFunctionDeclaration.class, LSFunctionExpression.class) != null;
     }
 
     public static boolean isGlobalInFunction(PsiElement element) {

@@ -10,7 +10,15 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.LeekWarsApi;
-import com.plopiplop.leekwars.psi.*;
+import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
+import com.plopiplop.leekwars.psi.LSMethodCall;
+import com.plopiplop.leekwars.psi.LSParameter;
+import com.plopiplop.leekwars.psi.LSReference;
+import com.plopiplop.leekwars.psi.LSReferenceString;
+import com.plopiplop.leekwars.psi.LSTypes;
+import com.plopiplop.leekwars.psi.LSVariableDeclaration;
+import com.plopiplop.leekwars.psi.LSVariableStatement;
+import com.plopiplop.leekwars.psi.PsiUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class LSAnnotator implements Annotator {
@@ -86,6 +94,9 @@ public class LSAnnotator implements Annotator {
             }
         }
 
+        if (results.length == 1 && (results[0].getElement() instanceof LSVariableDeclaration || results[0].getElement() instanceof LSParameter)) {
+            return true;
+        }
         return false;
     }
 

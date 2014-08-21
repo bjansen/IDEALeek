@@ -75,6 +75,10 @@ public class LSVisitor extends PsiElementVisitor {
     visitNamedElement(o);
   }
 
+    public void visitFunctionExpression(@NotNull LSFunctionExpression o) {
+        visitPsiElement(o);
+    }
+
   public void visitIfStatement(@NotNull LSIfStatement o) {
     visitPsiElement(o);
   }

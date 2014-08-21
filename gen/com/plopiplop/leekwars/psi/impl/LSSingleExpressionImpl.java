@@ -5,6 +5,7 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.plopiplop.leekwars.psi.LSFunctionExpression;
 import com.plopiplop.leekwars.psi.LSSimpleExpression;
 import com.plopiplop.leekwars.psi.LSSingleExpression;
 import com.plopiplop.leekwars.psi.LSVariableReference;
@@ -12,7 +13,34 @@ import com.plopiplop.leekwars.psi.LSVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.*;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_AND;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_AND_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_ASSIGN;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_BINARY_AND;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_BINARY_OR;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_COLON;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_DIVIDE;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_DIVIDE_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_EQUALS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_GE;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_GT;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_EQUALS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_NOT_EQUALS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LE;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_AND;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_OR;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LT;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_MODULO;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_NOT_EQUALS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_OR;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_OR_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_TERNARY;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES_EQ;
 
 public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSingleExpression {
 
@@ -27,6 +55,12 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public LSFunctionExpression getFunctionExpression() {
+      return findChildByClass(LSFunctionExpression.class);
+  }
+
+    @Override
+    @Nullable
   public LSSimpleExpression getSimpleExpression() {
     return findChildByClass(LSSimpleExpression.class);
   }

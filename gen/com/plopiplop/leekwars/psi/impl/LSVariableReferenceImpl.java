@@ -5,7 +5,11 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.*;
+import com.plopiplop.leekwars.psi.LSExpressionSequence;
+import com.plopiplop.leekwars.psi.LSMethodCall;
+import com.plopiplop.leekwars.psi.LSNamedElementImpl;
+import com.plopiplop.leekwars.psi.LSVariableReference;
+import com.plopiplop.leekwars.psi.LSVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

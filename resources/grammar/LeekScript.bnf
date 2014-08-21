@@ -115,40 +115,42 @@ variableDeclaration ::= identifier initialiser? {methods=[getPresentation] pin=1
 initialiser ::= '=' singleExpression {pin=1}
 
 emptyStatement ::= ';'
-expressionStatement ::= expressionSequence eos {pin=1}
+expressionStatement ::= expressionSequence eos {pin=1}  // TODO is it really valid in LS?
 expressionSequence ::= singleExpression (',' singleExpression)*
 
-ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock? {pin=1}
+ifStatement ::= 'if' '(' expressionSequence ')' thenBlock elseBlock? {pin=1} // TODO should be singleExpression?
 thenBlock ::= statement
 elseBlock ::= 'else' statement {pin=1}
 whileStatement ::= whileCondition statement {pin=1}
-whileCondition ::= 'while' '(' expressionSequence ')' {pin=1}
+whileCondition ::= 'while' '(' expressionSequence ')' {pin=1} // TODO should be singleExpression?
 doWhileStatement ::= 'do' statement whileCondition eos  {pin=1}
 forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' statement {pin=1}
 forInitializer ::= 'var'? identifier
-returnStatement ::= 'return' expressionSequence? eos {pin=2}
+returnStatement ::= 'return' expressionSequence? eos {pin=2} // TODO should be singleExpression?
 breakStatement ::= 'break' eos  {pin=1}
 continueStatement ::= 'continue' eos  {pin=1}
 
 singleExpression ::=
-//        'function' identifier? '(' formalParameterList ')' '{' functionBody '}'
-        simpleExpression comparator singleExpression
+        functionExpression
+    |   simpleExpression comparator singleExpression
     |   simpleExpression booleanOperator singleExpression
     |   simpleExpression mathOperator singleExpression
     |   simpleExpression '?' simpleExpression ':' simpleExpression
     |   variableReference assignmentOperator singleExpression
     |   simpleExpression
 
+functionExpression ::= 'function' '(' formalParameterList? ')' block {pin=1}
+
 simpleExpression ::=
         variableReference postfixOperator
 //    |   methodCall
-    |   prefixOperator singleExpression
+    |   prefixOperator singleExpression // TODO does not accept functionExpression (and perhaps others?)
     |   variableReference
     |   '(' expressionSequence ')'
     |   literal
     |   arrayLiteral
 
-variableReference ::= (methodCall | identifier) ('[' expressionSequence ']')*
+variableReference ::= (methodCall | identifier) ('[' expressionSequence ']')* // TODO should be singleExpression?
 methodCall ::= identifier arguments {methods=[getNbArguments]}
 
 eos ::= ';'
@@ -166,7 +168,7 @@ private comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
 private booleanOperator ::= '&&' | '||' | '&' | '|' | 'and' | 'or'
 modifier ::= 'var' | 'global'
 postfixOperator ::= '++' | '--'
-prefixOperator ::= postfixOperator | '+' | '-' |  '!' | 'not'
+prefixOperator ::= '+' | '-' |  '!' | 'not'
 private mathOperator ::= '+' | '-' | '*' | '/' | '%'
 private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
 literal ::= 'null' | 'true' | 'false' | string | number
