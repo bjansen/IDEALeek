@@ -25,11 +25,11 @@ import java.util.regex.Matcher;
 
 public class UploadScriptTask implements Runnable {
     private final Project project;
-    private final DataContext dataContext;
+    private final VirtualFile[] files;
 
     public UploadScriptTask(Project eventProject, DataContext dataContext) {
         this.project = eventProject;
-        this.dataContext = dataContext;
+        this.files = LangDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
     }
 
     @Override
@@ -37,7 +37,6 @@ public class UploadScriptTask implements Runnable {
         ApplicationManager.getApplication().runReadAction(new Runnable() {
             @Override
             public void run() {
-                final VirtualFile[] files = LangDataKeys.VIRTUAL_FILE_ARRAY.getData(dataContext);
 
                 if (project == null || files == null) {
                     return;

@@ -61,6 +61,8 @@
             <add-to-group group-id="ToolsMenu"/>
         </action>
         <action class="com.plopiplop.leekwars.actions.UploadScriptAction" id="LeekScript.UploadScript" text="Upload script to LeekWars" icon="/icons/leek.png">
+                        
+            <keyboard-shortcut first-keystroke="control alt U" keymap="$default"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>
