@@ -78,7 +78,7 @@
 
     <target name="compile">
         <mkdir dir="${plugin.output.dir}"/>
-        <javac source="1.7" target="1.7" destdir="${plugin.output.dir}">
+        <javac source="1.6" target="1.6" destdir="${plugin.output.dir}">
             <classpath refid="jdk.classpath"/>
             <src refid="plugin.sourcepath"/>
         </javac>
@@ -91,7 +91,7 @@
 
     <target name="compile.tests" depends="compile">
         <mkdir dir="${plugin.testoutput.dir}"/>
-        <javac source="1.7" target="1.7" destdir="${plugin.testoutput.dir}">
+        <javac source="1.6" target="1.6" destdir="${plugin.testoutput.dir}">
             <classpath refid="jdk.classpath"/>
             <src refid="plugin.testsourcepath"/>
             <classpath refid="plugin.classpath"/>
