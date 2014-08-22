@@ -7,114 +7,33 @@ import org.jetbrains.annotations.Nullable;
 public interface LSSingleExpression extends PsiElement {
 
   @Nullable
-  LSFunctionExpression getFunctionExpression();
-
-    @Nullable
-  LSSimpleExpression getSimpleExpression();
+  LSAdditiveExpression getAdditiveExpression();
 
   @Nullable
-  LSSingleExpression getSingleExpression();
+  LSAssignExpression getAssignExpression();
 
   @Nullable
-  LSVariableReference getVariableReference();
+  LSBitwiseExpression getBitwiseExpression();
 
   @Nullable
-  PsiElement getOpAnd();
-
-    @Nullable
-  PsiElement getOpAndEq();
+  LSCompareExpression getCompareExpression();
 
   @Nullable
-  PsiElement getOpAssign();
+  LSLogicAndExpression getLogicAndExpression();
 
   @Nullable
-  PsiElement getOpBinaryAnd();
+  LSLogicOrExpression getLogicOrExpression();
 
   @Nullable
-  PsiElement getOpBinaryOr();
+  LSMultiplicativeExpression getMultiplicativeExpression();
 
   @Nullable
-  PsiElement getOpColon();
+  LSPrefixExpression getPrefixExpression();
 
   @Nullable
-  PsiElement getOpDivide();
+  LSShiftExpression getShiftExpression();
 
   @Nullable
-  PsiElement getOpDivideEq();
-
-  @Nullable
-  PsiElement getOpEquals();
-
-  @Nullable
-  PsiElement getOpGe();
-
-  @Nullable
-  PsiElement getOpGt();
-
-  @Nullable
-  PsiElement getOpIdentityEquals();
-
-  @Nullable
-  PsiElement getOpIdentityNotEquals();
-
-  @Nullable
-  PsiElement getOpLe();
-
-  @Nullable
-  PsiElement getOpLogicalAnd();
-
-  @Nullable
-  PsiElement getOpLogicalOr();
-
-  @Nullable
-  PsiElement getOpLshift();
-
-    @Nullable
-  PsiElement getOpLt();
-
-  @Nullable
-  PsiElement getOpMinus();
-
-  @Nullable
-  PsiElement getOpMinusEq();
-
-  @Nullable
-  PsiElement getOpModulo();
-
-  @Nullable
-  PsiElement getOpNotEquals();
-
-    @Nullable
-    PsiElement getOpOr();
-
-  @Nullable
-  PsiElement getOpOrEq();
-
-  @Nullable
-  PsiElement getOpPlus();
-
-  @Nullable
-  PsiElement getOpPlusEq();
-
-  @Nullable
-  PsiElement getOpPow();
-
-    @Nullable
-    PsiElement getOpRshift();
-
-    @Nullable
-  PsiElement getOpTernary();
-
-  @Nullable
-  PsiElement getOpTimes();
-
-  @Nullable
-  PsiElement getOpTimesEq();
-
-    @Nullable
-    PsiElement getOpUnsignedRshift();
-
-    @Nullable
-    PsiElement getOpXor();
+  LSTernaryExpression getTernaryExpression();
 
 }

@@ -7,6 +7,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class LSVisitor extends PsiElementVisitor {
 
+    public void visitAdditiveExpression(@NotNull LSAdditiveExpression o) {
+        visitPsiElement(o);
+    }
+
   public void visitArgumentList(@NotNull LSArgumentList o) {
     visitPsiElement(o);
   }
@@ -19,6 +23,14 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+    public void visitAssignExpression(@NotNull LSAssignExpression o) {
+        visitPsiElement(o);
+    }
+
+    public void visitBitwiseExpression(@NotNull LSBitwiseExpression o) {
+        visitPsiElement(o);
+    }
+
   public void visitBlock(@NotNull LSBlock o) {
     visitPsiElement(o);
   }
@@ -26,6 +38,10 @@ public class LSVisitor extends PsiElementVisitor {
   public void visitBreakStatement(@NotNull LSBreakStatement o) {
     visitPsiElement(o);
   }
+
+    public void visitCompareExpression(@NotNull LSCompareExpression o) {
+        visitPsiElement(o);
+    }
 
   public void visitContinueStatement(@NotNull LSContinueStatement o) {
     visitPsiElement(o);
@@ -99,6 +115,18 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+    public void visitLogicAndExpression(@NotNull LSLogicAndExpression o) {
+        visitPsiElement(o);
+    }
+
+    public void visitLogicOrExpression(@NotNull LSLogicOrExpression o) {
+        visitPsiElement(o);
+    }
+
+    public void visitMemberExpression(@NotNull LSMemberExpression o) {
+        visitPsiElement(o);
+    }
+
   public void visitMethodCall(@NotNull LSMethodCall o) {
     visitNamedElement(o);
   }
@@ -107,17 +135,25 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
+    public void visitMultiplicativeExpression(@NotNull LSMultiplicativeExpression o) {
+        visitPsiElement(o);
+    }
+
   public void visitParameter(@NotNull LSParameter o) {
     visitNamedElement(o);
   }
 
-  public void visitPostfixOperator(@NotNull LSPostfixOperator o) {
+    public void visitPrefixExpression(@NotNull LSPrefixExpression o) {
     visitPsiElement(o);
   }
 
   public void visitPrefixOperator(@NotNull LSPrefixOperator o) {
     visitPsiElement(o);
   }
+
+    public void visitPrimaryExpression(@NotNull LSPrimaryExpression o) {
+        visitNamedElement(o);
+    }
 
   public void visitReferenceString(@NotNull LSReferenceString o) {
     visitPsiElement(o);
@@ -127,7 +163,7 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitSimpleExpression(@NotNull LSSimpleExpression o) {
+    public void visitShiftExpression(@NotNull LSShiftExpression o) {
     visitPsiElement(o);
   }
 
@@ -139,15 +175,19 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitThenBlock(@NotNull LSThenBlock o) {
+    public void visitSuffixExpression(@NotNull LSSuffixExpression o) {
     visitPsiElement(o);
   }
 
-  public void visitVariableDeclaration(@NotNull LSVariableDeclaration o) {
-    visitNamedElement(o);
+    public void visitTernaryExpression(@NotNull LSTernaryExpression o) {
+        visitPsiElement(o);
   }
 
-  public void visitVariableReference(@NotNull LSVariableReference o) {
+    public void visitThenBlock(@NotNull LSThenBlock o) {
+        visitPsiElement(o);
+    }
+
+    public void visitVariableDeclaration(@NotNull LSVariableDeclaration o) {
     visitNamedElement(o);
   }
 

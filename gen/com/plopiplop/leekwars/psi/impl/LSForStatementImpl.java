@@ -17,7 +17,6 @@ import com.plopiplop.leekwars.psi.LSForStatement;
 import com.plopiplop.leekwars.psi.LSIfStatement;
 import com.plopiplop.leekwars.psi.LSInitialiser;
 import com.plopiplop.leekwars.psi.LSReturnStatement;
-import com.plopiplop.leekwars.psi.LSSimpleExpression;
 import com.plopiplop.leekwars.psi.LSSingleExpression;
 import com.plopiplop.leekwars.psi.LSVariableStatement;
 import com.plopiplop.leekwars.psi.LSVisitor;
@@ -108,12 +107,6 @@ public class LSForStatementImpl extends ASTWrapperPsiElement implements LSForSta
   @Nullable
   public LSReturnStatement getReturnStatement() {
     return findChildByClass(LSReturnStatement.class);
-  }
-
-  @Override
-  @Nullable
-  public LSSimpleExpression getSimpleExpression() {
-    return findChildByClass(LSSimpleExpression.class);
   }
 
   @Override

@@ -4,11 +4,15 @@ package com.plopiplop.leekwars.psi;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
+import com.plopiplop.leekwars.psi.impl.LSAdditiveExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSArgumentListImpl;
 import com.plopiplop.leekwars.psi.impl.LSArgumentsImpl;
 import com.plopiplop.leekwars.psi.impl.LSArrayLiteralImpl;
+import com.plopiplop.leekwars.psi.impl.LSAssignExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSBitwiseExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSBlockImpl;
 import com.plopiplop.leekwars.psi.impl.LSBreakStatementImpl;
+import com.plopiplop.leekwars.psi.impl.LSCompareExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSContinueStatementImpl;
 import com.plopiplop.leekwars.psi.impl.LSDoWhileStatementImpl;
 import com.plopiplop.leekwars.psi.impl.LSElementListImpl;
@@ -27,30 +31,40 @@ import com.plopiplop.leekwars.psi.impl.LSInitialiserImpl;
 import com.plopiplop.leekwars.psi.impl.LSKeyvalImpl;
 import com.plopiplop.leekwars.psi.impl.LSKeyvalListImpl;
 import com.plopiplop.leekwars.psi.impl.LSLiteralImpl;
+import com.plopiplop.leekwars.psi.impl.LSLogicAndExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSLogicOrExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSMemberExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSMethodCallImpl;
 import com.plopiplop.leekwars.psi.impl.LSModifierImpl;
+import com.plopiplop.leekwars.psi.impl.LSMultiplicativeExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSParameterImpl;
-import com.plopiplop.leekwars.psi.impl.LSPostfixOperatorImpl;
+import com.plopiplop.leekwars.psi.impl.LSPrefixExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSPrefixOperatorImpl;
+import com.plopiplop.leekwars.psi.impl.LSPrimaryExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSReferenceStringImpl;
 import com.plopiplop.leekwars.psi.impl.LSReturnStatementImpl;
-import com.plopiplop.leekwars.psi.impl.LSSimpleExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSShiftExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSSingleExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSStatementListImpl;
+import com.plopiplop.leekwars.psi.impl.LSSuffixExpressionImpl;
+import com.plopiplop.leekwars.psi.impl.LSTernaryExpressionImpl;
 import com.plopiplop.leekwars.psi.impl.LSThenBlockImpl;
 import com.plopiplop.leekwars.psi.impl.LSVariableDeclarationImpl;
-import com.plopiplop.leekwars.psi.impl.LSVariableReferenceImpl;
 import com.plopiplop.leekwars.psi.impl.LSVariableStatementImpl;
 import com.plopiplop.leekwars.psi.impl.LSWhileConditionImpl;
 import com.plopiplop.leekwars.psi.impl.LSWhileStatementImpl;
 
 public interface LSTypes {
 
+    IElementType ADDITIVE_EXPRESSION = new LSElementType("ADDITIVE_EXPRESSION");
   IElementType ARGUMENTS = new LSElementType("ARGUMENTS");
   IElementType ARGUMENT_LIST = new LSElementType("ARGUMENT_LIST");
   IElementType ARRAY_LITERAL = new LSElementType("ARRAY_LITERAL");
+    IElementType ASSIGN_EXPRESSION = new LSElementType("ASSIGN_EXPRESSION");
+    IElementType BITWISE_EXPRESSION = new LSElementType("BITWISE_EXPRESSION");
   IElementType BLOCK = new LSElementType("BLOCK");
   IElementType BREAK_STATEMENT = new LSElementType("BREAK_STATEMENT");
+    IElementType COMPARE_EXPRESSION = new LSElementType("COMPARE_EXPRESSION");
   IElementType CONTINUE_STATEMENT = new LSElementType("CONTINUE_STATEMENT");
   IElementType DO_WHILE_STATEMENT = new LSElementType("DO_WHILE_STATEMENT");
   IElementType ELEMENT_LIST = new LSElementType("ELEMENT_LIST");
@@ -69,24 +83,31 @@ public interface LSTypes {
     IElementType KEYVAL = new LSElementType("KEYVAL");
     IElementType KEYVAL_LIST = new LSElementType("KEYVAL_LIST");
   IElementType LITERAL = new LSElementType("LITERAL");
+    IElementType LOGIC_AND_EXPRESSION = new LSElementType("LOGIC_AND_EXPRESSION");
+    IElementType LOGIC_OR_EXPRESSION = new LSElementType("LOGIC_OR_EXPRESSION");
+    IElementType MEMBER_EXPRESSION = new LSElementType("MEMBER_EXPRESSION");
   IElementType METHOD_CALL = new LSElementType("METHOD_CALL");
   IElementType MODIFIER = new LSElementType("MODIFIER");
+    IElementType MULTIPLICATIVE_EXPRESSION = new LSElementType("MULTIPLICATIVE_EXPRESSION");
   IElementType PARAMETER = new LSElementType("PARAMETER");
-  IElementType POSTFIX_OPERATOR = new LSElementType("POSTFIX_OPERATOR");
+    IElementType PREFIX_EXPRESSION = new LSElementType("PREFIX_EXPRESSION");
   IElementType PREFIX_OPERATOR = new LSElementType("PREFIX_OPERATOR");
+    IElementType PRIMARY_EXPRESSION = new LSElementType("PRIMARY_EXPRESSION");
   IElementType REFERENCE_STRING = new LSElementType("REFERENCE_STRING");
   IElementType RETURN_STATEMENT = new LSElementType("RETURN_STATEMENT");
-  IElementType SIMPLE_EXPRESSION = new LSElementType("SIMPLE_EXPRESSION");
+    IElementType SHIFT_EXPRESSION = new LSElementType("SHIFT_EXPRESSION");
   IElementType SINGLE_EXPRESSION = new LSElementType("SINGLE_EXPRESSION");
   IElementType STATEMENT_LIST = new LSElementType("STATEMENT_LIST");
+    IElementType SUFFIX_EXPRESSION = new LSElementType("SUFFIX_EXPRESSION");
+    IElementType TERNARY_EXPRESSION = new LSElementType("TERNARY_EXPRESSION");
   IElementType THEN_BLOCK = new LSElementType("THEN_BLOCK");
   IElementType VARIABLE_DECLARATION = new LSElementType("VARIABLE_DECLARATION");
-  IElementType VARIABLE_REFERENCE = new LSElementType("VARIABLE_REFERENCE");
   IElementType VARIABLE_STATEMENT = new LSElementType("VARIABLE_STATEMENT");
   IElementType WHILE_CONDITION = new LSElementType("WHILE_CONDITION");
   IElementType WHILE_STATEMENT = new LSElementType("WHILE_STATEMENT");
 
   IElementType COMMENT = new LSTokenType("comment");
+    IElementType EXPRESSION = new LSTokenType("expression");
   IElementType IDENTIFIER = new LSTokenType("identifier");
   IElementType KW_BREAK = new LSTokenType("break");
   IElementType KW_CONTINUE = new LSTokenType("continue");
@@ -157,7 +178,9 @@ public interface LSTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == ARGUMENTS) {
+        if (type == ADDITIVE_EXPRESSION) {
+            return new LSAdditiveExpressionImpl(node);
+        } else if (type == ARGUMENTS) {
         return new LSArgumentsImpl(node);
       }
       else if (type == ARGUMENT_LIST) {
@@ -165,13 +188,19 @@ public interface LSTypes {
       }
       else if (type == ARRAY_LITERAL) {
         return new LSArrayLiteralImpl(node);
-      }
+      } else if (type == ASSIGN_EXPRESSION) {
+            return new LSAssignExpressionImpl(node);
+        } else if (type == BITWISE_EXPRESSION) {
+            return new LSBitwiseExpressionImpl(node);
+        }
       else if (type == BLOCK) {
         return new LSBlockImpl(node);
       }
       else if (type == BREAK_STATEMENT) {
         return new LSBreakStatementImpl(node);
-      }
+      } else if (type == COMPARE_EXPRESSION) {
+            return new LSCompareExpressionImpl(node);
+        }
       else if (type == CONTINUE_STATEMENT) {
         return new LSContinueStatementImpl(node);
       }
@@ -204,9 +233,9 @@ public interface LSTypes {
       }
       else if (type == FUNCTION_DECLARATION) {
         return new LSFunctionDeclarationImpl(node);
-       } else if (type == FUNCTION_EXPRESSION) {
-           return new LSFunctionExpressionImpl(node);
-       }
+        } else if (type == FUNCTION_EXPRESSION) {
+            return new LSFunctionExpressionImpl(node);
+        }
       else if (type == IF_STATEMENT) {
         return new LSIfStatementImpl(node);
       }
@@ -215,52 +244,61 @@ public interface LSTypes {
       }
       else if (type == INITIALISER) {
         return new LSInitialiserImpl(node);
-       } else if (type == KEYVAL) {
-           return new LSKeyvalImpl(node);
-       } else if (type == KEYVAL_LIST) {
-           return new LSKeyvalListImpl(node);
-      }
+      } else if (type == KEYVAL) {
+            return new LSKeyvalImpl(node);
+        } else if (type == KEYVAL_LIST) {
+            return new LSKeyvalListImpl(node);
+        }
       else if (type == LITERAL) {
         return new LSLiteralImpl(node);
-      }
+      } else if (type == LOGIC_AND_EXPRESSION) {
+            return new LSLogicAndExpressionImpl(node);
+        } else if (type == LOGIC_OR_EXPRESSION) {
+            return new LSLogicOrExpressionImpl(node);
+        } else if (type == MEMBER_EXPRESSION) {
+            return new LSMemberExpressionImpl(node);
+        }
       else if (type == METHOD_CALL) {
         return new LSMethodCallImpl(node);
       }
       else if (type == MODIFIER) {
         return new LSModifierImpl(node);
-      }
+      } else if (type == MULTIPLICATIVE_EXPRESSION) {
+            return new LSMultiplicativeExpressionImpl(node);
+        }
       else if (type == PARAMETER) {
         return new LSParameterImpl(node);
-      }
-      else if (type == POSTFIX_OPERATOR) {
-        return new LSPostfixOperatorImpl(node);
+      } else if (type == PREFIX_EXPRESSION) {
+            return new LSPrefixExpressionImpl(node);
       }
       else if (type == PREFIX_OPERATOR) {
         return new LSPrefixOperatorImpl(node);
-      }
+      } else if (type == PRIMARY_EXPRESSION) {
+            return new LSPrimaryExpressionImpl(node);
+        }
       else if (type == REFERENCE_STRING) {
         return new LSReferenceStringImpl(node);
       }
       else if (type == RETURN_STATEMENT) {
         return new LSReturnStatementImpl(node);
-      }
-      else if (type == SIMPLE_EXPRESSION) {
-        return new LSSimpleExpressionImpl(node);
+      } else if (type == SHIFT_EXPRESSION) {
+            return new LSShiftExpressionImpl(node);
       }
       else if (type == SINGLE_EXPRESSION) {
         return new LSSingleExpressionImpl(node);
       }
       else if (type == STATEMENT_LIST) {
         return new LSStatementListImpl(node);
-      }
+      } else if (type == SUFFIX_EXPRESSION) {
+            return new LSSuffixExpressionImpl(node);
+        } else if (type == TERNARY_EXPRESSION) {
+            return new LSTernaryExpressionImpl(node);
+        }
       else if (type == THEN_BLOCK) {
         return new LSThenBlockImpl(node);
       }
       else if (type == VARIABLE_DECLARATION) {
         return new LSVariableDeclarationImpl(node);
-      }
-      else if (type == VARIABLE_REFERENCE) {
-        return new LSVariableReferenceImpl(node);
       }
       else if (type == VARIABLE_STATEMENT) {
         return new LSVariableStatementImpl(node);

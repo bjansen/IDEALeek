@@ -15,18 +15,18 @@ import java.util.List;
 public class LSKeyvalListImpl extends ASTWrapperPsiElement implements LSKeyvalList {
 
     public LSKeyvalListImpl(ASTNode node) {
-        super(node);
-    }
+    super(node);
+  }
 
-    public void accept(@NotNull PsiElementVisitor visitor) {
-        if (visitor instanceof LSVisitor) ((LSVisitor) visitor).visitKeyvalList(this);
-        else super.accept(visitor);
-    }
+  public void accept(@NotNull PsiElementVisitor visitor) {
+      if (visitor instanceof LSVisitor) ((LSVisitor) visitor).visitKeyvalList(this);
+    else super.accept(visitor);
+  }
 
-    @Override
-    @NotNull
-    public List<LSKeyval> getKeyvalList() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, LSKeyval.class);
-    }
+  @Override
+  @NotNull
+  public List<LSKeyval> getKeyvalList() {
+      return PsiTreeUtil.getChildrenOfTypeAsList(this, LSKeyval.class);
+  }
 
 }

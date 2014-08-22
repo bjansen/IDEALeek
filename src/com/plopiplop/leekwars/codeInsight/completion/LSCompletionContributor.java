@@ -1,6 +1,13 @@
 package com.plopiplop.leekwars.codeInsight.completion;
 
-import com.intellij.codeInsight.completion.*;
+import com.google.common.base.Objects;
+import com.intellij.codeInsight.completion.CompletionContributor;
+import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.codeInsight.completion.CompletionProvider;
+import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
+import com.intellij.codeInsight.completion.InsertHandler;
+import com.intellij.codeInsight.completion.InsertionContext;
 import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
@@ -16,7 +23,16 @@ import com.intellij.util.ProcessingContext;
 import com.plopiplop.leekwars.ApiNotFoundException;
 import com.plopiplop.leekwars.LeekWarsApi;
 import com.plopiplop.leekwars.language.LSIcons;
-import com.plopiplop.leekwars.psi.*;
+import com.plopiplop.leekwars.psi.LSBlock;
+import com.plopiplop.leekwars.psi.LSExpressionStatement;
+import com.plopiplop.leekwars.psi.LSFile;
+import com.plopiplop.leekwars.psi.LSForStatement;
+import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
+import com.plopiplop.leekwars.psi.LSIfStatement;
+import com.plopiplop.leekwars.psi.LSReferenceString;
+import com.plopiplop.leekwars.psi.LSSingleExpression;
+import com.plopiplop.leekwars.psi.LSTypes;
+import com.plopiplop.leekwars.psi.PsiUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -147,7 +163,7 @@ public class LSCompletionContributor extends CompletionContributor {
             parentBlock.accept(visitor);
 
             for (PsiNamedElement candidate : visitor.namedElements) {
-                String text = candidate.getName();
+                String text = Objects.firstNonNull(candidate.getName(), "<anonymous function>");
                 String tailText = null;
                 Icon icon = candidate.getIcon(0);
                 InsertHandler<LookupElement> insertHandler = null;

@@ -13,8 +13,8 @@
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
 
-  implements("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElement"
-  mixin("(functionDeclaration|variableDeclaration|variableReference|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
+  implements("(functionDeclaration|variableDeclaration|primaryExpression|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElement"
+  mixin("(functionDeclaration|variableDeclaration|primaryExpression|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
 
   tokens=[
     identifier='regexp:(\p{Alpha}|_)\w*'
@@ -127,33 +127,53 @@ elseBlock ::= 'else' (block | statement) {pin=1}
 whileStatement ::= whileCondition (block | statement) {pin=1}
 whileCondition ::= 'while' '(' singleExpression ')' {pin=1}
 doWhileStatement ::= 'do' (block | statement) whileCondition eos  {pin=1}
-forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' simpleExpression | initialiser ';' singleExpression ';' singleExpression) ')' (block | statement) {pin=1}
+forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' singleExpression | initialiser ';' singleExpression ';' singleExpression) ')' (block | statement) {pin=1}
 forInitializer ::= 'var'? identifier
 returnStatement ::= 'return' singleExpression? eos {pin=2}
 breakStatement ::= 'break' eos  {pin=1}
 continueStatement ::= 'continue' eos  {pin=1}
 
-singleExpression ::=
-        functionExpression
-    |   simpleExpression comparator singleExpression
-    |   simpleExpression booleanOperator singleExpression
-    |   simpleExpression mathOperator singleExpression
-    |   simpleExpression '?' simpleExpression ':' simpleExpression
-    |   variableReference assignmentOperator singleExpression
-    |   simpleExpression
+singleExpression ::= assignExpressionWrapper
+
+private assignExpressionWrapper ::= ternaryExpressionWrapper assignExpression*
+left assignExpression ::= assignmentOperator ternaryExpressionWrapper {pin=1}
+
+private ternaryExpressionWrapper ::= logicOrExpressionWrapper ternaryExpression?
+left ternaryExpression ::= '?' expression ':' ternaryExpressionWrapper
+
+private logicOrExpressionWrapper ::= logicAndExpressionWrapper logicOrExpression*
+left logicOrExpression ::= ('||' | 'or') logicAndExpressionWrapper
+
+private logicAndExpressionWrapper ::= compareExpressionWrapper logicAndExpression*
+left logicAndExpression ::= ('&&' | 'and') compareExpressionWrapper
+
+private compareExpressionWrapper ::= bitwiseExpressionWrapper compareExpression*
+left compareExpression ::= (comparisonOperator | equalityOperator) bitwiseExpressionWrapper
+
+private bitwiseExpressionWrapper ::= shiftExpressionWrapper bitwiseExpression*
+left bitwiseExpression ::= bitwiseOperator shiftExpressionWrapper
+
+private shiftExpressionWrapper ::= additiveExpressionWrapper shiftExpression*
+left shiftExpression ::= shiftOperator additiveExpressionWrapper
+
+private additiveExpressionWrapper ::= multiplicativeExpressionWrapper additiveExpression*
+left additiveExpression ::= additiveOperator multiplicativeExpressionWrapper
+
+private multiplicativeExpressionWrapper ::= prefixExpression multiplicativeExpression*
+left multiplicativeExpression ::= multiplicativeOperator prefixExpression
+
+prefixExpression ::= (prefixOperator prefixExpression) | suffixExpressionWrapper
+
+private suffixExpressionWrapper ::= leftHandSideExpression suffixExpression*
+left suffixExpression ::= ('--' | '++')
 
 functionExpression ::= 'function' '(' formalParameterList? ')' block {pin=1}
 
-simpleExpression ::=
-        variableReference postfixOperator
-    |   prefixOperator singleExpression
-    |   variableReference
-    |   '(' singleExpression ')'
-    |   literal
-    |   arrayLiteral
+private leftHandSideExpression ::= methodCall | memberExpression
 
-variableReference ::= (methodCall | identifier) ('[' singleExpression ']')*
 methodCall ::= identifier arguments {methods=[getNbArguments]}
+memberExpression ::= (primaryExpression | functionExpression) ('[' singleExpression ']')*
+primaryExpression ::= identifier | literal | arrayLiteral | '(' singleExpression ')'
 
 eos ::= ';'
 
@@ -166,12 +186,14 @@ private singleExpressionPartRecover ::= !(')' | ',')
 formalParameterList ::= parameter (',' parameter)*
 parameter ::= '@'? identifier
 
-private comparator ::= '<=' | '>=' | '<' | '>' | '===' | '==' | '!==' | '!='
-private booleanOperator ::= '&&' | '||' | '&' | '|' | 'and' | 'or' | '>>>' | '<<' | '>>' | '^'
+private equalityOperator ::= '===' | '==' | '!==' | '!='
+private comparisonOperator ::= '<=' | '>=' | '<' | '>'
 modifier ::= 'var' | 'global'
-postfixOperator ::= '++' | '--'
 prefixOperator ::= '-' |  '!' | 'not'
-private mathOperator ::= '+' | '-' | '**' | '*' | '/' | '%'
+private shiftOperator ::= '>>>' | '<<' | '>>'
+private bitwiseOperator ::= '&' | '^' | '|'
+private multiplicativeOperator ::= '**' | '*' | '/' | '%'
+private additiveOperator ::= '+' | '-'
 private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
 literal ::= 'null' | 'true' | 'false' | string | number
 

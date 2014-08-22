@@ -4,7 +4,7 @@ package com.plopiplop.leekwars.psi;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.Nullable;
 
-public interface LSSimpleExpression extends PsiElement {
+public interface LSPrimaryExpression extends LSNamedElement {
 
   @Nullable
   LSArrayLiteral getArrayLiteral();
@@ -13,16 +13,10 @@ public interface LSSimpleExpression extends PsiElement {
   LSLiteral getLiteral();
 
   @Nullable
-  LSPostfixOperator getPostfixOperator();
-
-  @Nullable
-  LSPrefixOperator getPrefixOperator();
-
-  @Nullable
   LSSingleExpression getSingleExpression();
 
   @Nullable
-  LSVariableReference getVariableReference();
+  PsiElement getIdentifier();
 
   @Nullable
   PsiElement getOpLparen();

@@ -7,15 +7,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public interface LSVariableReference extends LSNamedElement {
+public interface LSMemberExpression extends PsiElement {
 
     @Nullable
-    LSMethodCall getMethodCall();
-
-  @NotNull
-  List<LSSingleExpression> getSingleExpressionList();
+    LSFunctionExpression getFunctionExpression();
 
     @Nullable
-    PsiElement getIdentifier();
+    LSPrimaryExpression getPrimaryExpression();
+
+    @NotNull
+    List<LSSingleExpression> getSingleExpressionList();
 
 }

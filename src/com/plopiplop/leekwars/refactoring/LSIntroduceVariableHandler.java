@@ -119,8 +119,8 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
         }
 
         if (singleExpression != null) {
-            if (singleExpression.getSimpleExpression() != null && singleExpression.getSimpleExpression().getVariableReference() != null && singleExpression.getSimpleExpression().getVariableReference().getMethodCall() != null) {
-                String functionName = singleExpression.getSimpleExpression().getVariableReference().getMethodCall().getIdentifier().getText();
+            if (singleExpression.getPrefixExpression() != null && singleExpression.getPrefixExpression().getMethodCall() != null) {
+                String functionName = singleExpression.getPrefixExpression().getMethodCall().getIdentifier().getText();
 
                 if (functionName.startsWith("get")) {
                     return StringUtil.firstLetterToLowerCase(functionName.substring("get".length()));

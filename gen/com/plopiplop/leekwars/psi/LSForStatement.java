@@ -42,9 +42,6 @@ public interface LSForStatement extends PsiElement {
   @Nullable
   LSReturnStatement getReturnStatement();
 
-  @Nullable
-  LSSimpleExpression getSimpleExpression();
-
   @NotNull
   List<LSSingleExpression> getSingleExpressionList();
 
