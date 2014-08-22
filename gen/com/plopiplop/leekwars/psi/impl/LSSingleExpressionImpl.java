@@ -29,6 +29,7 @@ import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_NOT_EQUALS;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LE;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_AND;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_OR;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LSHIFT;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LT;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS_EQ;
@@ -38,9 +39,13 @@ import static com.plopiplop.leekwars.psi.LSTypes.OP_OR;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_OR_EQ;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_POW;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_RSHIFT;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_TERNARY;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_UNSIGNED_RSHIFT;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_XOR;
 
 public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSingleExpression {
 
@@ -175,6 +180,12 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public PsiElement getOpLshift() {
+      return findChildByType(OP_LSHIFT);
+  }
+
+    @Override
+    @Nullable
   public PsiElement getOpLt() {
     return findChildByType(OP_LT);
   }
@@ -229,6 +240,18 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
 
   @Override
   @Nullable
+  public PsiElement getOpPow() {
+      return findChildByType(OP_POW);
+  }
+
+    @Override
+    @Nullable
+    public PsiElement getOpRshift() {
+        return findChildByType(OP_RSHIFT);
+    }
+
+    @Override
+    @Nullable
   public PsiElement getOpTernary() {
     return findChildByType(OP_TERNARY);
   }
@@ -243,6 +266,18 @@ public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSi
   @Nullable
   public PsiElement getOpTimesEq() {
     return findChildByType(OP_TIMES_EQ);
+  }
+
+    @Override
+    @Nullable
+    public PsiElement getOpUnsignedRshift() {
+        return findChildByType(OP_UNSIGNED_RSHIFT);
+    }
+
+    @Override
+    @Nullable
+    public PsiElement getOpXor() {
+        return findChildByType(OP_XOR);
   }
 
 }

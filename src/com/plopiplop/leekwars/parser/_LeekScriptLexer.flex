@@ -52,6 +52,7 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "--"                     { return OP_DEC; }
   "+"                      { return OP_PLUS; }
   "-"                      { return OP_MINUS; }
+  "**"                     { return OP_POW; }
   "*"                      { return OP_TIMES; }
   "/"                      { return OP_DIVIDE; }
   "%"                      { return OP_MODULO; }
@@ -77,6 +78,10 @@ MULTILINE_COMMENT="/"\*([^\*]|\*[^/])*\*"/"
   "&&"                     { return OP_LOGICAL_AND; }
   "or"                     { return OP_OR; }
   "and"                    { return OP_AND; }
+  ">>>"                    { return OP_UNSIGNED_RSHIFT; }
+  ">>"                     { return OP_RSHIFT; }
+  "<<"                     { return OP_LSHIFT; }
+  "^"                      { return OP_XOR; }
   "<="                     { return OP_LE; }
   "<"                      { return OP_LT; }
   ">="                     { return OP_GE; }

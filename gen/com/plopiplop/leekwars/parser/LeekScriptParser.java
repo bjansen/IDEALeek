@@ -90,6 +90,7 @@ import static com.plopiplop.leekwars.psi.LSTypes.OP_LE;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_AND;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_OR;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_LSHIFT;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LT;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS_EQ;
@@ -100,14 +101,18 @@ import static com.plopiplop.leekwars.psi.LSTypes.OP_OR;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_OR_EQ;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_POW;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_RBRACE;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_RBRACKET;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_REFERENCE;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_RSHIFT;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_SEMICOLON;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_TERNARY;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES_EQ;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_UNSIGNED_RSHIFT;
+import static com.plopiplop.leekwars.psi.LSTypes.OP_XOR;
 import static com.plopiplop.leekwars.psi.LSTypes.PARAMETER;
 import static com.plopiplop.leekwars.psi.LSTypes.POSTFIX_OPERATOR;
 import static com.plopiplop.leekwars.psi.LSTypes.PREFIX_OPERATOR;
@@ -385,7 +390,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '&&' | '||' | '&' | '|' | 'and' | 'or'
+  // '&&' | '||' | '&' | '|' | 'and' | 'or' | '>>>' | '<<' | '>>' | '^'
   static boolean booleanOperator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "booleanOperator")) return false;
     boolean result_;
@@ -396,6 +401,10 @@ public class LeekScriptParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, OP_BINARY_OR);
       if (!result_) result_ = consumeToken(builder_, OP_AND);
       if (!result_) result_ = consumeToken(builder_, OP_OR);
+      if (!result_) result_ = consumeToken(builder_, OP_UNSIGNED_RSHIFT);
+      if (!result_) result_ = consumeToken(builder_, OP_LSHIFT);
+      if (!result_) result_ = consumeToken(builder_, OP_RSHIFT);
+      if (!result_) result_ = consumeToken(builder_, OP_XOR);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
@@ -890,13 +899,14 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // '+' | '-' | '*' | '/' | '%'
+  // '+' | '-' | '**' | '*' | '/' | '%'
   static boolean mathOperator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "mathOperator")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
     result_ = consumeToken(builder_, OP_PLUS);
     if (!result_) result_ = consumeToken(builder_, OP_MINUS);
+      if (!result_) result_ = consumeToken(builder_, OP_POW);
     if (!result_) result_ = consumeToken(builder_, OP_TIMES);
     if (!result_) result_ = consumeToken(builder_, OP_DIVIDE);
     if (!result_) result_ = consumeToken(builder_, OP_MODULO);

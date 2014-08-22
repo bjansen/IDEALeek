@@ -129,6 +129,7 @@ public interface LSTypes {
   IElementType OP_LOGICAL_AND = new LSTokenType("&&");
   IElementType OP_LOGICAL_OR = new LSTokenType("||");
   IElementType OP_LPAREN = new LSTokenType("(");
+    IElementType OP_LSHIFT = new LSTokenType("<<");
   IElementType OP_LT = new LSTokenType("<");
   IElementType OP_MINUS = new LSTokenType("-");
   IElementType OP_MINUS_EQ = new LSTokenType("-=");
@@ -139,14 +140,18 @@ public interface LSTypes {
   IElementType OP_OR_EQ = new LSTokenType("|=");
   IElementType OP_PLUS = new LSTokenType("+");
   IElementType OP_PLUS_EQ = new LSTokenType("+=");
+    IElementType OP_POW = new LSTokenType("**");
   IElementType OP_RBRACE = new LSTokenType("}");
   IElementType OP_RBRACKET = new LSTokenType("]");
   IElementType OP_REFERENCE = new LSTokenType("@");
   IElementType OP_RPAREN = new LSTokenType(")");
+    IElementType OP_RSHIFT = new LSTokenType(">>");
   IElementType OP_SEMICOLON = new LSTokenType(";");
   IElementType OP_TERNARY = new LSTokenType("?");
   IElementType OP_TIMES = new LSTokenType("*");
   IElementType OP_TIMES_EQ = new LSTokenType("*=");
+    IElementType OP_UNSIGNED_RSHIFT = new LSTokenType(">>>");
+    IElementType OP_XOR = new LSTokenType("^");
   IElementType STRING = new LSTokenType("string");
 
   class Factory {

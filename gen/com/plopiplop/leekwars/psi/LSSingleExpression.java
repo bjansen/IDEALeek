@@ -67,6 +67,9 @@ public interface LSSingleExpression extends PsiElement {
   PsiElement getOpLogicalOr();
 
   @Nullable
+  PsiElement getOpLshift();
+
+    @Nullable
   PsiElement getOpLt();
 
   @Nullable
@@ -94,6 +97,12 @@ public interface LSSingleExpression extends PsiElement {
   PsiElement getOpPlusEq();
 
   @Nullable
+  PsiElement getOpPow();
+
+    @Nullable
+    PsiElement getOpRshift();
+
+    @Nullable
   PsiElement getOpTernary();
 
   @Nullable
@@ -101,5 +110,11 @@ public interface LSSingleExpression extends PsiElement {
 
   @Nullable
   PsiElement getOpTimesEq();
+
+    @Nullable
+    PsiElement getOpUnsignedRshift();
+
+    @Nullable
+    PsiElement getOpXor();
 
 }
