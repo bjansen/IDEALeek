@@ -14,10 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.plopiplop.leekwars.psi.LSTypes.OP_DIVIDE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_MODULO;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_POW;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSMultiplicativeExpressionImpl extends ASTWrapperPsiElement implements LSMultiplicativeExpression {
 

@@ -26,9 +26,9 @@ public class FindDeclarationVisitor extends LSVisitor {
                 }
                 visitVariableStatement((LSVariableStatement) psiElement);
             } else if (psiElement instanceof LSFunctionDeclaration) {
-                PsiElement identifier = ((LSFunctionDeclaration) psiElement).getIdentifier();
-                if (identifier != null && identifier.getText().equals(element.getText())) {
-                    declarations.add(psiElement);
+                LSFunctionName functionName = ((LSFunctionDeclaration) psiElement).getFunctionName();
+                if (functionName != null && functionName.getIdentifier().getText().equals(element.getText())) {
+                    declarations.add(functionName);
                 }
             }
         }
@@ -51,9 +51,9 @@ public class FindDeclarationVisitor extends LSVisitor {
             visitBlock(decl.getBlock());
         }
 
-        PsiElement identifier = decl.getIdentifier();
-        if (identifier != null && identifier.getText().equals(element.getText())) {
-            declarations.add(decl);
+        LSFunctionName functionName = decl.getFunctionName();
+        if (functionName != null && functionName.getIdentifier().getText().equals(element.getText())) {
+            declarations.add(functionName);
         }
 
         if (decl.getFormalParameterList() != null) {
@@ -132,7 +132,7 @@ public class FindDeclarationVisitor extends LSVisitor {
     @Override
     public void visitForInitializer(@NotNull LSForInitializer initializer) {
         boolean isDeclaration = initializer.getKwVar() != null;
-        if (isDeclaration && initializer.getIdentifier().getText().equals(element.getText()) && PsiUtils.isDeclaredBefore(initializer, element)) {
+        if (isDeclaration && initializer.getReferenceExpression().getText().equals(element.getText()) && PsiUtils.isDeclaredBefore(initializer, element)) {
             declarations.add(initializer);
         }
     }

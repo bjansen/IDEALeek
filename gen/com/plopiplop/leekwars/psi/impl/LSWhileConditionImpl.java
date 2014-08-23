@@ -11,9 +11,7 @@ import com.plopiplop.leekwars.psi.LSWhileCondition;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.KW_WHILE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSWhileConditionImpl extends ASTWrapperPsiElement implements LSWhileCondition {
 

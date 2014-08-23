@@ -20,12 +20,7 @@ import com.intellij.refactoring.RefactoringBundle;
 import com.intellij.refactoring.rename.inplace.VariableInplaceRenameHandler;
 import com.intellij.refactoring.util.CommonRefactoringUtil;
 import com.intellij.testFramework.MapDataContext;
-import com.plopiplop.leekwars.psi.LSExpressionStatement;
-import com.plopiplop.leekwars.psi.LSIfStatement;
-import com.plopiplop.leekwars.psi.LSSingleExpression;
-import com.plopiplop.leekwars.psi.LSVariableStatement;
-import com.plopiplop.leekwars.psi.LSWhileStatement;
-import com.plopiplop.leekwars.psi.PsiUtils;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.generate.tostring.util.StringUtil;
 
@@ -120,7 +115,7 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
 
         if (singleExpression != null) {
             if (singleExpression.getPrefixExpression() != null && singleExpression.getPrefixExpression().getMethodCall() != null) {
-                String functionName = singleExpression.getPrefixExpression().getMethodCall().getIdentifier().getText();
+                String functionName = singleExpression.getPrefixExpression().getMethodCall().getReferenceExpression().getIdentifier().getText();
 
                 if (functionName.startsWith("get")) {
                     return StringUtil.firstLetterToLowerCase(functionName.substring("get".length()));

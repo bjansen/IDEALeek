@@ -35,8 +35,10 @@ public class LSBraceMatcher implements PairedBraceMatcher {
 
         if (parent instanceof LSFunctionDeclaration) {
             LSFunctionDeclaration parentDeclaration = (LSFunctionDeclaration) parent;
-            PsiElement nameIdentifier = parentDeclaration.getIdentifier();
-            return nameIdentifier.getTextOffset();
+            PsiElement nameIdentifier = parentDeclaration.getFunctionName();
+            if (nameIdentifier != null) {
+                return nameIdentifier.getTextOffset();
+            }
         }
         return openingBraceOffset;
     }

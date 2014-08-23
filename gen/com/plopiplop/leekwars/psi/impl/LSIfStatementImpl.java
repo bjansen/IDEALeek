@@ -5,17 +5,11 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.plopiplop.leekwars.psi.LSElseBlock;
-import com.plopiplop.leekwars.psi.LSIfStatement;
-import com.plopiplop.leekwars.psi.LSSingleExpression;
-import com.plopiplop.leekwars.psi.LSThenBlock;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.KW_IF;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSIfStatementImpl extends ASTWrapperPsiElement implements LSIfStatement {
 

@@ -61,7 +61,7 @@ public class LSFunctionParameterInfoHandler implements ParameterInfoHandler<LSAr
 
             for (PsiNamedElement element : ContainerUtil.concat(currentFileCandidates, apiCandidates)) {
                 if (element instanceof LSFunctionDeclaration && element.getName() != null
-                        && element.getName().equals(((LSMethodCall) arguments.getParent()).getName())) {
+                        && element.getName().equals(((LSMethodCall) arguments.getParent()).getReferenceExpression().getText())) {
                     declarations.add((LSFunctionDeclaration) element);
                 }
             }

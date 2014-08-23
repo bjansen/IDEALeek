@@ -6,7 +6,7 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.psi.PsiElement;
 import com.plopiplop.leekwars.LeekWarsApi;
-import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
+import com.plopiplop.leekwars.psi.LSFunctionName;
 import com.plopiplop.leekwars.psi.LSParameter;
 import com.plopiplop.leekwars.psi.LSReference;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +26,7 @@ public class LSSyntaxAnnotator {
 
         if (reference != null) {
             PsiElement resolve = reference.resolve();
-            if (resolve != null && resolve instanceof LSFunctionDeclaration && resolve.getContainingFile().getName().equals(LeekWarsApi.LEEKWARS_API_FILE)) {
+            if (resolve != null && resolve instanceof LSFunctionName && resolve.getContainingFile().getName().equals(LeekWarsApi.LEEKWARS_API_FILE)) {
                 Annotation annotation = holder.createInfoAnnotation(element, null);
                 annotation.setTextAttributes(DefaultLanguageHighlighterColors.PREDEFINED_SYMBOL);
             }

@@ -13,8 +13,8 @@
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
 
-  implements("(functionDeclaration|variableDeclaration|primaryExpression|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElement"
-  mixin("(functionDeclaration|variableDeclaration|primaryExpression|parameter|methodCall|forInitializer)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
+  implements("(functionDeclaration|variableDeclaration|parameter|forInitializer|functionName|referenceExpression)")="com.plopiplop.leekwars.psi.LSNamedElement"
+  mixin("(functionDeclaration|variableDeclaration|parameter|forInitializer|functionName|referenceExpression)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"
 
   tokens=[
     identifier='regexp:(\p{Alpha}|_)\w*'
@@ -63,6 +63,7 @@
     op_divide_eq='/='
     op_and_eq='&='
     op_or_eq='|='
+    op_xor_eq='^='
     op_assign='='
     op_exclamation_mark='!'
     op_not='not'
@@ -106,10 +107,12 @@ private statement ::=
     |   breakStatement
     |   continueStatement
 
+referenceExpression ::= identifier
 include ::= 'include' '(' referenceString ')' eos {pin=1}
 referenceString ::= string {methods=[getReference]}
-functionDeclaration ::= 'function' identifier '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation] pin=1}
+functionDeclaration ::= 'function' functionName '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation] pin=1}
 
+functionName ::= identifier
 block ::= '{' statementList? '}'
 statementList ::= statement+
 
@@ -128,7 +131,7 @@ whileStatement ::= whileCondition (block | statement) {pin=1}
 whileCondition ::= 'while' '(' singleExpression ')' {pin=1}
 doWhileStatement ::= 'do' (block | statement) whileCondition eos  {pin=1}
 forStatement ::= 'for' '(' forInitializer ((':' forInitializer)? 'in' singleExpression | initialiser ';' singleExpression ';' singleExpression) ')' (block | statement) {pin=1}
-forInitializer ::= 'var'? identifier
+forInitializer ::= 'var'? referenceExpression
 returnStatement ::= 'return' singleExpression? eos {pin=2}
 breakStatement ::= 'break' eos  {pin=1}
 continueStatement ::= 'continue' eos  {pin=1}
@@ -139,7 +142,7 @@ private assignExpressionWrapper ::= ternaryExpressionWrapper assignExpression*
 left assignExpression ::= assignmentOperator ternaryExpressionWrapper {pin=1}
 
 private ternaryExpressionWrapper ::= logicOrExpressionWrapper ternaryExpression?
-left ternaryExpression ::= '?' expression ':' ternaryExpressionWrapper
+left ternaryExpression ::= '?' singleExpression ':' ternaryExpressionWrapper
 
 private logicOrExpressionWrapper ::= logicAndExpressionWrapper logicOrExpression*
 left logicOrExpression ::= ('||' | 'or') logicAndExpressionWrapper
@@ -171,9 +174,9 @@ functionExpression ::= 'function' '(' formalParameterList? ')' block {pin=1}
 
 private leftHandSideExpression ::= methodCall | memberExpression
 
-methodCall ::= identifier arguments {methods=[getNbArguments]}
+methodCall ::= referenceExpression arguments {methods=[getNbArguments]}
 memberExpression ::= (primaryExpression | functionExpression) ('[' singleExpression ']')*
-primaryExpression ::= identifier | literal | arrayLiteral | '(' singleExpression ')'
+primaryExpression ::= referenceExpression | literal | arrayLiteral | '(' singleExpression ')'
 
 eos ::= ';'
 
@@ -194,7 +197,7 @@ private shiftOperator ::= '>>>' | '<<' | '>>'
 private bitwiseOperator ::= '&' | '^' | '|'
 private multiplicativeOperator ::= '**' | '*' | '/' | '%'
 private additiveOperator ::= '+' | '-'
-private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
+private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^='
 literal ::= 'null' | 'true' | 'false' | string | number
 
 arrayLiteral ::= '[' (keyvalList | elementList)? ']'

@@ -39,6 +39,12 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
 
     @NotNull
     @Override
+    public String getCanonicalText() {
+        return myElement.getText();
+    }
+
+    @NotNull
+    @Override
     public ResolveResult[] multiResolve(boolean incompleteCode) {
         return resolve(false);
     }
@@ -95,8 +101,8 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
         LSMethodCall methodCall = (LSMethodCall) myElement.getParent();
 
         for (PsiElement element : elements) {
-            if (element instanceof LSFunctionDeclaration) {
-                LSFunctionDeclaration decl = (LSFunctionDeclaration) element;
+            if (element instanceof LSFunctionName) {
+                LSFunctionDeclaration decl = (LSFunctionDeclaration) element.getParent();
 
                 if (methodCall.getNbArguments() == decl.getNbArguments()) {
                     return element;

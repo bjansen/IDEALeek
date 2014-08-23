@@ -1,17 +1,13 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
-import java.util.List;
-import org.jetbrains.annotations.*;
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.util.PsiTreeUtil;
-import static com.plopiplop.leekwars.psi.LSTypes.*;
-import com.plopiplop.leekwars.psi.LSNamedElementImpl;
 import com.plopiplop.leekwars.psi.*;
+import org.jetbrains.annotations.NotNull;
 
-public class LSMethodCallImpl extends LSNamedElementImpl implements LSMethodCall {
+public class LSMethodCallImpl extends ASTWrapperPsiElement implements LSMethodCall {
 
   public LSMethodCallImpl(ASTNode node) {
     super(node);
@@ -30,8 +26,8 @@ public class LSMethodCallImpl extends LSNamedElementImpl implements LSMethodCall
 
   @Override
   @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+  public LSReferenceExpression getReferenceExpression() {
+      return findNotNullChildByClass(LSReferenceExpression.class);
   }
 
   public int getNbArguments() {

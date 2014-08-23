@@ -8,138 +8,8 @@ import com.intellij.lang.PsiParser;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 
-import static com.intellij.lang.parser.GeneratedParserUtilBase.Parser;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.TRUE_CONDITION;
-import static com.intellij.lang.parser.GeneratedParserUtilBase._COLLAPSE_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase._LEFT_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase._NONE_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase._NOT_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.adapt_builder_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.consumeToken;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.current_position_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.empty_element_parsed_guard_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.eof;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.nextTokenIs;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.recursion_guard_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.report_error_;
-import static com.plopiplop.leekwars.psi.LSTypes.ADDITIVE_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.ARGUMENTS;
-import static com.plopiplop.leekwars.psi.LSTypes.ARGUMENT_LIST;
-import static com.plopiplop.leekwars.psi.LSTypes.ARRAY_LITERAL;
-import static com.plopiplop.leekwars.psi.LSTypes.ASSIGN_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.BITWISE_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.BLOCK;
-import static com.plopiplop.leekwars.psi.LSTypes.BREAK_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.COMPARE_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.CONTINUE_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.DO_WHILE_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.ELEMENT_LIST;
-import static com.plopiplop.leekwars.psi.LSTypes.ELSE_BLOCK;
-import static com.plopiplop.leekwars.psi.LSTypes.EMPTY_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.EOS;
-import static com.plopiplop.leekwars.psi.LSTypes.EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.EXPRESSION_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.FORMAL_PARAMETER_LIST;
-import static com.plopiplop.leekwars.psi.LSTypes.FOR_INITIALIZER;
-import static com.plopiplop.leekwars.psi.LSTypes.FOR_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.FUNCTION_DECLARATION;
-import static com.plopiplop.leekwars.psi.LSTypes.FUNCTION_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.IDENTIFIER;
-import static com.plopiplop.leekwars.psi.LSTypes.IF_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.INCLUDE;
-import static com.plopiplop.leekwars.psi.LSTypes.INITIALISER;
-import static com.plopiplop.leekwars.psi.LSTypes.KEYVAL;
-import static com.plopiplop.leekwars.psi.LSTypes.KEYVAL_LIST;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_BREAK;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_CONTINUE;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_DO;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_ELSE;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_FALSE;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_FOR;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_FUNCTION;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_GLOBAL;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_IF;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_IN;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_INCLUDE;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_NULL;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_RETURN;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_TRUE;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_VAR;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_WHILE;
-import static com.plopiplop.leekwars.psi.LSTypes.LITERAL;
-import static com.plopiplop.leekwars.psi.LSTypes.LOGIC_AND_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.LOGIC_OR_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.MEMBER_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.METHOD_CALL;
-import static com.plopiplop.leekwars.psi.LSTypes.MODIFIER;
-import static com.plopiplop.leekwars.psi.LSTypes.MULTILINE_COMMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.MULTIPLICATIVE_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.NUMBER;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_AND;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_AND_EQ;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_ASSIGN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_BINARY_AND;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_BINARY_OR;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_COLON;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_COMMA;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_DEC;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_DIVIDE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_DIVIDE_EQ;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_EXCLAMATION_MARK;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_GE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_GT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_NOT_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_INC;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LBRACE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LBRACKET;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_AND;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LOGICAL_OR;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LSHIFT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_MINUS_EQ;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_MODULO;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_NOT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_NOT_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_OR;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_OR_EQ;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_PLUS_EQ;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_POW;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RBRACE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RBRACKET;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_REFERENCE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RSHIFT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_SEMICOLON;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_TERNARY;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_TIMES_EQ;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_UNSIGNED_RSHIFT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_XOR;
-import static com.plopiplop.leekwars.psi.LSTypes.PARAMETER;
-import static com.plopiplop.leekwars.psi.LSTypes.PREFIX_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.PREFIX_OPERATOR;
-import static com.plopiplop.leekwars.psi.LSTypes.PRIMARY_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.REFERENCE_STRING;
-import static com.plopiplop.leekwars.psi.LSTypes.RETURN_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.SHIFT_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.SINGLE_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.STATEMENT_LIST;
-import static com.plopiplop.leekwars.psi.LSTypes.STRING;
-import static com.plopiplop.leekwars.psi.LSTypes.SUFFIX_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.TERNARY_EXPRESSION;
-import static com.plopiplop.leekwars.psi.LSTypes.THEN_BLOCK;
-import static com.plopiplop.leekwars.psi.LSTypes.VARIABLE_DECLARATION;
-import static com.plopiplop.leekwars.psi.LSTypes.VARIABLE_STATEMENT;
-import static com.plopiplop.leekwars.psi.LSTypes.WHILE_CONDITION;
-import static com.plopiplop.leekwars.psi.LSTypes.WHILE_STATEMENT;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
 public class LeekScriptParser implements PsiParser {
@@ -160,7 +30,7 @@ public class LeekScriptParser implements PsiParser {
     }
     else if (root_ == ARRAY_LITERAL) {
       result_ = arrayLiteral(builder_, 0);
-    } else if (root_ == ASSIGN_EXPRESSION) {
+      } else if (root_ == ASSIGN_EXPRESSION) {
           result_ = assignExpression(builder_, 0);
       } else if (root_ == BITWISE_EXPRESSION) {
           result_ = bitwiseExpression(builder_, 0);
@@ -170,7 +40,7 @@ public class LeekScriptParser implements PsiParser {
     }
     else if (root_ == BREAK_STATEMENT) {
       result_ = breakStatement(builder_, 0);
-    } else if (root_ == COMPARE_EXPRESSION) {
+      } else if (root_ == COMPARE_EXPRESSION) {
           result_ = compareExpression(builder_, 0);
       }
     else if (root_ == CONTINUE_STATEMENT) {
@@ -205,8 +75,10 @@ public class LeekScriptParser implements PsiParser {
     }
     else if (root_ == FUNCTION_DECLARATION) {
       result_ = functionDeclaration(builder_, 0);
-    } else if (root_ == FUNCTION_EXPRESSION) {
+      } else if (root_ == FUNCTION_EXPRESSION) {
           result_ = functionExpression(builder_, 0);
+      } else if (root_ == FUNCTION_NAME) {
+          result_ = functionName(builder_, 0);
       }
     else if (root_ == IF_STATEMENT) {
       result_ = ifStatement(builder_, 0);
@@ -216,14 +88,14 @@ public class LeekScriptParser implements PsiParser {
     }
     else if (root_ == INITIALISER) {
       result_ = initialiser(builder_, 0);
-    } else if (root_ == KEYVAL) {
+      } else if (root_ == KEYVAL) {
           result_ = keyval(builder_, 0);
       } else if (root_ == KEYVAL_LIST) {
           result_ = keyvalList(builder_, 0);
       }
     else if (root_ == LITERAL) {
       result_ = literal(builder_, 0);
-    } else if (root_ == LOGIC_AND_EXPRESSION) {
+      } else if (root_ == LOGIC_AND_EXPRESSION) {
           result_ = logicAndExpression(builder_, 0);
       } else if (root_ == LOGIC_OR_EXPRESSION) {
           result_ = logicOrExpression(builder_, 0);
@@ -235,18 +107,20 @@ public class LeekScriptParser implements PsiParser {
     }
     else if (root_ == MODIFIER) {
       result_ = modifier(builder_, 0);
-    } else if (root_ == MULTIPLICATIVE_EXPRESSION) {
+      } else if (root_ == MULTIPLICATIVE_EXPRESSION) {
           result_ = multiplicativeExpression(builder_, 0);
       }
     else if (root_ == PARAMETER) {
       result_ = parameter(builder_, 0);
     } else if (root_ == PREFIX_EXPRESSION) {
           result_ = prefixExpression(builder_, 0);
-    }
+      }
     else if (root_ == PREFIX_OPERATOR) {
       result_ = prefixOperator(builder_, 0);
-    } else if (root_ == PRIMARY_EXPRESSION) {
+      } else if (root_ == PRIMARY_EXPRESSION) {
           result_ = primaryExpression(builder_, 0);
+      } else if (root_ == REFERENCE_EXPRESSION) {
+          result_ = referenceExpression(builder_, 0);
       }
     else if (root_ == REFERENCE_STRING) {
       result_ = referenceString(builder_, 0);
@@ -255,13 +129,13 @@ public class LeekScriptParser implements PsiParser {
       result_ = returnStatement(builder_, 0);
     } else if (root_ == SHIFT_EXPRESSION) {
           result_ = shiftExpression(builder_, 0);
-    }
+      }
     else if (root_ == SINGLE_EXPRESSION) {
       result_ = singleExpression(builder_, 0);
     }
     else if (root_ == STATEMENT_LIST) {
       result_ = statementList(builder_, 0);
-    } else if (root_ == SUFFIX_EXPRESSION) {
+      } else if (root_ == SUFFIX_EXPRESSION) {
           result_ = suffixExpression(builder_, 0);
       } else if (root_ == TERNARY_EXPRESSION) {
           result_ = ternaryExpression(builder_, 0);
@@ -325,7 +199,7 @@ public class LeekScriptParser implements PsiParser {
             if (!additiveExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "additiveExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -469,7 +343,7 @@ public class LeekScriptParser implements PsiParser {
     }
 
   /* ********************************************************** */
-  // '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|='
+  // '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^='
   static boolean assignmentOperator(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "assignmentOperator")) return false;
     boolean result_;
@@ -481,6 +355,7 @@ public class LeekScriptParser implements PsiParser {
     if (!result_) result_ = consumeToken(builder_, OP_DIVIDE_EQ);
     if (!result_) result_ = consumeToken(builder_, OP_AND_EQ);
     if (!result_) result_ = consumeToken(builder_, OP_OR_EQ);
+      if (!result_) result_ = consumeToken(builder_, OP_XOR_EQ);
     exit_section_(builder_, marker_, null, result_);
     return result_;
   }
@@ -517,7 +392,7 @@ public class LeekScriptParser implements PsiParser {
             if (!bitwiseExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "bitwiseExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -613,7 +488,7 @@ public class LeekScriptParser implements PsiParser {
             if (!compareExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "compareExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -788,14 +663,14 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'var'? identifier
+  // 'var'? referenceExpression
   public static boolean forInitializer(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "forInitializer")) return false;
     if (!nextTokenIs(builder_, "<for initializer>", KW_VAR, IDENTIFIER)) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_, level_, _NONE_, "<for initializer>");
     result_ = forInitializer_0(builder_, level_ + 1);
-    result_ = result_ && consumeToken(builder_, IDENTIFIER);
+      result_ = result_ && referenceExpression(builder_, level_ + 1);
     exit_section_(builder_, level_, marker_, FOR_INITIALIZER, result_, false, null);
     return result_;
   }
@@ -929,7 +804,7 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // 'function' identifier '(' formalParameterList? ')' block
+  // 'function' functionName '(' formalParameterList? ')' block
   public static boolean functionDeclaration(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "functionDeclaration")) return false;
     if (!nextTokenIs(builder_, KW_FUNCTION)) return false;
@@ -938,7 +813,7 @@ public class LeekScriptParser implements PsiParser {
       Marker marker_ = enter_section_(builder_, level_, _NONE_, null);
     result_ = consumeToken(builder_, KW_FUNCTION);
       pinned_ = result_; // pin = 1
-      result_ = result_ && report_error_(builder_, consumeToken(builder_, IDENTIFIER));
+      result_ = result_ && report_error_(builder_, functionName(builder_, level_ + 1));
       result_ = pinned_ && report_error_(builder_, consumeToken(builder_, OP_LPAREN)) && result_;
       result_ = pinned_ && report_error_(builder_, functionDeclaration_3(builder_, level_ + 1)) && result_;
       result_ = pinned_ && report_error_(builder_, consumeToken(builder_, OP_RPAREN)) && result_;
@@ -977,6 +852,18 @@ public class LeekScriptParser implements PsiParser {
         if (!recursion_guard_(builder_, level_, "functionExpression_2")) return false;
         formalParameterList(builder_, level_ + 1);
         return true;
+    }
+
+    /* ********************************************************** */
+    // identifier
+    public static boolean functionName(PsiBuilder builder_, int level_) {
+        if (!recursion_guard_(builder_, level_, "functionName")) return false;
+        if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+        boolean result_;
+        Marker marker_ = enter_section_(builder_);
+        result_ = consumeToken(builder_, IDENTIFIER);
+        exit_section_(builder_, marker_, FUNCTION_NAME, result_);
+        return result_;
     }
 
     /* ********************************************************** */
@@ -1157,7 +1044,7 @@ public class LeekScriptParser implements PsiParser {
             if (!logicAndExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "logicAndExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -1205,7 +1092,7 @@ public class LeekScriptParser implements PsiParser {
             if (!logicOrExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "logicOrExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -1240,7 +1127,7 @@ public class LeekScriptParser implements PsiParser {
             if (!memberExpression_1_0(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "memberExpression_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -1257,13 +1144,13 @@ public class LeekScriptParser implements PsiParser {
     }
 
     /* ********************************************************** */
-  // identifier arguments
+    // referenceExpression arguments
   public static boolean methodCall(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "methodCall")) return false;
     if (!nextTokenIs(builder_, IDENTIFIER)) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = consumeToken(builder_, IDENTIFIER);
+      result_ = referenceExpression(builder_, level_ + 1);
     result_ = result_ && arguments(builder_, level_ + 1);
     exit_section_(builder_, marker_, METHOD_CALL, result_);
     return result_;
@@ -1314,7 +1201,7 @@ public class LeekScriptParser implements PsiParser {
             if (!multiplicativeExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "multiplicativeExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
@@ -1389,12 +1276,12 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // identifier | literal | arrayLiteral | '(' singleExpression ')'
+  // referenceExpression | literal | arrayLiteral | '(' singleExpression ')'
   public static boolean primaryExpression(PsiBuilder builder_, int level_) {
       if (!recursion_guard_(builder_, level_, "primaryExpression")) return false;
       boolean result_;
       Marker marker_ = enter_section_(builder_, level_, _NONE_, "<primary expression>");
-      result_ = consumeToken(builder_, IDENTIFIER);
+      result_ = referenceExpression(builder_, level_ + 1);
       if (!result_) result_ = literal(builder_, level_ + 1);
       if (!result_) result_ = arrayLiteral(builder_, level_ + 1);
       if (!result_) result_ = primaryExpression_3(builder_, level_ + 1);
@@ -1434,6 +1321,18 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
+  // identifier
+  public static boolean referenceExpression(PsiBuilder builder_, int level_) {
+      if (!recursion_guard_(builder_, level_, "referenceExpression")) return false;
+      if (!nextTokenIs(builder_, IDENTIFIER)) return false;
+      boolean result_;
+      Marker marker_ = enter_section_(builder_);
+      result_ = consumeToken(builder_, IDENTIFIER);
+      exit_section_(builder_, marker_, REFERENCE_EXPRESSION, result_);
+      return result_;
+  }
+
+    /* ********************************************************** */
   // string
   public static boolean referenceString(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "referenceString")) return false;
@@ -1692,19 +1591,19 @@ public class LeekScriptParser implements PsiParser {
             if (!suffixExpression(builder_, level_ + 1)) break;
             if (!empty_element_parsed_guard_(builder_, "suffixExpressionWrapper_1", pos_)) break;
             pos_ = current_position_(builder_);
-        }
+    }
         return true;
     }
 
     /* ********************************************************** */
-    // '?' expression ':' ternaryExpressionWrapper
+    // '?' singleExpression ':' ternaryExpressionWrapper
     public static boolean ternaryExpression(PsiBuilder builder_, int level_) {
         if (!recursion_guard_(builder_, level_, "ternaryExpression")) return false;
         if (!nextTokenIs(builder_, OP_TERNARY)) return false;
         boolean result_;
         Marker marker_ = enter_section_(builder_, level_, _LEFT_, null);
         result_ = consumeToken(builder_, OP_TERNARY);
-        result_ = result_ && consumeToken(builder_, EXPRESSION);
+        result_ = result_ && singleExpression(builder_, level_ + 1);
         result_ = result_ && consumeToken(builder_, OP_COLON);
         result_ = result_ && ternaryExpressionWrapper(builder_, level_ + 1);
         exit_section_(builder_, level_, marker_, TERNARY_EXPRESSION, result_, false, null);

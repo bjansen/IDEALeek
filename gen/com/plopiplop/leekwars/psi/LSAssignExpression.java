@@ -60,4 +60,7 @@ public interface LSAssignExpression extends PsiElement {
     @Nullable
     PsiElement getOpTimesEq();
 
+    @Nullable
+    PsiElement getOpXorEq();
+
 }

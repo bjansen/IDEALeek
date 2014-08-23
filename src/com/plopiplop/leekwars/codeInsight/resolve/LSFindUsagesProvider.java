@@ -32,7 +32,7 @@ public class LSFindUsagesProvider implements FindUsagesProvider {
     @NotNull
     @Override
     public String getType(@NotNull PsiElement element) {
-        if (element instanceof LSFunctionDeclaration) {
+        if (element instanceof LSFunctionDeclaration || element instanceof LSFunctionName) {
             return "Function declaration";
         } else if (element.getParent() instanceof LSVariableStatement) {
             String scope = ((LSVariableStatement) element.getParent()).isGlobal() ? "Global" : "Local";

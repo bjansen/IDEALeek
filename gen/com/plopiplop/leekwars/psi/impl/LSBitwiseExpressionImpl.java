@@ -6,20 +6,13 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.LSAdditiveExpression;
-import com.plopiplop.leekwars.psi.LSBitwiseExpression;
-import com.plopiplop.leekwars.psi.LSMultiplicativeExpression;
-import com.plopiplop.leekwars.psi.LSPrefixExpression;
-import com.plopiplop.leekwars.psi.LSShiftExpression;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.plopiplop.leekwars.psi.LSTypes.OP_BINARY_AND;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_BINARY_OR;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_XOR;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSBitwiseExpressionImpl extends ASTWrapperPsiElement implements LSBitwiseExpression {
 

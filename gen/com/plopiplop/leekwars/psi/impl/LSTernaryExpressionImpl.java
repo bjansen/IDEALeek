@@ -6,16 +6,7 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.LSAdditiveExpression;
-import com.plopiplop.leekwars.psi.LSBitwiseExpression;
-import com.plopiplop.leekwars.psi.LSCompareExpression;
-import com.plopiplop.leekwars.psi.LSLogicAndExpression;
-import com.plopiplop.leekwars.psi.LSLogicOrExpression;
-import com.plopiplop.leekwars.psi.LSMultiplicativeExpression;
-import com.plopiplop.leekwars.psi.LSPrefixExpression;
-import com.plopiplop.leekwars.psi.LSShiftExpression;
-import com.plopiplop.leekwars.psi.LSTernaryExpression;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -81,6 +72,12 @@ public class LSTernaryExpressionImpl extends ASTWrapperPsiElement implements LST
     @NotNull
     public List<LSShiftExpression> getShiftExpressionList() {
         return PsiTreeUtil.getChildrenOfTypeAsList(this, LSShiftExpression.class);
+    }
+
+    @Override
+    @NotNull
+    public LSSingleExpression getSingleExpression() {
+        return findNotNullChildByClass(LSSingleExpression.class);
     }
 
     @Override

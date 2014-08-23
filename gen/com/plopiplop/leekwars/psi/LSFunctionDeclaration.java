@@ -15,7 +15,7 @@ public interface LSFunctionDeclaration extends LSNamedElement {
   LSFormalParameterList getFormalParameterList();
 
     @Nullable
-  PsiElement getIdentifier();
+    LSFunctionName getFunctionName();
 
   @NotNull
   PsiElement getKwFunction();

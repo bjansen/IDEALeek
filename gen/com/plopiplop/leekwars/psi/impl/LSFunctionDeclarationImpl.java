@@ -5,19 +5,11 @@ import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.plopiplop.leekwars.psi.LSBlock;
-import com.plopiplop.leekwars.psi.LSFormalParameterList;
-import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
-import com.plopiplop.leekwars.psi.LSNamedElementImpl;
-import com.plopiplop.leekwars.psi.LSPsiImplUtil;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.IDENTIFIER;
-import static com.plopiplop.leekwars.psi.LSTypes.KW_FUNCTION;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSFunctionDeclaration {
 
@@ -44,8 +36,8 @@ public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSF
 
   @Override
   @Nullable
-  public PsiElement getIdentifier() {
-      return findChildByType(IDENTIFIER);
+  public LSFunctionName getFunctionName() {
+      return findChildByClass(LSFunctionName.class);
   }
 
   @Override

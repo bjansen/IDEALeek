@@ -33,6 +33,9 @@ public interface LSTernaryExpression extends PsiElement {
     @NotNull
     List<LSShiftExpression> getShiftExpressionList();
 
+    @NotNull
+    LSSingleExpression getSingleExpression();
+
     @Nullable
     LSTernaryExpression getTernaryExpression();
 

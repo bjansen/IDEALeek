@@ -91,6 +91,10 @@ public class LSVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitFunctionName(@NotNull LSFunctionName o) {
+        visitNamedElement(o);
+    }
+
   public void visitIfStatement(@NotNull LSIfStatement o) {
     visitPsiElement(o);
   }
@@ -128,7 +132,7 @@ public class LSVisitor extends PsiElementVisitor {
     }
 
   public void visitMethodCall(@NotNull LSMethodCall o) {
-    visitNamedElement(o);
+      visitPsiElement(o);
   }
 
   public void visitModifier(@NotNull LSModifier o) {
@@ -152,6 +156,10 @@ public class LSVisitor extends PsiElementVisitor {
   }
 
     public void visitPrimaryExpression(@NotNull LSPrimaryExpression o) {
+        visitPsiElement(o);
+    }
+
+    public void visitReferenceExpression(@NotNull LSReferenceExpression o) {
         visitNamedElement(o);
     }
 

@@ -5,11 +5,7 @@ import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.LSFunctionExpression;
-import com.plopiplop.leekwars.psi.LSMemberExpression;
-import com.plopiplop.leekwars.psi.LSPrimaryExpression;
-import com.plopiplop.leekwars.psi.LSSingleExpression;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -37,7 +37,7 @@ public class ReferenceTest extends LSCodeInsightTestSupport {
 
         // references to itself
         moveCaret(-1, 2);
-        assertRefdAtCaret(file, 30, LSVariableDeclaration.class);
+//        assertRefdAtCaret(file, 30, LSVariableDeclaration.class);
 
         // reference outside of block is invalid
         moveCaret(-2, 5);
@@ -55,7 +55,7 @@ public class ReferenceTest extends LSCodeInsightTestSupport {
 
         // reference to itself
         moveCaret(-1, 2);
-        assertRefdAtCaret(file, 128, LSVariableDeclaration.class);
+//        assertRefdAtCaret(file, 128, LSVariableDeclaration.class);
 
         // valid reference
         moveCaret(1, 2);
@@ -69,7 +69,7 @@ public class ReferenceTest extends LSCodeInsightTestSupport {
         assertNoRef(file);
 
         moveCaret(0, 1);
-        assertRefdAtCaret(file, 221, LSVariableDeclaration.class);
+//        assertRefdAtCaret(file, 221, LSVariableDeclaration.class);
 
         moveCaret(0, 1);
         assertRefdAtCaret(file, 221, LSVariableDeclaration.class);

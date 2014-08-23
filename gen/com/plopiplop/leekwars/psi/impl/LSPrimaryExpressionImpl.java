@@ -1,23 +1,18 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi.impl;
 
+import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-import com.plopiplop.leekwars.psi.LSArrayLiteral;
-import com.plopiplop.leekwars.psi.LSLiteral;
-import com.plopiplop.leekwars.psi.LSNamedElementImpl;
-import com.plopiplop.leekwars.psi.LSPrimaryExpression;
-import com.plopiplop.leekwars.psi.LSSingleExpression;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.IDENTIFIER;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
 import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
 
-public class LSPrimaryExpressionImpl extends LSNamedElementImpl implements LSPrimaryExpression {
+public class LSPrimaryExpressionImpl extends ASTWrapperPsiElement implements LSPrimaryExpression {
 
     public LSPrimaryExpressionImpl(ASTNode node) {
         super(node);
@@ -42,14 +37,14 @@ public class LSPrimaryExpressionImpl extends LSNamedElementImpl implements LSPri
 
     @Override
     @Nullable
-    public LSSingleExpression getSingleExpression() {
-        return findChildByClass(LSSingleExpression.class);
+    public LSReferenceExpression getReferenceExpression() {
+        return findChildByClass(LSReferenceExpression.class);
     }
 
     @Override
     @Nullable
-    public PsiElement getIdentifier() {
-        return findChildByType(IDENTIFIER);
+    public LSSingleExpression getSingleExpression() {
+        return findChildByClass(LSSingleExpression.class);
     }
 
     @Override

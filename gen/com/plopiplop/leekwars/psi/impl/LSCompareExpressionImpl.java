@@ -6,26 +6,13 @@ import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.plopiplop.leekwars.psi.LSAdditiveExpression;
-import com.plopiplop.leekwars.psi.LSBitwiseExpression;
-import com.plopiplop.leekwars.psi.LSCompareExpression;
-import com.plopiplop.leekwars.psi.LSMultiplicativeExpression;
-import com.plopiplop.leekwars.psi.LSPrefixExpression;
-import com.plopiplop.leekwars.psi.LSShiftExpression;
-import com.plopiplop.leekwars.psi.LSVisitor;
+import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.plopiplop.leekwars.psi.LSTypes.OP_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_GE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_GT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_IDENTITY_NOT_EQUALS;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LE;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LT;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_NOT_EQUALS;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSCompareExpressionImpl extends ASTWrapperPsiElement implements LSCompareExpression {
 

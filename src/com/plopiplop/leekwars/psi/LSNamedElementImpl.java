@@ -32,6 +32,12 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
     @Nullable
     @Override
     public PsiElement getNameIdentifier() {
+        if (this instanceof LSFunctionDeclaration) {
+            return ((LSFunctionDeclaration) this).getFunctionName().getIdentifier();
+        } else if (this instanceof LSForInitializer) {
+            return ((LSForInitializer) this).getReferenceExpression().getIdentifier();
+        }
+
         return findChildByType(LSTypes.IDENTIFIER);
     }
 
@@ -42,18 +48,23 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
 
     @Override
     public PsiReference getReference() {
-        PsiElement id = getNameIdentifier();
-
-        if (id != null) {
-            return new LSReference(id, new TextRange(0, id.getTextLength()));
+        if (this instanceof LSReferenceExpression) {
+            return new LSReference(this, new TextRange(0, getTextLength()));
         }
+
         return null;
     }
 
     @NotNull
     @Override
     public SearchScope getUseScope() {
-        if (!(PsiUtils.findParentBlock(this) instanceof PsiFile)) {
+        PsiElement element = this;
+
+        if (element instanceof LSFunctionName) {
+            element = element.getParent();
+        }
+
+        if (!(PsiUtils.findParentBlock(element) instanceof PsiFile)) {
             return new LocalSearchScope(getContainingFile());
         }
 

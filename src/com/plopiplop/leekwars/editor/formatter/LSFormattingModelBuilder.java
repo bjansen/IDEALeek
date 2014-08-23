@@ -60,7 +60,7 @@ public class LSFormattingModelBuilder implements FormattingModelBuilder {
                 .between(LSTypes.KW_ELSE, LSTypes.BLOCK).spaces(1)
                 .after(LSTypes.IF_STATEMENT).lineBreakInCode()
 
-                .between(LSTypes.IDENTIFIER, LSTypes.OP_LPAREN).none()
+                .between(LSTypes.FUNCTION_NAME, LSTypes.OP_LPAREN).none()
                 .after(LSTypes.FUNCTION_DECLARATION).lineBreakInCode()
                 .around(LSTypes.FORMAL_PARAMETER_LIST).none()
 

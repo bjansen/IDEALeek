@@ -12,9 +12,7 @@ import com.plopiplop.leekwars.psi.LSVisitor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.plopiplop.leekwars.psi.LSTypes.KW_FUNCTION;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_LPAREN;
-import static com.plopiplop.leekwars.psi.LSTypes.OP_RPAREN;
+import static com.plopiplop.leekwars.psi.LSTypes.*;
 
 public class LSFunctionExpressionImpl extends ASTWrapperPsiElement implements LSFunctionExpression {
 
