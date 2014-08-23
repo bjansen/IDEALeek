@@ -1,54 +1,52 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
 
 public interface LSCompareExpression extends PsiElement {
 
-    @NotNull
-    List<LSAdditiveExpression> getAdditiveExpressionList();
+  @NotNull
+  List<LSAdditiveExpression> getAdditiveExpressionList();
 
-    @NotNull
-    List<LSBitwiseExpression> getBitwiseExpressionList();
+  @NotNull
+  List<LSBitwiseExpression> getBitwiseExpressionList();
 
-    @Nullable
-    LSCompareExpression getCompareExpression();
+  @Nullable
+  LSCompareExpression getCompareExpression();
 
-    @NotNull
-    List<LSMultiplicativeExpression> getMultiplicativeExpressionList();
+  @NotNull
+  List<LSMultiplicativeExpression> getMultiplicativeExpressionList();
 
-    @NotNull
-    List<LSPrefixExpression> getPrefixExpressionList();
+  @NotNull
+  List<LSPrefixExpression> getPrefixExpressionList();
 
-    @NotNull
-    List<LSShiftExpression> getShiftExpressionList();
+  @NotNull
+  List<LSShiftExpression> getShiftExpressionList();
 
-    @Nullable
-    PsiElement getOpEquals();
+  @Nullable
+  PsiElement getOpEquals();
 
-    @Nullable
-    PsiElement getOpGe();
+  @Nullable
+  PsiElement getOpGe();
 
-    @Nullable
-    PsiElement getOpGt();
+  @Nullable
+  PsiElement getOpGt();
 
-    @Nullable
-    PsiElement getOpIdentityEquals();
+  @Nullable
+  PsiElement getOpIdentityEquals();
 
-    @Nullable
-    PsiElement getOpIdentityNotEquals();
+  @Nullable
+  PsiElement getOpIdentityNotEquals();
 
-    @Nullable
-    PsiElement getOpLe();
+  @Nullable
+  PsiElement getOpLe();
 
-    @Nullable
-    PsiElement getOpLt();
+  @Nullable
+  PsiElement getOpLt();
 
-    @Nullable
-    PsiElement getOpNotEquals();
+  @Nullable
+  PsiElement getOpNotEquals();
 
 }

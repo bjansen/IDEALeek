@@ -1,15 +1,15 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.psi.PsiElement;
+import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.psi.PsiElement;
 
 public class LSVisitor extends PsiElementVisitor {
 
-    public void visitAdditiveExpression(@NotNull LSAdditiveExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitAdditiveExpression(@NotNull LSAdditiveExpression o) {
+    visitPsiElement(o);
+  }
 
   public void visitArgumentList(@NotNull LSArgumentList o) {
     visitPsiElement(o);
@@ -23,13 +23,13 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-    public void visitAssignExpression(@NotNull LSAssignExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitAssignExpression(@NotNull LSAssignExpression o) {
+    visitPsiElement(o);
+  }
 
-    public void visitBitwiseExpression(@NotNull LSBitwiseExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitBitwiseExpression(@NotNull LSBitwiseExpression o) {
+    visitPsiElement(o);
+  }
 
   public void visitBlock(@NotNull LSBlock o) {
     visitPsiElement(o);
@@ -39,9 +39,9 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-    public void visitCompareExpression(@NotNull LSCompareExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitCompareExpression(@NotNull LSCompareExpression o) {
+    visitPsiElement(o);
+  }
 
   public void visitContinueStatement(@NotNull LSContinueStatement o) {
     visitPsiElement(o);
@@ -87,13 +87,13 @@ public class LSVisitor extends PsiElementVisitor {
     visitNamedElement(o);
   }
 
-    public void visitFunctionExpression(@NotNull LSFunctionExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitFunctionExpression(@NotNull LSFunctionExpression o) {
+    visitPsiElement(o);
+  }
 
-    public void visitFunctionName(@NotNull LSFunctionName o) {
-        visitNamedElement(o);
-    }
+  public void visitFunctionName(@NotNull LSFunctionName o) {
+    visitNamedElement(o);
+  }
 
   public void visitIfStatement(@NotNull LSIfStatement o) {
     visitPsiElement(o);
@@ -104,14 +104,14 @@ public class LSVisitor extends PsiElementVisitor {
   }
 
   public void visitInitialiser(@NotNull LSInitialiser o) {
-      visitPsiElement(o);
+    visitPsiElement(o);
   }
 
-    public void visitKeyval(@NotNull LSKeyval o) {
-        visitPsiElement(o);
-    }
+  public void visitKeyval(@NotNull LSKeyval o) {
+    visitPsiElement(o);
+  }
 
-    public void visitKeyvalList(@NotNull LSKeyvalList o) {
+  public void visitKeyvalList(@NotNull LSKeyvalList o) {
     visitPsiElement(o);
   }
 
@@ -119,35 +119,35 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-    public void visitLogicAndExpression(@NotNull LSLogicAndExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitLogicAndExpression(@NotNull LSLogicAndExpression o) {
+    visitPsiElement(o);
+  }
 
-    public void visitLogicOrExpression(@NotNull LSLogicOrExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitLogicOrExpression(@NotNull LSLogicOrExpression o) {
+    visitPsiElement(o);
+  }
 
-    public void visitMemberExpression(@NotNull LSMemberExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitMemberExpression(@NotNull LSMemberExpression o) {
+    visitPsiElement(o);
+  }
 
   public void visitMethodCall(@NotNull LSMethodCall o) {
-      visitPsiElement(o);
+    visitPsiElement(o);
   }
 
   public void visitModifier(@NotNull LSModifier o) {
     visitPsiElement(o);
   }
 
-    public void visitMultiplicativeExpression(@NotNull LSMultiplicativeExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitMultiplicativeExpression(@NotNull LSMultiplicativeExpression o) {
+    visitPsiElement(o);
+  }
 
   public void visitParameter(@NotNull LSParameter o) {
     visitNamedElement(o);
   }
 
-    public void visitPrefixExpression(@NotNull LSPrefixExpression o) {
+  public void visitPrefixExpression(@NotNull LSPrefixExpression o) {
     visitPsiElement(o);
   }
 
@@ -155,13 +155,13 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-    public void visitPrimaryExpression(@NotNull LSPrimaryExpression o) {
-        visitPsiElement(o);
-    }
+  public void visitPrimaryExpression(@NotNull LSPrimaryExpression o) {
+    visitPsiElement(o);
+  }
 
-    public void visitReferenceExpression(@NotNull LSReferenceExpression o) {
-        visitNamedElement(o);
-    }
+  public void visitReferenceExpression(@NotNull LSReferenceExpression o) {
+    visitNamedElement(o);
+  }
 
   public void visitReferenceString(@NotNull LSReferenceString o) {
     visitPsiElement(o);
@@ -171,7 +171,7 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-    public void visitShiftExpression(@NotNull LSShiftExpression o) {
+  public void visitShiftExpression(@NotNull LSShiftExpression o) {
     visitPsiElement(o);
   }
 
@@ -183,19 +183,19 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-    public void visitSuffixExpression(@NotNull LSSuffixExpression o) {
+  public void visitSuffixExpression(@NotNull LSSuffixExpression o) {
     visitPsiElement(o);
   }
 
-    public void visitTernaryExpression(@NotNull LSTernaryExpression o) {
-        visitPsiElement(o);
+  public void visitTernaryExpression(@NotNull LSTernaryExpression o) {
+    visitPsiElement(o);
   }
 
-    public void visitThenBlock(@NotNull LSThenBlock o) {
-        visitPsiElement(o);
-    }
+  public void visitThenBlock(@NotNull LSThenBlock o) {
+    visitPsiElement(o);
+  }
 
-    public void visitVariableDeclaration(@NotNull LSVariableDeclaration o) {
+  public void visitVariableDeclaration(@NotNull LSVariableDeclaration o) {
     visitNamedElement(o);
   }
 

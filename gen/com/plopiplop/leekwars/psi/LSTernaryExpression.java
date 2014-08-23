@@ -1,48 +1,46 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
 
 public interface LSTernaryExpression extends PsiElement {
 
-    @NotNull
-    List<LSAdditiveExpression> getAdditiveExpressionList();
+  @NotNull
+  List<LSAdditiveExpression> getAdditiveExpressionList();
 
-    @NotNull
-    List<LSBitwiseExpression> getBitwiseExpressionList();
+  @NotNull
+  List<LSBitwiseExpression> getBitwiseExpressionList();
 
-    @NotNull
-    List<LSCompareExpression> getCompareExpressionList();
+  @NotNull
+  List<LSCompareExpression> getCompareExpressionList();
 
-    @NotNull
-    List<LSLogicAndExpression> getLogicAndExpressionList();
+  @NotNull
+  List<LSLogicAndExpression> getLogicAndExpressionList();
 
-    @NotNull
-    List<LSLogicOrExpression> getLogicOrExpressionList();
+  @NotNull
+  List<LSLogicOrExpression> getLogicOrExpressionList();
 
-    @NotNull
-    List<LSMultiplicativeExpression> getMultiplicativeExpressionList();
+  @NotNull
+  List<LSMultiplicativeExpression> getMultiplicativeExpressionList();
 
-    @NotNull
-    List<LSPrefixExpression> getPrefixExpressionList();
+  @NotNull
+  List<LSPrefixExpression> getPrefixExpressionList();
 
-    @NotNull
-    List<LSShiftExpression> getShiftExpressionList();
+  @NotNull
+  List<LSShiftExpression> getShiftExpressionList();
 
-    @NotNull
-    LSSingleExpression getSingleExpression();
+  @NotNull
+  LSSingleExpression getSingleExpression();
 
-    @Nullable
-    LSTernaryExpression getTernaryExpression();
+  @Nullable
+  LSTernaryExpression getTernaryExpression();
 
-    @NotNull
-    PsiElement getOpColon();
+  @NotNull
+  PsiElement getOpColon();
 
-    @NotNull
-    PsiElement getOpTernary();
+  @NotNull
+  PsiElement getOpTernary();
 
 }

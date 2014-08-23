@@ -15,7 +15,7 @@ public class LSFindUsagesProvider implements FindUsagesProvider {
     @Override
     public WordsScanner getWordsScanner() {
         return new DefaultWordsScanner(new LeekScriptLexer(), TokenSet.create(LSTypes.IDENTIFIER),
-                TokenSet.create(LSTypes.COMMENT, LSTypes.MULTILINE_COMMENT), TokenSet.create(LSTypes.STRING));
+                TokenSet.create(LSTypes.COMMENT, LSTypes.C_STYLE_COMMENT, LSTypes.DOC_COMMENT), TokenSet.create(LSTypes.STRING));
     }
 
     @Override

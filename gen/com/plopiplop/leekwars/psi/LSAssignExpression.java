@@ -1,66 +1,64 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
-import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.*;
+import com.intellij.psi.PsiElement;
 
 public interface LSAssignExpression extends PsiElement {
 
-    @NotNull
-    List<LSAdditiveExpression> getAdditiveExpressionList();
+  @NotNull
+  List<LSAdditiveExpression> getAdditiveExpressionList();
 
-    @Nullable
-    LSAssignExpression getAssignExpression();
+  @Nullable
+  LSAssignExpression getAssignExpression();
 
-    @NotNull
-    List<LSBitwiseExpression> getBitwiseExpressionList();
+  @NotNull
+  List<LSBitwiseExpression> getBitwiseExpressionList();
 
-    @NotNull
-    List<LSCompareExpression> getCompareExpressionList();
+  @NotNull
+  List<LSCompareExpression> getCompareExpressionList();
 
-    @NotNull
-    List<LSLogicAndExpression> getLogicAndExpressionList();
+  @NotNull
+  List<LSLogicAndExpression> getLogicAndExpressionList();
 
-    @NotNull
-    List<LSLogicOrExpression> getLogicOrExpressionList();
+  @NotNull
+  List<LSLogicOrExpression> getLogicOrExpressionList();
 
-    @NotNull
-    List<LSMultiplicativeExpression> getMultiplicativeExpressionList();
+  @NotNull
+  List<LSMultiplicativeExpression> getMultiplicativeExpressionList();
 
-    @NotNull
-    List<LSPrefixExpression> getPrefixExpressionList();
+  @NotNull
+  List<LSPrefixExpression> getPrefixExpressionList();
 
-    @NotNull
-    List<LSShiftExpression> getShiftExpressionList();
+  @NotNull
+  List<LSShiftExpression> getShiftExpressionList();
 
-    @NotNull
-    List<LSTernaryExpression> getTernaryExpressionList();
+  @NotNull
+  List<LSTernaryExpression> getTernaryExpressionList();
 
-    @Nullable
-    PsiElement getOpAndEq();
+  @Nullable
+  PsiElement getOpAndEq();
 
-    @Nullable
-    PsiElement getOpAssign();
+  @Nullable
+  PsiElement getOpAssign();
 
-    @Nullable
-    PsiElement getOpDivideEq();
+  @Nullable
+  PsiElement getOpDivideEq();
 
-    @Nullable
-    PsiElement getOpMinusEq();
+  @Nullable
+  PsiElement getOpMinusEq();
 
-    @Nullable
-    PsiElement getOpOrEq();
+  @Nullable
+  PsiElement getOpOrEq();
 
-    @Nullable
-    PsiElement getOpPlusEq();
+  @Nullable
+  PsiElement getOpPlusEq();
 
-    @Nullable
-    PsiElement getOpTimesEq();
+  @Nullable
+  PsiElement getOpTimesEq();
 
-    @Nullable
-    PsiElement getOpXorEq();
+  @Nullable
+  PsiElement getOpXorEq();
 
 }

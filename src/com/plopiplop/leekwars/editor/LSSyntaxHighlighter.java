@@ -44,7 +44,7 @@ public class LSSyntaxHighlighter extends SyntaxHighlighterBase {
             return KEYWORD_KEYS;
         } else if (tokenType.equals(LSTypes.COMMENT)) {
             return COMMENT_KEYS;
-        } else if (tokenType.equals(LSTypes.MULTILINE_COMMENT)) {
+        } else if (tokenType.equals(LSTypes.DOC_COMMENT) || tokenType.equals(LSTypes.C_STYLE_COMMENT)) {
             return MULTI_COMMENT_KEYS;
         } else if (tokenType.equals(LSTypes.NUMBER)) {
             return NUMBER_KEYS;

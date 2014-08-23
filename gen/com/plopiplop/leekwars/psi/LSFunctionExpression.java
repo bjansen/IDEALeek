@@ -1,25 +1,25 @@
 // This is a generated file. Not intended for manual editing.
 package com.plopiplop.leekwars.psi;
 
+import java.util.List;
+import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public interface LSFunctionExpression extends PsiElement {
 
-    @Nullable
-    LSBlock getBlock();
+  @Nullable
+  LSBlock getBlock();
 
-    @Nullable
-    LSFormalParameterList getFormalParameterList();
+  @Nullable
+  LSFormalParameterList getFormalParameterList();
 
-    @NotNull
-    PsiElement getKwFunction();
+  @NotNull
+  PsiElement getKwFunction();
 
-    @Nullable
-    PsiElement getOpLparen();
+  @Nullable
+  PsiElement getOpLparen();
 
-    @Nullable
-    PsiElement getOpRparen();
+  @Nullable
+  PsiElement getOpRparen();
 
 }

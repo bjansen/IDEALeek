@@ -21,7 +21,9 @@
     number='regexp:\d+(\.\d*)?'
     string="regexp:('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")"
     comment='regexp://.*'
-    multiline_comment='regexp:/\*([^\*]|\*[^/])*\*/'
+    c_style_comment='regexp:(/\*[^\*]{COMMENT_TAIL})|/\*'
+    doc_comment='regexp:/\*\*(/|([^/\*]{COMMENT_TAIL}))?'
+    comment_tail='regexp:([^\*]*(\*+[^\*/])?)*(\*+/)?'
 
     kw_function='function'
     kw_var='var'
@@ -93,7 +95,7 @@
 program ::= sourceElements? <<eof>>
 
 private sourceElements ::= sourceElement+
-private sourceElement ::= functionDeclaration | statement | include | multiline_comment
+private sourceElement ::= functionDeclaration | statement | include | c_style_comment | doc_comment
 
 private statement ::=
         variableStatement
