@@ -124,7 +124,7 @@ public class DownloadScriptsTask implements Runnable {
         int i = 0;
 
         for (Map.Entry<String, String> entry : files.entrySet()) {
-            entry.setValue(names[i].substring(1, names[i].length() - 1));
+            entry.setValue(StringEscapeUtils.unescapeHtml(names[i].substring(1, names[i].length() - 1)));
             i++;
         }
     }
