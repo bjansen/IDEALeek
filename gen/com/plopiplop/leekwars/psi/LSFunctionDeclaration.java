@@ -4,7 +4,6 @@ package com.plopiplop.leekwars.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import com.intellij.navigation.ItemPresentation;
 
 public interface LSFunctionDeclaration extends LSNamedElement {
 
@@ -29,7 +28,5 @@ public interface LSFunctionDeclaration extends LSNamedElement {
   String getSignature();
 
   int getNbArguments();
-
-  ItemPresentation getPresentation();
 
 }

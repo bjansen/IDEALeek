@@ -4,10 +4,13 @@ package com.plopiplop.leekwars.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
+import com.intellij.navigation.ItemPresentation;
 
 public interface LSFunctionName extends LSNamedElement {
 
   @NotNull
   PsiElement getIdentifier();
+
+  ItemPresentation getPresentation();
 
 }

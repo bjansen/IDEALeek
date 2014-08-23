@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.plopiplop.leekwars.psi.LSTypes.*;
 import com.plopiplop.leekwars.psi.LSNamedElementImpl;
 import com.plopiplop.leekwars.psi.*;
+import com.intellij.navigation.ItemPresentation;
 
 public class LSFunctionNameImpl extends LSNamedElementImpl implements LSFunctionName {
 
@@ -26,6 +27,10 @@ public class LSFunctionNameImpl extends LSNamedElementImpl implements LSFunction
   @NotNull
   public PsiElement getIdentifier() {
     return findNotNullChildByType(IDENTIFIER);
+  }
+
+  public ItemPresentation getPresentation() {
+    return LSPsiImplUtil.getPresentation(this);
   }
 
 }

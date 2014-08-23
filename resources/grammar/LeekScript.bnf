@@ -112,9 +112,9 @@ private statement ::=
 referenceExpression ::= identifier
 include ::= 'include' '(' referenceString ')' eos {pin=1}
 referenceString ::= string {methods=[getReference]}
-functionDeclaration ::= 'function' functionName '(' formalParameterList? ')' block {methods=[getSignature getNbArguments getPresentation] pin=1}
+functionDeclaration ::= 'function' functionName '(' formalParameterList? ')' block {methods=[getSignature getNbArguments] pin=1}
 
-functionName ::= identifier
+functionName ::= identifier {methods=[getPresentation]}
 block ::= '{' statementList? '}'
 statementList ::= statement+
 

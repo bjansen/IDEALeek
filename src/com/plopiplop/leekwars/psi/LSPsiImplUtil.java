@@ -47,24 +47,24 @@ public class LSPsiImplUtil {
         return nbArgs;
     }
 
-    public static ItemPresentation getPresentation(final LSFunctionDeclaration declaration) {
+    public static ItemPresentation getPresentation(final LSFunctionName declaration) {
         return new ItemPresentation() {
             @Nullable
             @Override
             public String getPresentableText() {
-                return declaration.getSignature();
+                return ((LSFunctionDeclaration) declaration.getParent()).getSignature();
             }
 
             @Nullable
             @Override
             public String getLocationString() {
-                return null;
+                return "(" + declaration.getContainingFile().getName() + ")";
             }
 
             @Nullable
             @Override
             public Icon getIcon(boolean unused) {
-                return declaration.getIcon(0);
+                return declaration.getParent().getIcon(0);
             }
         };
     }

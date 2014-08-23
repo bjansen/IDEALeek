@@ -10,7 +10,6 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.plopiplop.leekwars.psi.LSTypes.*;
 import com.plopiplop.leekwars.psi.LSNamedElementImpl;
 import com.plopiplop.leekwars.psi.*;
-import com.intellij.navigation.ItemPresentation;
 
 public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSFunctionDeclaration {
 
@@ -65,10 +64,6 @@ public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSF
 
   public int getNbArguments() {
     return LSPsiImplUtil.getNbArguments(this);
-  }
-
-  public ItemPresentation getPresentation() {
-    return LSPsiImplUtil.getPresentation(this);
   }
 
 }
