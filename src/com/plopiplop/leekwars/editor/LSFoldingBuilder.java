@@ -8,6 +8,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.plopiplop.leekwars.psi.LSFunctionDeclaration;
+import com.plopiplop.leekwars.psi.LSFunctionExpression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,19 +23,35 @@ public class LSFoldingBuilder extends FoldingBuilderEx {
         List<FoldingDescriptor> descriptors = new ArrayList<FoldingDescriptor>();
         Collection<LSFunctionDeclaration> declarations = PsiTreeUtil.findChildrenOfType(root, LSFunctionDeclaration.class);
 
-        for (final LSFunctionDeclaration literalExpression : declarations) {
-            descriptors.add(new FoldingDescriptor(literalExpression.getNode(),
-                    new TextRange(literalExpression.getTextRange().getStartOffset(),
-                            literalExpression.getTextRange().getEndOffset())) {
+        for (final LSFunctionDeclaration functionDeclaration : declarations) {
+            descriptors.add(new FoldingDescriptor(functionDeclaration.getNode(),
+                    new TextRange(functionDeclaration.getTextRange().getStartOffset(),
+                            functionDeclaration.getTextRange().getEndOffset())) {
                 @Nullable
                 @Override
                 public String getPlaceholderText() {
-                    String formalParams = literalExpression.getFormalParameterList() == null ? "" : literalExpression.getFormalParameterList().getText();
-                    String name = literalExpression.getFunctionName() == null ? "?" : literalExpression.getFunctionName().getText();
+                    String formalParams = functionDeclaration.getFormalParameterList() == null ? "" : functionDeclaration.getFormalParameterList().getText();
+                    String name = functionDeclaration.getFunctionName() == null ? "?" : functionDeclaration.getFunctionName().getText();
                     return "function " + name + "(" + formalParams + ")";
                 }
             });
         }
+
+        Collection<LSFunctionExpression> anonymousFunctions = PsiTreeUtil.findChildrenOfType(root, LSFunctionExpression.class);
+
+        for (final LSFunctionExpression anonymousFunction : anonymousFunctions) {
+            descriptors.add(new FoldingDescriptor(anonymousFunction.getNode(),
+                    new TextRange(anonymousFunction.getTextRange().getStartOffset(),
+                            anonymousFunction.getTextRange().getEndOffset())) {
+                @Nullable
+                @Override
+                public String getPlaceholderText() {
+                    String formalParams = anonymousFunction.getFormalParameterList() == null ? "" : anonymousFunction.getFormalParameterList().getText();
+                    return "function (" + formalParams + ")";
+                }
+            });
+        }
+
         return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
     }
 

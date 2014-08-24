@@ -38,6 +38,9 @@ public class LSSmartEnterProcessor extends SmartEnterProcessorWithFixers {
                 }
             } else if (element instanceof LSFunctionDeclaration && ((LSFunctionDeclaration) element).getBlock() == null) {
                 insertBraces = true;
+            } else if (element instanceof LSFunctionExpression && ((LSFunctionExpression) element).getBlock() == null) {
+                insertBraces = true;
+                insertSemicolon = true;
             } else if (element instanceof LSForStatement && ((LSForStatement) element).getBlock() == null) {
                 insertBraces = true;
             } else if (element instanceof LSWhileStatement && ((LSWhileStatement) element).getBlock() == null) {
@@ -66,7 +69,7 @@ public class LSSmartEnterProcessor extends SmartEnterProcessorWithFixers {
         public boolean doEnter(PsiElement atCaret, PsiFile file, @NotNull Editor editor, boolean modified) {
             if (atCaret instanceof LSVariableStatement || atCaret instanceof LSExpressionStatement
                     || atCaret instanceof LSIfStatement || atCaret instanceof LSFunctionDeclaration || atCaret instanceof LSForStatement
-                    || atCaret instanceof LSWhileStatement || atCaret instanceof LSElseBlock) {
+                    || atCaret instanceof LSWhileStatement || atCaret instanceof LSElseBlock || atCaret instanceof LSFunctionExpression) {
                 plainEnter(editor);
                 return true;
             }
@@ -90,6 +93,6 @@ public class LSSmartEnterProcessor extends SmartEnterProcessorWithFixers {
         PsiElement element = super.getStatementAtCaret(editor, psiFile);
 
         return PsiTreeUtil.getParentOfType(element, LSBreakStatement.class, LSReturnStatement.class, LSVariableStatement.class, LSElseBlock.class,
-                LSIfStatement.class, LSFunctionDeclaration.class, LSExpressionStatement.class, LSForStatement.class, LSWhileStatement.class, LSDoWhileStatement.class);
+                LSIfStatement.class, LSFunctionDeclaration.class, LSFunctionExpression.class, LSExpressionStatement.class, LSForStatement.class, LSWhileStatement.class, LSDoWhileStatement.class);
     }
 }
