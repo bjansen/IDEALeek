@@ -5,6 +5,7 @@ import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Editor;
@@ -15,20 +16,19 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilBase;
-import com.intellij.refactoring.HelpID;
 import com.intellij.refactoring.IntroduceTargetChooser;
 import com.intellij.refactoring.RefactoringActionHandler;
 import com.intellij.refactoring.RefactoringBundle;
 import com.intellij.refactoring.rename.inplace.VariableInplaceRenameHandler;
 import com.intellij.refactoring.util.CommonRefactoringUtil;
-import com.intellij.testFramework.MapDataContext;
 import com.intellij.util.Function;
 import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.generate.tostring.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LSIntroduceVariableHandler implements RefactoringActionHandler {
 
@@ -67,7 +67,7 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
             PsiElement parentStatement = PsiTreeUtil.getParentOfType(statementOrExpression, LSExpressionStatement.class, LSIfStatement.class, LSWhileStatement.class, LSVariableStatement.class);
 
             if (parentStatement == null) {
-                CommonRefactoringUtil.showErrorHint(project, editor, "I don't know how to extract a variable from this :'(", RefactoringBundle.message("introduce.variable.title"), HelpID.INTRODUCE_VARIABLE);
+                CommonRefactoringUtil.showErrorHint(project, editor, "I don't know how to extract a variable from this :'(", RefactoringBundle.message("introduce.variable.title"), null);
                 return;
             }
             inserted = (LSVariableStatement) parentStatement.getParent().addBefore(newVar, parentStatement);
@@ -78,17 +78,17 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
 
         editor.getCaretModel().moveToOffset(inserted.getTextOffset() + 4);
 
-        MapDataContext myDataContext = new MapDataContext();
-        myDataContext.put(CommonDataKeys.EDITOR, editor);
-        myDataContext.put(CommonDataKeys.PSI_FILE, file);
-        myDataContext.put(LangDataKeys.PSI_ELEMENT_ARRAY, new PsiElement[]{inserted.getVariableDeclarationList().get(0)});
+        Map<String, Object> myDataContext = new HashMap<String, Object>();
+        myDataContext.put(CommonDataKeys.EDITOR.getName(), editor);
+        myDataContext.put(CommonDataKeys.PSI_FILE.getName(), file);
+        myDataContext.put(LangDataKeys.PSI_ELEMENT_ARRAY.getName(), new PsiElement[]{inserted.getVariableDeclarationList().get(0)});
 
         PsiDocumentManager.getInstance(project).doPostponedOperationsAndUnblockDocument(editor.getDocument());
 
         RefactoringSupportProvider supportProvider = LanguageRefactoringSupport.INSTANCE.forLanguage(newVar.getLanguage());
 
         if (supportProvider.isInplaceRenameAvailable(inserted.getVariableDeclarationList().get(0), identifier)) {
-            new VariableInplaceRenameHandler().invoke(project, editor, file, myDataContext);
+            new VariableInplaceRenameHandler().invoke(project, editor, file, SimpleDataContext.getSimpleContext(myDataContext, null));
         }
     }
 
@@ -144,11 +144,11 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
                 String functionName = singleExpression.getPrefixExpression().getMethodCall().getReferenceExpression().getIdentifier().getText();
 
                 if (functionName.startsWith("get")) {
-                    return StringUtil.firstLetterToLowerCase(functionName.substring("get".length()));
+                    return firstLetterToLowerCase(functionName.substring("get".length()));
                 }
 
                 // TODO use function's return name (in LeekDoc)
-                String lowerCasedName = StringUtil.firstLetterToLowerCase(functionName);
+                String lowerCasedName = firstLetterToLowerCase(functionName);
 
                 return lowerCasedName.equals(functionName) ? "my" + functionName : lowerCasedName;
             }
@@ -158,6 +158,12 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
         // TODO suggest name based on function parameter in function calls (LeekDoc)
 
         return expression instanceof LSFunctionExpression ? "myFunc" : "myVar";
+    }
+
+    private String firstLetterToLowerCase(String data) {
+        String firstLetter = data.substring(0, 1).toLowerCase();
+        String restLetters = data.substring(1);
+        return firstLetter + restLetters;
     }
 
     @Override
