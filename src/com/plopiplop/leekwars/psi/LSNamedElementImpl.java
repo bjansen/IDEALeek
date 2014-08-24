@@ -44,7 +44,12 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
 
     @Override
     public PsiElement setName(@NonNls @NotNull String name) throws IncorrectOperationException {
-        return PsiUtils.createIdentifierFromText(getProject(), name);
+        PsiElement nameIdentifier = getNameIdentifier();
+        PsiElement newIdentifier = PsiUtils.createIdentifierFromText(getProject(), name);
+        if (nameIdentifier != null) {
+            getNode().replaceChild(nameIdentifier.getNode(), newIdentifier.getNode());
+        }
+        return this;
     }
 
     @Override

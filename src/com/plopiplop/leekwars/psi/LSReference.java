@@ -30,9 +30,12 @@ public class LSReference extends PsiPolyVariantReferenceBase<PsiElement> {
         if (declaration != null && declaration.getContainingFile().equals(apiPsiFile)) {
             throw new IncorrectOperationException("API variables and functions cannot be renamed");
         }
-        PsiElement newIdentifier = PsiUtils.createIdentifierFromText(myElement.getProject(), newElementName);
 
-        myElement.replace(newIdentifier);
+        PsiElement newIdentifier = PsiUtils.createIdentifierFromText(myElement.getProject(), newElementName);
+        PsiElement oldIdentifier = ((LSReferenceExpression) myElement).getNameIdentifier();
+        if (oldIdentifier != null) {
+            myElement.getNode().replaceChild(oldIdentifier.getNode(), newIdentifier.getNode());
+        }
 
         return myElement;
     }

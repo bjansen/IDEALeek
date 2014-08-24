@@ -55,7 +55,7 @@ public class LSAnnotator implements Annotator {
             }
 
             syntaxAnnotator.annotate(element, reference, holder);
-            // TODO find unused variables/functions?
+            // TODO find unused variables/functions? see com.intellij.refactoring.rename.RenameUtil.findUsages()
         } else if (element instanceof LSReferenceString) {
             PsiReference reference = element.getReference();
 
