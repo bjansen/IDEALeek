@@ -1,11 +1,11 @@
 var local = 1;
 
 function foo() {
-var local2 = < error descr = "Cannot revolve symbol 'local'" > local < / error > ;
+    var local2 = <error descr="Cannot revolve symbol 'local'">local</error>;
 }
 
-< error descr = "Cannot revolve symbol 'fooo'" > fooo < /error >();
+<error descr="Cannot revolve symbol 'fooo'">fooo</error>();
 
-foo < error descr = "Cannot find function 'foo()' with given parameters" >(1, 2, 3)< / error > ;
+foo <error descr="Cannot find function 'foo()' with given parameters">(1, 2, 3)</error>;
 
 foo();
