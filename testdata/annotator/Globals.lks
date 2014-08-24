@@ -1,0 +1,3 @@
+function foo() {
+global < error descr = "Global variables are not allowed inside function" > coin < / error > = "meuh";
+}

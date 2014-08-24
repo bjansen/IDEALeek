@@ -134,4 +134,8 @@ public class DownloadScriptsTask implements Runnable {
             files.put(id, null);
         }
     }
+
+    Map<String, String> getFiles() {
+        return files;
+    }
 }

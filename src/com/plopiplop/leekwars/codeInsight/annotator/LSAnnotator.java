@@ -29,8 +29,8 @@ public class LSAnnotator implements Annotator {
             if (resolveResults.length == 0) {
                 Annotation annotation = holder.createErrorAnnotation(element, "Cannot revolve symbol '" + element.getText() + "'");
                 annotation.setHighlightType(ProblemHighlightType.LIKE_UNKNOWN_SYMBOL);
-            } else if (element.getParent() instanceof LSMethodCall) {
-                LSMethodCall methodCall = (LSMethodCall) element.getParent();
+            } else if (element.getParent().getParent() instanceof LSMethodCall) {
+                LSMethodCall methodCall = (LSMethodCall) element.getParent().getParent();
 
                 if (!hasExactSignature(methodCall, resolveResults)) {
                     holder.createErrorAnnotation(methodCall.getArguments(), "Cannot find function '" + element.getText() + "()' with given parameters");
@@ -79,8 +79,8 @@ public class LSAnnotator implements Annotator {
         int nbArguments = methodCall.getNbArguments();
 
         for (ResolveResult result : results) {
-            if (result.getElement() instanceof LSFunctionDeclaration) {
-                if (((LSFunctionDeclaration) result.getElement()).getNbArguments() == nbArguments) {
+            if (result.getElement() instanceof LSFunctionName) {
+                if (((LSFunctionDeclaration) result.getElement().getParent()).getNbArguments() == nbArguments) {
                     return true;
                 }
             }

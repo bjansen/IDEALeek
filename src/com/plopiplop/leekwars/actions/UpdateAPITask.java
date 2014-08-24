@@ -129,7 +129,6 @@ public class UpdateAPITask implements Runnable {
             Elements constant = element.select(".item-preview .constant");
 
             if (constant.isEmpty()) {
-                System.out.println("WARN: skipping market item " + element.html());
                 continue;
             }
             String elementText = constant.first().text();
