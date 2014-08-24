@@ -8,6 +8,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.search.LocalSearchScope;
 import com.intellij.psi.search.SearchScope;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.PlatformIcons;
 import org.jetbrains.annotations.NonNls;
@@ -72,6 +73,11 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
 
         if (!(PsiUtils.findParentBlock(element) instanceof PsiFile)) {
             return new LocalSearchScope(getContainingFile());
+        } else {
+            LSVariableStatement statement = PsiTreeUtil.getParentOfType(element, LSVariableStatement.class);
+            if (statement != null && !statement.isGlobal()) {
+                return new LocalSearchScope(getContainingFile());
+            }
         }
 
         return super.getUseScope();

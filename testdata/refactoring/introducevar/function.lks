@@ -1,2 +1,2 @@
-debug(function(a, b, c) {
-});
+var hmm = function(a, b, c) {
+};

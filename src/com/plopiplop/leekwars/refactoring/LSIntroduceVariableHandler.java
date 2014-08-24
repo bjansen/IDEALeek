@@ -9,50 +9,61 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.CommandProcessor;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Pass;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilBase;
 import com.intellij.refactoring.HelpID;
+import com.intellij.refactoring.IntroduceTargetChooser;
 import com.intellij.refactoring.RefactoringActionHandler;
 import com.intellij.refactoring.RefactoringBundle;
 import com.intellij.refactoring.rename.inplace.VariableInplaceRenameHandler;
 import com.intellij.refactoring.util.CommonRefactoringUtil;
 import com.intellij.testFramework.MapDataContext;
+import com.intellij.util.Function;
 import com.plopiplop.leekwars.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.generate.tostring.util.StringUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LSIntroduceVariableHandler implements RefactoringActionHandler {
 
     @Override
     public void invoke(@NotNull final Project project, final Editor editor, final PsiFile file, final DataContext dataContext) {
-        final PsiElement statementOrExpression = findParentExpressionOrStatement(editor);
+        final PsiElement statementOrExpression = findParentExpressionOrStatement(project, editor, file);
 
         if (statementOrExpression != null) {
-            final LSVariableStatement myVar = PsiUtils.createVariableFromText(project, suggestVarName(statementOrExpression), statementOrExpression.getText());
-
-            CommandProcessor.getInstance().executeCommand(project, new Runnable() {
-                @Override
-                public void run() {
-                    ApplicationManager.getApplication().runWriteAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            introduceVariable(statementOrExpression, myVar, editor, file, project);
-                        }
-                    });
-                }
-            }, RefactoringBundle.message("introduce.variable.title"), "LeekScript");
+            createVarAndIntroduce(project, editor, file, statementOrExpression);
         }
+    }
+
+    private void createVarAndIntroduce(final Project project, final Editor editor, final PsiFile file, final PsiElement statementOrExpression) {
+        final LSVariableStatement myVar = PsiUtils.createVariableFromText(project, suggestVarName(statementOrExpression), statementOrExpression.getText());
+
+        CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+            @Override
+            public void run() {
+                ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        introduceVariable(statementOrExpression, myVar, editor, file, project);
+                    }
+                });
+            }
+        }, RefactoringBundle.message("introduce.variable.title"), "LeekScript");
     }
 
     private void introduceVariable(PsiElement statementOrExpression, LSVariableStatement newVar, Editor editor, PsiFile file, Project project) {
         LSVariableStatement inserted;
 
-        if (statementOrExpression instanceof LSExpressionStatement) {
-            inserted = (LSVariableStatement) statementOrExpression.replace(newVar);
+        if (statementOrExpression.getParent() instanceof LSExpressionStatement) {
+            inserted = (LSVariableStatement) statementOrExpression.getParent().replace(newVar);
         } else {
+            @SuppressWarnings("unchecked")
             PsiElement parentStatement = PsiTreeUtil.getParentOfType(statementOrExpression, LSExpressionStatement.class, LSIfStatement.class, LSWhileStatement.class, LSVariableStatement.class);
 
             if (parentStatement == null) {
@@ -81,35 +92,50 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
         }
     }
 
-    private PsiElement findParentExpressionOrStatement(Editor editor) {
-        PsiElement elementAtCaret = PsiUtilBase.getElementAtCaret(editor);
+    private PsiElement findParentExpressionOrStatement(final Project project, final Editor editor, final PsiFile file) {
+        final PsiElement elementAtCaret = PsiUtilBase.getElementAtCaret(editor);
 
-        // TODO suggest parent expressions as well ("1", "1 == 2", "1 == 2 or 3 == 4" etc)
-        // TODO find the correct expression when the caret is just before the semicolon
-        LSSingleExpression singleExpression = PsiTreeUtil.getParentOfType(elementAtCaret, LSSingleExpression.class);
+        List<PsiElement> allParentExpressions = new ArrayList<PsiElement>();
+        PsiElement parentExpression = elementAtCaret;
+        int lastOffset = elementAtCaret == null ? -1 : elementAtCaret.getTextOffset() + 1;
 
-        if (singleExpression != null) {
-            PsiElement parent = singleExpression.getParent();
-
-            if (parent instanceof LSExpressionStatement) {
-                return parent;
+        while (parentExpression != null) {
+            if (parentExpression != elementAtCaret && parentExpression.getTextOffset() < lastOffset) {
+                // TODO don't add if this is a method call returning nothing (see LeekDoc)
+                allParentExpressions.add(parentExpression);
+                lastOffset = parentExpression.getTextOffset();
             }
 
-            return singleExpression;
+            //noinspection unchecked
+            parentExpression = PsiTreeUtil.getParentOfType(parentExpression, LSFunctionExpression.class, LSSingleExpression.class);
         }
 
+        if (allParentExpressions.isEmpty()) {
+            return null;
+        } else if (allParentExpressions.size() == 1) {
+            return allParentExpressions.get(0);
+        } else {
+            IntroduceTargetChooser.showChooser(editor, allParentExpressions,
+                    new Pass<PsiElement>() {
+                        public void pass(final PsiElement selectedValue) {
+                            createVarAndIntroduce(project, editor, file, selectedValue);
+                        }
+                    },
+                    new Function<PsiElement, String>() {
+                        @Override
+                        public String fun(PsiElement element) {
+                            return element.getText();
+                        }
+                    }, "Expressions"
+            );
+        }
         return null;
-
     }
 
     private String suggestVarName(PsiElement expression) {
         LSSingleExpression singleExpression = null;
 
-        if (expression instanceof LSExpressionStatement) {
-            LSExpressionStatement statement = (LSExpressionStatement) expression;
-
-            singleExpression = statement.getSingleExpression();
-        } else if (expression instanceof LSSingleExpression) {
+        if (expression instanceof LSSingleExpression) {
             singleExpression = (LSSingleExpression) expression;
         }
 
@@ -122,14 +148,16 @@ public class LSIntroduceVariableHandler implements RefactoringActionHandler {
                 }
 
                 // TODO use function's return name (in LeekDoc)
-                return StringUtil.firstLetterToLowerCase(functionName);
+                String lowerCasedName = StringUtil.firstLetterToLowerCase(functionName);
+
+                return lowerCasedName.equals(functionName) ? "my" + functionName : lowerCasedName;
             }
         }
 
         // TODO suggest "condition" in if/while
         // TODO suggest name based on function parameter in function calls (LeekDoc)
 
-        return "myVar";
+        return expression instanceof LSFunctionExpression ? "myFunc" : "myVar";
     }
 
     @Override

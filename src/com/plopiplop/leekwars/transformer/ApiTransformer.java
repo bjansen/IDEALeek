@@ -48,6 +48,7 @@ public class ApiTransformer {
 
         FileTemplateUtil.createFromTemplate(templateManager.getInternalTemplate(LEEKWARS_API_FILE), fileName, context, out, getClass().getClassLoader());
 
+        // TODO put the file in readonly mode
         if (existingApi != null) {
             File tmpFile = new File(out.getVirtualFile().getPath(), fileName + ".lks");
             String content = Files.toString(tmpFile, Charset.forName("UTF-8"));
