@@ -1,17 +1,15 @@
 package com.plopiplop.leekwars.error;
 
 import com.intellij.diagnostic.LogMessage;
-import com.intellij.ide.DataManager;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.ErrorReportSubmitter;
 import com.intellij.openapi.diagnostic.IdeaLoggingEvent;
 import com.intellij.openapi.diagnostic.SubmittedReportInfo;
-import com.intellij.openapi.project.Project;
+import com.intellij.openapi.extensions.PluginDescriptor;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NonNls;
 
@@ -43,15 +41,16 @@ public class LSErrorReportSubmitter extends ErrorReportSubmitter {
 
     @Override
     public SubmittedReportInfo submit(IdeaLoggingEvent[] events, Component parentComponent) {
-        DataContext dataContext = DataManager.getInstance().getDataContext(parentComponent);
-        Project project = PlatformDataKeys.PROJECT.getData(dataContext);
-
         IdeaLoggingEvent firstEvent = events[0];
         String firstEventText = firstEvent.getThrowableText();
         String summary = firstEventText.substring(0, Math.min(Math.max(80, firstEventText.length()), 80));
 
         String platformBuild = ApplicationInfo.getInstance().getBuild().asString();
-        String localPluginVersion = "1.0";
+        PluginDescriptor pluginDescriptor = getPluginDescriptor();
+        String localPluginVersion = "unknown";
+        if (pluginDescriptor instanceof IdeaPluginDescriptor) {
+            localPluginVersion = ((IdeaPluginDescriptor) pluginDescriptor).getVersion();
+        }
 
         @NonNls StringBuilder description = new StringBuilder();
         description.append("Java Version: ").append(System.getProperty("java.version")).append('\n');
