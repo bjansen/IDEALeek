@@ -33,7 +33,8 @@ public abstract class LSNamedElementImpl extends ASTWrapperPsiElement implements
     @Override
     public PsiElement getNameIdentifier() {
         if (this instanceof LSFunctionDeclaration) {
-            return ((LSFunctionDeclaration) this).getFunctionName().getIdentifier();
+            LSFunctionName functionName = ((LSFunctionDeclaration) this).getFunctionName();
+            return functionName == null ? null : functionName.getIdentifier();
         } else if (this instanceof LSForInitializer) {
             return ((LSForInitializer) this).getReferenceExpression().getIdentifier();
         }
