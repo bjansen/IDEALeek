@@ -85,7 +85,7 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
                 @Override
                 public void visitPsiElement(@NotNull PsiElement psi) {
                     if (psi instanceof LSFunctionDeclaration) {
-                        childrenElements.add(psi);
+                        childrenElements.add(((LSFunctionDeclaration) psi).getFunctionName());
                     } else if (psi instanceof LSVariableStatement) {
                         LSVariableStatement statement = (LSVariableStatement) psi;
 
