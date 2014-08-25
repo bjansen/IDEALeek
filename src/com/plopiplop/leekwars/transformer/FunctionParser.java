@@ -45,7 +45,7 @@ public class FunctionParser {
         if (!elements.isEmpty()) {
             for (Element li : elements.first().select("> li")) {
                 String paramName = li.text();
-                if (paramName.contains(":")) {
+                if (paramName.indexOf(':') > 1) {
                     paramName = paramName.substring(0, paramName.indexOf(':') - 1);
                 }
                 map.put(paramName, html(li.select("span.searchable")));
