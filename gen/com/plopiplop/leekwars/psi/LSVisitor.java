@@ -127,10 +127,6 @@ public class LSVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitMemberExpression(@NotNull LSMemberExpression o) {
-    visitPsiElement(o);
-  }
-
   public void visitMethodCall(@NotNull LSMethodCall o) {
     visitPsiElement(o);
   }

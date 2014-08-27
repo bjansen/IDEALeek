@@ -24,14 +24,20 @@ public class LSSuffixExpressionImpl extends ASTWrapperPsiElement implements LSSu
 
   @Override
   @Nullable
-  public LSMemberExpression getMemberExpression() {
-    return findChildByClass(LSMemberExpression.class);
+  public LSFunctionExpression getFunctionExpression() {
+    return findChildByClass(LSFunctionExpression.class);
   }
 
   @Override
   @Nullable
   public LSMethodCall getMethodCall() {
     return findChildByClass(LSMethodCall.class);
+  }
+
+  @Override
+  @Nullable
+  public LSPrimaryExpression getPrimaryExpression() {
+    return findChildByClass(LSPrimaryExpression.class);
   }
 
   @Override

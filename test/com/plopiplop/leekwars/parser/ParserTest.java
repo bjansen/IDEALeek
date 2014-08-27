@@ -12,6 +12,10 @@ public class ParserTest extends ParsingTestCase {
         doTest(true);
     }
 
+    public void testMethodCall() {
+        doTest(true);
+    }
+
     @Override
     protected String getTestDataPath() {
         return "testdata/parser";
