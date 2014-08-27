@@ -174,10 +174,10 @@ left suffixExpression ::= ('--' | '++')
 
 functionExpression ::= 'function' '(' formalParameterList? ')' block {pin=1}
 
-private leftHandSideExpression ::= methodCall | memberExpression
+private leftHandSideExpression ::= memberExpression
 
 methodCall ::= referenceExpression arguments {methods=[getNbArguments]}
-memberExpression ::= (primaryExpression | functionExpression) ('[' singleExpression ']')*
+private memberExpression ::= (methodCall | primaryExpression | functionExpression) ('[' singleExpression ']')*
 primaryExpression ::= referenceExpression | literal | arrayLiteral | '(' singleExpression ')'
 
 eos ::= ';'

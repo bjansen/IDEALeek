@@ -8,10 +8,13 @@ import com.intellij.psi.PsiElement;
 public interface LSSuffixExpression extends PsiElement {
 
   @Nullable
-  LSMemberExpression getMemberExpression();
+  LSFunctionExpression getFunctionExpression();
 
   @Nullable
   LSMethodCall getMethodCall();
+
+  @Nullable
+  LSPrimaryExpression getPrimaryExpression();
 
   @Nullable
   LSSuffixExpression getSuffixExpression();

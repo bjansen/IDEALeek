@@ -24,8 +24,8 @@ public class LSPrefixExpressionImpl extends ASTWrapperPsiElement implements LSPr
 
   @Override
   @Nullable
-  public LSMemberExpression getMemberExpression() {
-    return findChildByClass(LSMemberExpression.class);
+  public LSFunctionExpression getFunctionExpression() {
+    return findChildByClass(LSFunctionExpression.class);
   }
 
   @Override
@@ -44,6 +44,18 @@ public class LSPrefixExpressionImpl extends ASTWrapperPsiElement implements LSPr
   @Nullable
   public LSPrefixOperator getPrefixOperator() {
     return findChildByClass(LSPrefixOperator.class);
+  }
+
+  @Override
+  @Nullable
+  public LSPrimaryExpression getPrimaryExpression() {
+    return findChildByClass(LSPrimaryExpression.class);
+  }
+
+  @Override
+  @NotNull
+  public List<LSSingleExpression> getSingleExpressionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LSSingleExpression.class);
   }
 
   @Override

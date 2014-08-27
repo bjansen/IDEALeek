@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface LSPrefixExpression extends PsiElement {
 
   @Nullable
-  LSMemberExpression getMemberExpression();
+  LSFunctionExpression getFunctionExpression();
 
   @Nullable
   LSMethodCall getMethodCall();
@@ -18,6 +18,12 @@ public interface LSPrefixExpression extends PsiElement {
 
   @Nullable
   LSPrefixOperator getPrefixOperator();
+
+  @Nullable
+  LSPrimaryExpression getPrimaryExpression();
+
+  @NotNull
+  List<LSSingleExpression> getSingleExpressionList();
 
   @Nullable
   LSSuffixExpression getSuffixExpression();

@@ -38,7 +38,6 @@ public interface LSTypes {
   IElementType LITERAL = new LSElementType("LITERAL");
   IElementType LOGIC_AND_EXPRESSION = new LSElementType("LOGIC_AND_EXPRESSION");
   IElementType LOGIC_OR_EXPRESSION = new LSElementType("LOGIC_OR_EXPRESSION");
-  IElementType MEMBER_EXPRESSION = new LSElementType("MEMBER_EXPRESSION");
   IElementType METHOD_CALL = new LSElementType("METHOD_CALL");
   IElementType MODIFIER = new LSElementType("MODIFIER");
   IElementType MULTIPLICATIVE_EXPRESSION = new LSElementType("MULTIPLICATIVE_EXPRESSION");
@@ -223,9 +222,6 @@ public interface LSTypes {
       }
       else if (type == LOGIC_OR_EXPRESSION) {
         return new LSLogicOrExpressionImpl(node);
-      }
-      else if (type == MEMBER_EXPRESSION) {
-        return new LSMemberExpressionImpl(node);
       }
       else if (type == METHOD_CALL) {
         return new LSMethodCallImpl(node);

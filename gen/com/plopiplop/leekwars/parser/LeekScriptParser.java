@@ -110,9 +110,6 @@ public class LeekScriptParser implements PsiParser {
     else if (root_ == LOGIC_OR_EXPRESSION) {
       result_ = logicOrExpression(builder_, 0);
     }
-    else if (root_ == MEMBER_EXPRESSION) {
-      result_ = memberExpression(builder_, 0);
-    }
     else if (root_ == METHOD_CALL) {
       result_ = methodCall(builder_, 0);
     }
@@ -992,15 +989,9 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // methodCall | memberExpression
+  // memberExpression
   static boolean leftHandSideExpression(PsiBuilder builder_, int level_) {
-    if (!recursion_guard_(builder_, level_, "leftHandSideExpression")) return false;
-    boolean result_;
-    Marker marker_ = enter_section_(builder_);
-    result_ = methodCall(builder_, level_ + 1);
-    if (!result_) result_ = memberExpression(builder_, level_ + 1);
-    exit_section_(builder_, marker_, null, result_);
-    return result_;
+    return memberExpression(builder_, level_ + 1);
   }
 
   /* ********************************************************** */
@@ -1115,23 +1106,24 @@ public class LeekScriptParser implements PsiParser {
   }
 
   /* ********************************************************** */
-  // (primaryExpression | functionExpression) ('[' singleExpression ']')*
-  public static boolean memberExpression(PsiBuilder builder_, int level_) {
+  // (methodCall | primaryExpression | functionExpression) ('[' singleExpression ']')*
+  static boolean memberExpression(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "memberExpression")) return false;
     boolean result_;
-    Marker marker_ = enter_section_(builder_, level_, _NONE_, "<member expression>");
+    Marker marker_ = enter_section_(builder_);
     result_ = memberExpression_0(builder_, level_ + 1);
     result_ = result_ && memberExpression_1(builder_, level_ + 1);
-    exit_section_(builder_, level_, marker_, MEMBER_EXPRESSION, result_, false, null);
+    exit_section_(builder_, marker_, null, result_);
     return result_;
   }
 
-  // primaryExpression | functionExpression
+  // methodCall | primaryExpression | functionExpression
   private static boolean memberExpression_0(PsiBuilder builder_, int level_) {
     if (!recursion_guard_(builder_, level_, "memberExpression_0")) return false;
     boolean result_;
     Marker marker_ = enter_section_(builder_);
-    result_ = primaryExpression(builder_, level_ + 1);
+    result_ = methodCall(builder_, level_ + 1);
+    if (!result_) result_ = primaryExpression(builder_, level_ + 1);
     if (!result_) result_ = functionExpression(builder_, level_ + 1);
     exit_section_(builder_, marker_, null, result_);
     return result_;
