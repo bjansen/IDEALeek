@@ -37,7 +37,7 @@ public class LSBlock extends AbstractBlock {
 
     @Override
     public Indent getIndent() {
-        if (myNode.getTreeParent().getElementType() == LSTypes.BLOCK && myNode.getElementType() != LSTypes.OP_LBRACE && myNode.getElementType() != LSTypes.OP_RBRACE) {
+        if (myNode.getTreeParent() != null && myNode.getTreeParent().getElementType() == LSTypes.BLOCK && myNode.getElementType() != LSTypes.OP_LBRACE && myNode.getElementType() != LSTypes.OP_RBRACE) {
             return Indent.getNormalIndent();
         }
 
