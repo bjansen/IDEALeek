@@ -1,6 +1,6 @@
 package com.plopiplop.leekwars.codeInsight.completion;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.completion.util.ParenthesesInsertHandler;
 import com.intellij.codeInsight.lookup.LookupElement;
@@ -149,7 +149,7 @@ public class LSCompletionContributor extends CompletionContributor {
             parentBlock.accept(visitor);
 
             for (PsiNamedElement candidate : visitor.namedElements) {
-                String text = Objects.firstNonNull(candidate.getName(), "<anonymous function>");
+                String text = MoreObjects.firstNonNull(candidate.getName(), "<anonymous function>");
                 String tailText = null;
                 Icon icon = candidate.getIcon(0);
                 InsertHandler<LookupElement> insertHandler = null;

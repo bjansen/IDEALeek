@@ -47,13 +47,8 @@ public class LSModuleType extends ModuleType<LSModuleBuilder> implements ModuleB
     }
 
     @Override
-    public Icon getBigIcon() {
-        return IconLoader.getIcon("/icons/leek.png");
-    }
-
-    @Override
     public Icon getNodeIcon(@Deprecated boolean isOpened) {
-        return getBigIcon();
+        return IconLoader.getIcon("/icons/leek.png");
     }
 
     @Override
