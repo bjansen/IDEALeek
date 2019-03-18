@@ -9,7 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.plopiplop.leekwars.model.LeekWarsServer;
+import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.PsiUtils;
@@ -25,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DownloadScriptsTask implements Runnable {
-    private static final Pattern TOKEN_REGEX = Pattern.compile("var __TOKEN = '([^']+)';");
     private static final Pattern AI_IDS_REGEX = Pattern.compile("__AI_IDS = \\[([^\\]]+)\\];");
     private static final Pattern AI_NAMES_REGEX = Pattern.compile("__AI_NAMES = \\[([^\\]]+)\\];");
 
@@ -38,24 +37,16 @@ public class DownloadScriptsTask implements Runnable {
 
     @Override
     public void run() {
-        LeekWarsServer.callAction(new ServerAction() {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
-            public void doAction() throws PluginNotConfiguredException, IOException {
-                Document editor = LeekWarsServer.getInstance().getEditor();
-                parseScriptTags(editor);
-
-                ApplicationManager.getApplication().invokeLater(new Runnable() {
+            public void run() {
+                ApplicationManager.getApplication().runWriteAction(new Runnable() {
                     @Override
                     public void run() {
-                        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+                        LeekWarsApiClient.callAction(new ServerAction() {
                             @Override
-                            public void run() {
-                                LeekWarsServer.callAction(new ServerAction() {
-                                    @Override
-                                    public void doAction() throws PluginNotConfiguredException, IOException {
-                                        downloadFiles();
-                                    }
-                                });
+                            public void doAction() throws PluginNotConfiguredException, IOException {
+                                downloadFiles();
                             }
                         });
                     }
@@ -68,13 +59,7 @@ public class DownloadScriptsTask implements Runnable {
         Elements scripts = editor.select("head script");
 
         for (Element script : scripts) {
-            Matcher matcher = TOKEN_REGEX.matcher(script.data());
-
-            if (matcher.matches()) {
-                LeekWarsServer.getInstance().setToken(matcher.group(1));
-            }
-
-            matcher = AI_IDS_REGEX.matcher(script.data());
+            Matcher matcher = AI_IDS_REGEX.matcher(script.data());
 
             if (matcher.matches()) {
                 parseIdentifiers(matcher);
@@ -101,12 +86,12 @@ public class DownloadScriptsTask implements Runnable {
 
         assert srcDirectory != null;
 
-        for (Map.Entry<String, String> entry : files.entrySet()) {
-            Document leekScript = LeekWarsServer.getInstance().downloadScript(entry.getKey());
+        for (Map.Entry<Integer, String> entry : LeekWarsApiClient.getInstance().listScripts().entrySet()) {
+            String leekScript = LeekWarsApiClient.getInstance().downloadScript(entry.getKey());
 
             String fileName = String.format("%s__%s.lks", entry.getValue(), entry.getKey());
 
-            PsiFile file = PsiUtils.createDummyFile(project, fileName, StringEscapeUtils.unescapeHtml(leekScript.body().html()));
+            PsiFile file = PsiUtils.createDummyFile(project, fileName, leekScript);
 
             PsiFile existingFile = srcDirectory.findFile(fileName);
 

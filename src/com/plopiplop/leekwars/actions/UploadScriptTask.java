@@ -15,7 +15,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.ui.content.MessageView;
-import com.plopiplop.leekwars.model.LeekWarsServer;
+import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
@@ -49,11 +49,11 @@ public class UploadScriptTask implements Runnable {
 
                     if (psiFile instanceof LSFile) {
                         Matcher matcher = LSFile.LKS_FILE_PATTERN.matcher(file.getName());
-                        final String id;
+                        final Integer id;
                         final String name;
 
                         if (matcher.matches()) {
-                            id = matcher.group(2);
+                            id = Integer.parseInt(matcher.group(2));
                             name = matcher.group(1);
                         } else {
                             id = null;
@@ -69,17 +69,17 @@ public class UploadScriptTask implements Runnable {
         });
     }
 
-    private void uploadFile(final VirtualFile file, final PsiFile psiFile, final String id, final String name) {
-        LeekWarsServer.callAction(new ServerAction() {
+    private void uploadFile(final VirtualFile file, final PsiFile psiFile, final Integer id, final String name) {
+        LeekWarsApiClient.callAction(new ServerAction() {
             @Override
             public void doAction() throws PluginNotConfiguredException, IOException {
                 try {
                     if (id == null) {
-                        String newId = LeekWarsServer.getInstance().createScript(name, psiFile.getText());
+                        int newId = LeekWarsApiClient.getInstance().createScript(name, psiFile.getText());
 
                         renameTempFile(psiFile, name, newId);
                     } else {
-                        LeekWarsServer.getInstance().uploadScript(id, name, psiFile.getText());
+                        LeekWarsApiClient.getInstance().uploadScript(id, name, psiFile.getText());
                     }
 
                     Notifications.Bus.notify(new Notification("LeekScript", "LeekWars Script", "Script uploaded", NotificationType.INFORMATION));
@@ -90,7 +90,7 @@ public class UploadScriptTask implements Runnable {
         });
     }
 
-    private void renameTempFile(final PsiFile psiFile, final String name, final String newId) {
+    private void renameTempFile(final PsiFile psiFile, final String name, final int newId) {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {

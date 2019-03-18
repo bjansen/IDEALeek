@@ -7,7 +7,7 @@ import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import com.plopiplop.leekwars.actions.CompilationException;
-import com.plopiplop.leekwars.model.LeekWarsServer;
+import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
@@ -46,12 +46,12 @@ public class LSVfsListener extends AbstractProjectComponent {
             int result = JOptionPane.showConfirmDialog(null, "Would you like to delete this AI on the LeekWars server as well?", "Confirm deletion", JOptionPane.YES_NO_OPTION);
 
             if (result == JOptionPane.YES_OPTION) {
-                final String id = matcher.group(2);
+                final int id = Integer.parseInt(matcher.group(2));
 
-                LeekWarsServer.callAction(new ServerAction() {
+                LeekWarsApiClient.callAction(new ServerAction() {
                     @Override
                     public void doAction() throws PluginNotConfiguredException, IOException {
-                        LeekWarsServer.getInstance().deleteScript(id);
+                        LeekWarsApiClient.getInstance().deleteScript(id);
                     }
                 });
             }
@@ -70,11 +70,11 @@ public class LSVfsListener extends AbstractProjectComponent {
 
                 if (newMatcher.matches() && Integer.parseInt(newMatcher.group(2)) == oldId) {
 
-                    LeekWarsServer.callAction(new ServerAction() {
+                    LeekWarsApiClient.callAction(new ServerAction() {
                         @Override
                         public void doAction() throws PluginNotConfiguredException, IOException {
                             try {
-                                LeekWarsServer.getInstance().uploadScript(newMatcher.group(2), newMatcher.group(1), new String(event.getFile().contentsToByteArray()));
+                                LeekWarsApiClient.getInstance().uploadScript(Integer.parseInt(newMatcher.group(2)), newMatcher.group(1), new String(event.getFile().contentsToByteArray()));
                             } catch (CompilationException e) {
                                 e.printStackTrace();
                             }
