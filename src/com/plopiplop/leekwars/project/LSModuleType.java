@@ -51,6 +51,10 @@ public class LSModuleType extends ModuleType<LSModuleBuilder> implements ModuleB
         return IconLoader.getIcon("/icons/leek.png");
     }
 
+    public Icon getBigIcon() {
+        return getNodeIcon(false);
+    }
+
     @Override
     public void moduleCreated(@NotNull final Module module) {
         RunnableBackgroundableWrapper wrapper = new RunnableBackgroundableWrapper(module.getProject(), "Preparing project...", new Runnable() {
