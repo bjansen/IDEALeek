@@ -5,7 +5,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-@State(name = "LSSettings", storages = {@Storage("leekscript.xml")})
+@State(name = "LSSettings", storages = {@Storage(file = "leekscript.xml")})
 public class LSSettings implements PersistentStateComponent<LSSettings> {
     public String siteUrl = "https://leekwars.com";
     public String siteLogin;

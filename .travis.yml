@@ -1,7 +1,14 @@
 language: java
-jdk:
-  - openjdk8
-  - oraclejdk8
+addons:
+  apt:
+    packages:
+      - openjdk-6-jdk
+
+jdk: openjdk6
+
+before_install:
+  - jdk_switcher use openjdk6
+
 install:
   - IDEA_VERSION=13.1.7
   - IDEA_TAR=ideaIC-${IDEA_VERSION}.tar.gz

@@ -1,16 +1,17 @@
 package com.plopiplop.leekwars.psi;
 
-import com.google.common.base.MoreObjects;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+import static org.apache.commons.lang.ObjectUtils.defaultIfNull;
+
 public class LSPsiImplUtil {
 
     public static String getSignature(LSFunctionDeclaration declaration) {
-        StringBuilder builder = new StringBuilder(MoreObjects.firstNonNull(declaration.getName(), "<anonymous function>"));
+        StringBuilder builder = new StringBuilder((String) defaultIfNull(declaration.getName(), "<anonymous function>"));
 
         builder.append('(');
 

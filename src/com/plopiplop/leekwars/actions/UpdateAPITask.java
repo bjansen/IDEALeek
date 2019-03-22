@@ -25,7 +25,7 @@ import org.jetbrains.jps.model.java.JpsJavaExtensionService;
 
 import java.io.IOException;
 
-import static org.apache.commons.lang3.ObjectUtils.firstNonNull;
+import static org.apache.commons.lang.ObjectUtils.defaultIfNull;
 
 public class UpdateAPITask implements Runnable {
 
@@ -34,7 +34,7 @@ public class UpdateAPITask implements Runnable {
 
     public UpdateAPITask(Project project, ModelManager modelManager) {
         this.project = project;
-        this.modelManager = firstNonNull(modelManager, ModelManager.getInstance(project));
+        this.modelManager = (ModelManager) defaultIfNull(modelManager, ModelManager.getInstance(project));
     }
 
     @Override
