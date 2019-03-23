@@ -1,19 +1,13 @@
 package com.plopiplop.leekwars.apiclient;
 
-import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.vfs.CharsetToolkit;
-import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.net.HttpConfigurable;
 import com.plopiplop.leekwars.actions.CompilationException;
-import com.plopiplop.leekwars.apiclient.dto.AIResponse;
-import com.plopiplop.leekwars.apiclient.dto.AIsResponse;
-import com.plopiplop.leekwars.apiclient.dto.FunctionsResponse;
-import com.plopiplop.leekwars.apiclient.dto.WeaponsResponse;
+import com.plopiplop.leekwars.apiclient.dto.*;
 import com.plopiplop.leekwars.model.Chip;
 import com.plopiplop.leekwars.model.Function;
 import com.plopiplop.leekwars.model.ServerAction;
@@ -56,11 +50,7 @@ public class LeekWarsApiClient {
     }
 
     public List<Weapon> getWeapons() throws IOException, PluginNotConfiguredException {
-        HttpURLConnection conn = getConnection("/api/weapon/get-all", null, false, false);
-        WeaponsResponse resp = new GsonBuilder().create().fromJson(
-                new InputStreamReader(conn.getInputStream()),
-                WeaponsResponse.class
-        );
+        WeaponsResponse resp = get("/api/weapon/get-all", WeaponsResponse.class);
 
         if (resp.isSuccess()) {
             List<Weapon> weapons = new ArrayList<Weapon>();
@@ -83,8 +73,7 @@ public class LeekWarsApiClient {
     }
 
     public List<Chip> getChips() throws IOException, PluginNotConfiguredException {
-        HttpURLConnection conn = getConnection("/api/chip/get-all", null, false, false);
-        Map resp = new GsonBuilder().create().fromJson(new InputStreamReader(conn.getInputStream()), Map.class);
+        Map resp = get("/api/chip/get-all", Map.class);
 
         if (resp.get("success") == Boolean.TRUE) {
             Map map = (Map) resp.get("chips");
@@ -111,9 +100,7 @@ public class LeekWarsApiClient {
     }
 
     public List<Function> getFunctions() throws IOException, PluginNotConfiguredException {
-        HttpURLConnection conn = getConnection("/api/function/get-all", null, false, false);
-        FunctionsResponse resp = new GsonBuilder().create().fromJson(
-                new InputStreamReader(conn.getInputStream()), FunctionsResponse.class);
+        FunctionsResponse resp = get("/api/function/get-all", FunctionsResponse.class);
 
         if (resp.isSuccess()) {
             List<Function> functions = new ArrayList<Function>();
@@ -142,9 +129,7 @@ public class LeekWarsApiClient {
     }
 
     public Map<Integer, String> listScripts() throws IOException, PluginNotConfiguredException {
-        HttpURLConnection conn = getConnection("/api/ai/get-farmer-ais", null, false, true);
-        AIsResponse resp = new GsonBuilder().create().fromJson(
-                new InputStreamReader(conn.getInputStream()), AIsResponse.class);
+        AIsResponse resp = secureGet("/api/ai/get-farmer-ais", AIsResponse.class);
 
         if (resp.isSuccess()) {
             Map<Integer, String> scripts = new TreeMap<Integer, String>();
@@ -160,9 +145,7 @@ public class LeekWarsApiClient {
     }
 
     public String downloadScript(int id) throws IOException, PluginNotConfiguredException {
-        HttpURLConnection conn = getConnection("/api/ai/get/" + id, null, false, true);
-        AIResponse resp = new GsonBuilder().create().fromJson(
-                new InputStreamReader(conn.getInputStream()), AIResponse.class);
+        AIResponse resp = secureGet("/api/ai/get/" + id, AIResponse.class);
 
         if (resp.isSuccess()) {
             return resp.getAi().getCode();
@@ -171,31 +154,30 @@ public class LeekWarsApiClient {
         throw new IOException("Can't fetch script");
     }
 
-    public void uploadScript(int id, String name, String content) throws CompilationException, IOException, PluginNotConfiguredException {
-        if (token == null) {
-            connectToLeekWars();
-        }
+    public void renameScript(int id, String name) throws IOException, PluginNotConfiguredException {
+        String params = String.format("ai_id=%d&new_name=%s", id, name);
 
+        GenericResponse result = securePost("/api/ai/rename", params, GenericResponse.class);
+
+        if (!result.isSuccess()) {
+            throw new IOException(result.getError());
+        }
+    }
+
+    public void uploadScript(int id, String name, String content) throws CompilationException, IOException, PluginNotConfiguredException {
         String params = String.format("ai_id=%d&code=%s", id, URLEncoder.encode(content, "UTF-8"));
 
-        HttpURLConnection connection = getConnection("/api/ai/save", params, true, true);
-        String result = CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
+        GenericResponse result = securePost("/api/ai/save", params, GenericResponse.class);
 
+        renameScript(id, name);
 
-        if (result.equals("\ufeff\n")) {
-            throw new IncorrectOperationException("Received empty response, uploaded script may have an invalid ID");
+        if (!result.isSuccess()) {
+            throw new CompilationException(result.getResult());
         }
     }
 
     public int createScript(String name, String content) throws IOException, PluginNotConfiguredException, CompilationException {
-        if (token == null) {
-            connectToLeekWars();
-        }
-
-        HttpURLConnection conn = getConnection("/api/ai/new", "folder_id=0&v2=false", false, true);
-
-        AIResponse resp = new GsonBuilder().create().fromJson(
-                new InputStreamReader(conn.getInputStream()), AIResponse.class);
+        AIResponse resp = securePost("/api/ai/new", "folder_id=0&v2=false", AIResponse.class);
 
         if (resp.isSuccess()) {
             int id = resp.getAi().getId();
@@ -209,13 +191,38 @@ public class LeekWarsApiClient {
     }
 
     public void deleteScript(int scriptId) throws IOException, PluginNotConfiguredException {
-        if (token == null) {
-            connectToLeekWars();
-        }
+        GenericResponse response = securePost("/api/ai/delete", "ai_id=" + scriptId, GenericResponse.class);
 
-        HttpURLConnection connection = getConnection("/api/ai/delete", "ai_id=" + scriptId, true, true);
-        String response = CharStreams.toString(new InputStreamReader(connection.getInputStream(), CharsetToolkit.UTF8));
-        System.out.println(response);
+        if (!response.isSuccess()) {
+            throw new IOException(response.getError());
+        }
+    }
+
+    private <T> T securePost(String url, String params, Class<T> responseType) throws IOException, PluginNotConfiguredException {
+        HttpURLConnection connection = getConnection(url, params, true, true);
+
+        return new GsonBuilder().create().fromJson(
+                new InputStreamReader(connection.getInputStream()),
+                responseType
+        );
+    }
+
+    private <T> T secureGet(String url, Class<T> responseType) throws IOException, PluginNotConfiguredException {
+        HttpURLConnection connection = getConnection(url, null, true, true);
+
+        return new GsonBuilder().create().fromJson(
+                new InputStreamReader(connection.getInputStream()),
+                responseType
+        );
+    }
+
+    private <T> T get(String url, Class<T> responseType) throws IOException, PluginNotConfiguredException {
+        HttpURLConnection connection = getConnection(url, null, true, false);
+
+        return new GsonBuilder().create().fromJson(
+                new InputStreamReader(connection.getInputStream()),
+                responseType
+        );
     }
 
     private HttpURLConnection getConnection(String url, String postData, boolean followRedirects, boolean appendToken) throws PluginNotConfiguredException, IOException {
@@ -272,7 +279,7 @@ public class LeekWarsApiClient {
 
         Map map = gson.fromJson(new InputStreamReader(connection.getInputStream()), Map.class);
 
-        System.out.println(map);
+        //System.out.println(map);
 
         if (map.get("success") == Boolean.TRUE) {
             token = map.get("token").toString();

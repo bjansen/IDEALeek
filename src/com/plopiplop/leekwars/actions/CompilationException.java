@@ -1,7 +1,5 @@
 package com.plopiplop.leekwars.actions;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.annotations.SerializedName;
 
 public class CompilationException extends Exception {
@@ -12,17 +10,7 @@ public class CompilationException extends Exception {
     @SerializedName("error")
     private String message;
 
-    public CompilationException(String result) {
-        Object[][] objects;
-
-        try {
-            objects = new Gson().fromJson(result, Object[][].class);
-        } catch (JsonSyntaxException e) {
-            success = false;
-            message = "Internal error, please report it (result was " + result + ")";
-            return;
-        }
-
+    public CompilationException(Object[][] objects) {
         for (Object[] object : objects) {
             int code = (int) Double.parseDouble(object[0].toString());
             success = code == 2;

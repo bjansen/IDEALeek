@@ -19,6 +19,10 @@ public class ScriptEditingTest extends LightCodeInsightFixtureTestCase {
 
         int scriptId = LeekWarsApiClient.getInstance().createScript("idealeek", SCRIPT_CONTENT);
 
+        Map<Integer, String> scripts = LeekWarsApiClient.getInstance().listScripts();
+        assertTrue(scripts.containsKey(scriptId));
+        assertEquals("idealeek", scripts.get(scriptId));
+
         assertEquals(SCRIPT_CONTENT, LeekWarsApiClient.getInstance().downloadScript(scriptId));
 
         LeekWarsApiClient.getInstance().uploadScript(scriptId, "idealeek", SCRIPT_NEW_CONTENT);
@@ -27,8 +31,7 @@ public class ScriptEditingTest extends LightCodeInsightFixtureTestCase {
 
         LeekWarsApiClient.getInstance().deleteScript(scriptId);
 
-        Map<Integer, String> scripts = LeekWarsApiClient.getInstance().listScripts();
-
+        scripts = LeekWarsApiClient.getInstance().listScripts();
         assertFalse(scripts.containsKey(scriptId));
     }
 
