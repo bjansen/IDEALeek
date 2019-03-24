@@ -14,6 +14,13 @@ global ${weapon.id};
 global ${chip.id};
 
 #end
+#foreach($const in $constants)
+/**
+ * ${const.description}
+ */
+global ${const.name} = ${const.value};
+
+#end
 #foreach($fun in $functions)
 #if($fun.isConstant)
 global ${fun.name};

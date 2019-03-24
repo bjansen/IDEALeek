@@ -46,6 +46,7 @@ public class UpdateAPITask implements Runnable {
                 modelManager.setWeapons(LeekWarsApiClient.getInstance().getWeapons());
                 modelManager.setChips(LeekWarsApiClient.getInstance().getChips());
                 modelManager.setFunctions(LeekWarsApiClient.getInstance().getFunctions());
+                modelManager.setConstants(LeekWarsApiClient.getInstance().getConstants());
 
                 if (!ApplicationManager.getApplication().isUnitTestMode()) {
                     writeApiFile();

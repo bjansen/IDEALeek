@@ -33,6 +33,7 @@ public class ApiTransformer {
         context.put("weapons", manager.getWeapons());
         context.put("chips", manager.getChips());
         context.put("functions", manager.getFunctions());
+        context.put("constants", manager.getConstants());
 
         PsiFile existingApi = out.findFile(LEEKWARS_API_FILE);
         String fileName = LEEKWARS_API_FILE;

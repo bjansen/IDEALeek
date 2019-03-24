@@ -12,6 +12,7 @@ public class ModelManager extends AbstractProjectComponent {
     private List<Weapon> weapons = Collections.emptyList();
     private List<Chip> chips = Collections.emptyList();
     private List<Function> functions;
+    private List<Constant> constants;
 
     protected ModelManager(Project project) {
         super(project);
@@ -84,5 +85,13 @@ public class ModelManager extends AbstractProjectComponent {
 
     public List<Function> getFunctions() {
         return functions;
+    }
+
+    public void setConstants(List<Constant> constants) {
+        this.constants = constants;
+    }
+
+    public List<Constant> getConstants() {
+        return constants;
     }
 }

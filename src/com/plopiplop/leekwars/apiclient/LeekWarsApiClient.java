@@ -5,13 +5,12 @@ import com.google.gson.GsonBuilder;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.util.Condition;
+import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.net.HttpConfigurable;
 import com.plopiplop.leekwars.actions.CompilationException;
 import com.plopiplop.leekwars.apiclient.dto.*;
-import com.plopiplop.leekwars.model.Chip;
-import com.plopiplop.leekwars.model.Function;
-import com.plopiplop.leekwars.model.ServerAction;
-import com.plopiplop.leekwars.model.Weapon;
+import com.plopiplop.leekwars.model.*;
 import com.plopiplop.leekwars.options.LSSettings;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 
@@ -51,6 +50,7 @@ public class LeekWarsApiClient {
 
     public List<Weapon> getWeapons() throws IOException, PluginNotConfiguredException {
         WeaponsResponse resp = get("/api/weapon/get-all", WeaponsResponse.class);
+        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/weapon.json", Map.class);
 
         if (resp.isSuccess()) {
             List<Weapon> weapons = new ArrayList<Weapon>();
@@ -58,8 +58,8 @@ public class LeekWarsApiClient {
             for (WeaponsResponse.Weap w : resp.getWeapons()) {
                 Weapon weapon = new Weapon();
                 weapon.id = "WEAPON_" + w.getName().toUpperCase();
-                weapon.name = weapon.id;
-                weapon.description = "?";
+                weapon.name = labels.get(w.getName());
+                weapon.description = "";
                 weapon.level = "Niveau " + w.getLevel();
                 weapon.price = "" + w.getCost();
                 weapon.value = w.getId();
@@ -74,6 +74,7 @@ public class LeekWarsApiClient {
 
     public List<Chip> getChips() throws IOException, PluginNotConfiguredException {
         Map resp = get("/api/chip/get-all", Map.class);
+        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/chip.json", Map.class);
 
         if (resp.get("success") == Boolean.TRUE) {
             Map map = (Map) resp.get("chips");
@@ -85,8 +86,8 @@ public class LeekWarsApiClient {
 
                 Chip chip = new Chip();
                 chip.id = "CHIP_" + w.get("name").toString().toUpperCase();
-                chip.name = chip.id;
-                chip.description = "?";
+                chip.name = labels.get(w.get("name").toString());
+                chip.description = "";
                 chip.level = "Niveau " + (int) Double.parseDouble(w.get("level").toString());
                 chip.price = w.get("cost").toString();
                 chip.value = "" + (int) Double.parseDouble(w.get("id").toString());
@@ -101,18 +102,35 @@ public class LeekWarsApiClient {
 
     public List<Function> getFunctions() throws IOException, PluginNotConfiguredException {
         FunctionsResponse resp = get("/api/function/get-all", FunctionsResponse.class);
+        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
 
         if (resp.isSuccess()) {
             List<Function> functions = new ArrayList<Function>();
+            String lastName = null;
+            int overloads = 0;
 
             for (FunctionsResponse.Fun fun : resp.getFunctions()) {
                 Function function = new Function();
                 function.name = fun.getName();
-                function.description = "?";
+
+                String funName = fun.getName();
+
+                if (fun.getName().equals(lastName)) {
+                    overloads++;
+                    funName += "_" + (overloads + 1);
+                } else {
+                    overloads = 0;
+                }
+                lastName = fun.getName();
+
+                function.description = labels.get("func_" + funName);
+
+                int argPos = 0;
 
                 for (String arg : fun.getArgumentNames()) {
+                    argPos++;
                     if (!arg.matches("\\d+")) {
-                        function.getParameters().put(arg, "?");
+                        function.getParameters().put(arg, labels.get("func_" + funName + "_arg_" + argPos));
                     }
                 }
 
@@ -126,6 +144,32 @@ public class LeekWarsApiClient {
         }
 
         throw new IOException("Can't fetch functions");
+    }
+
+    public List<Constant> getConstants() throws IOException, PluginNotConfiguredException {
+        ConstantsResponse resp = get("/api/constant/get-all", ConstantsResponse.class);
+        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
+
+        if (resp.isSuccess()) {
+            List<Constant> constants = ContainerUtil.filter(resp.getConstants(), new Condition<Constant>() {
+                @Override
+                public boolean value(Constant constant) {
+                    return !(constant.getName().startsWith("CHIP_") || constant.getName().startsWith("WEAPON_"));
+                }
+            });
+
+            for (Constant constant : constants) {
+                if (labels.containsKey("const_" + constant.getName())) {
+                    constant.description = labels.get("const_" + constant.getName());
+                } else {
+                    constant.description = constant.getName();
+                }
+            }
+
+            return constants;
+        }
+
+        throw new IOException("Can't fetch constants");
     }
 
     public Map<Integer, String> listScripts() throws IOException, PluginNotConfiguredException {
@@ -289,6 +333,10 @@ public class LeekWarsApiClient {
     }
 
     private String buildUrl(String path) {
+        if (path.startsWith("http")) {
+            return path;
+        }
+
         String host = LSSettings.getInstance().getSiteUrl();
 
         if (host.endsWith("/")) {
