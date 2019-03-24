@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSCompareExpressionImpl extends ASTWrapperPsiElement implements LSCompareExpression {
 
-  public LSCompareExpressionImpl(ASTNode node) {
+  public LSCompareExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitCompareExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitCompareExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

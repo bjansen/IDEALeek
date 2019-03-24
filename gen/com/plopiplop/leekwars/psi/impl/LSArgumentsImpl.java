@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSArgumentsImpl extends ASTWrapperPsiElement implements LSArguments {
 
-  public LSArgumentsImpl(ASTNode node) {
+  public LSArgumentsImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitArguments(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitArguments(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

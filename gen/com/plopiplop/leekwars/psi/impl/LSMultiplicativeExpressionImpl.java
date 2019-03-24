@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSMultiplicativeExpressionImpl extends ASTWrapperPsiElement implements LSMultiplicativeExpression {
 
-  public LSMultiplicativeExpressionImpl(ASTNode node) {
+  public LSMultiplicativeExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitMultiplicativeExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitMultiplicativeExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

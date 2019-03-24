@@ -133,7 +133,7 @@ public interface LSTypes {
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-       if (type == ADDITIVE_EXPRESSION) {
+      if (type == ADDITIVE_EXPRESSION) {
         return new LSAdditiveExpressionImpl(node);
       }
       else if (type == ARGUMENTS) {

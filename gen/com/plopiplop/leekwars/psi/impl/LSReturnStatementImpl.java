@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSReturnStatementImpl extends ASTWrapperPsiElement implements LSReturnStatement {
 
-  public LSReturnStatementImpl(ASTNode node) {
+  public LSReturnStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitReturnStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitReturnStatement(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

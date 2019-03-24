@@ -14,12 +14,16 @@ import com.intellij.navigation.ItemPresentation;
 
 public class LSVariableDeclarationImpl extends LSNamedElementImpl implements LSVariableDeclaration {
 
-  public LSVariableDeclarationImpl(ASTNode node) {
+  public LSVariableDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitVariableDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitVariableDeclaration(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

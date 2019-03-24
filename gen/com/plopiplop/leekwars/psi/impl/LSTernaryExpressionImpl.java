@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSTernaryExpressionImpl extends ASTWrapperPsiElement implements LSTernaryExpression {
 
-  public LSTernaryExpressionImpl(ASTNode node) {
+  public LSTernaryExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitTernaryExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitTernaryExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

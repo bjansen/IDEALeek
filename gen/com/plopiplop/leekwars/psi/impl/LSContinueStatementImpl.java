@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSContinueStatementImpl extends ASTWrapperPsiElement implements LSContinueStatement {
 
-  public LSContinueStatementImpl(ASTNode node) {
+  public LSContinueStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitContinueStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitContinueStatement(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

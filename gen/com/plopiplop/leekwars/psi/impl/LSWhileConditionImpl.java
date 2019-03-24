@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSWhileConditionImpl extends ASTWrapperPsiElement implements LSWhileCondition {
 
-  public LSWhileConditionImpl(ASTNode node) {
+  public LSWhileConditionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitWhileCondition(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitWhileCondition(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

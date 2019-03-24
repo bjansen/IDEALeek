@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSParameterImpl extends LSNamedElementImpl implements LSParameter {
 
-  public LSParameterImpl(ASTNode node) {
+  public LSParameterImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitParameter(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitParameter(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

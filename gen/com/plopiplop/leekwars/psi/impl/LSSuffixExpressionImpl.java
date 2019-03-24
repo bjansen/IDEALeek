@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSSuffixExpressionImpl extends ASTWrapperPsiElement implements LSSuffixExpression {
 
-  public LSSuffixExpressionImpl(ASTNode node) {
+  public LSSuffixExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitSuffixExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitSuffixExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSShiftExpressionImpl extends ASTWrapperPsiElement implements LSShiftExpression {
 
-  public LSShiftExpressionImpl(ASTNode node) {
+  public LSShiftExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitShiftExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitShiftExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

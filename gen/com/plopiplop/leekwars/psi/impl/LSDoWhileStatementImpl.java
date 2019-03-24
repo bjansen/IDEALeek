@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSDoWhileStatementImpl extends ASTWrapperPsiElement implements LSDoWhileStatement {
 
-  public LSDoWhileStatementImpl(ASTNode node) {
+  public LSDoWhileStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitDoWhileStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitDoWhileStatement(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

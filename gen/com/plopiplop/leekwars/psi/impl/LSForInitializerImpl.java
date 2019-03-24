@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSForInitializerImpl extends LSNamedElementImpl implements LSForInitializer {
 
-  public LSForInitializerImpl(ASTNode node) {
+  public LSForInitializerImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitForInitializer(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitForInitializer(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

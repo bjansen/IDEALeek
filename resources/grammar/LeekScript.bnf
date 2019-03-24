@@ -12,6 +12,7 @@
   elementTypeHolderClass="com.plopiplop.leekwars.psi.LSTypes"
   elementTypeClass="com.plopiplop.leekwars.psi.LSElementType"
   tokenTypeClass="com.plopiplop.leekwars.psi.LSTokenType"
+  generateTokenAccessors=true
 
   implements("(functionDeclaration|variableDeclaration|parameter|forInitializer|functionName|referenceExpression)")="com.plopiplop.leekwars.psi.LSNamedElement"
   mixin("(functionDeclaration|variableDeclaration|parameter|forInitializer|functionName|referenceExpression)")="com.plopiplop.leekwars.psi.LSNamedElementImpl"

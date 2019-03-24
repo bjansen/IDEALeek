@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSEmptyStatementImpl extends ASTWrapperPsiElement implements LSEmptyStatement {
 
-  public LSEmptyStatementImpl(ASTNode node) {
+  public LSEmptyStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitEmptyStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitEmptyStatement(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

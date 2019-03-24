@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSThenBlockImpl extends ASTWrapperPsiElement implements LSThenBlock {
 
-  public LSThenBlockImpl(ASTNode node) {
+  public LSThenBlockImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitThenBlock(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitThenBlock(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

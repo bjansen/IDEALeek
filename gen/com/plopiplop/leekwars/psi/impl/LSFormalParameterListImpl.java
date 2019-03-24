@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSFormalParameterListImpl extends ASTWrapperPsiElement implements LSFormalParameterList {
 
-  public LSFormalParameterListImpl(ASTNode node) {
+  public LSFormalParameterListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitFormalParameterList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitFormalParameterList(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

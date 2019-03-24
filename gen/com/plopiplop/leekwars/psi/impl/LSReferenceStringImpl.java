@@ -14,12 +14,16 @@ import com.intellij.psi.PsiReference;
 
 public class LSReferenceStringImpl extends ASTWrapperPsiElement implements LSReferenceString {
 
-  public LSReferenceStringImpl(ASTNode node) {
+  public LSReferenceStringImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitReferenceString(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitReferenceString(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

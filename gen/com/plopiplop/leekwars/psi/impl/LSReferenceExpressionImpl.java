@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSReferenceExpressionImpl extends LSNamedElementImpl implements LSReferenceExpression {
 
-  public LSReferenceExpressionImpl(ASTNode node) {
+  public LSReferenceExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitReferenceExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitReferenceExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

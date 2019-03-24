@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSSingleExpressionImpl extends ASTWrapperPsiElement implements LSSingleExpression {
 
-  public LSSingleExpressionImpl(ASTNode node) {
+  public LSSingleExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitSingleExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitSingleExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

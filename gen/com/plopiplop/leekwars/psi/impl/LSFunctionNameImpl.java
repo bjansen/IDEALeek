@@ -14,12 +14,16 @@ import com.intellij.navigation.ItemPresentation;
 
 public class LSFunctionNameImpl extends LSNamedElementImpl implements LSFunctionName {
 
-  public LSFunctionNameImpl(ASTNode node) {
+  public LSFunctionNameImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitFunctionName(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitFunctionName(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSBreakStatementImpl extends ASTWrapperPsiElement implements LSBreakStatement {
 
-  public LSBreakStatementImpl(ASTNode node) {
+  public LSBreakStatementImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitBreakStatement(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitBreakStatement(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

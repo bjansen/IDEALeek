@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSStatementListImpl extends ASTWrapperPsiElement implements LSStatementList {
 
-  public LSStatementListImpl(ASTNode node) {
+  public LSStatementListImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitStatementList(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitStatementList(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

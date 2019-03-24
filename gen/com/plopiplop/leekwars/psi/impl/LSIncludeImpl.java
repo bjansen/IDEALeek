@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSIncludeImpl extends ASTWrapperPsiElement implements LSInclude {
 
-  public LSIncludeImpl(ASTNode node) {
+  public LSIncludeImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitInclude(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitInclude(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

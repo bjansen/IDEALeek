@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSEosImpl extends ASTWrapperPsiElement implements LSEos {
 
-  public LSEosImpl(ASTNode node) {
+  public LSEosImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitEos(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitEos(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

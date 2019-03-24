@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSArrayLiteralImpl extends ASTWrapperPsiElement implements LSArrayLiteral {
 
-  public LSArrayLiteralImpl(ASTNode node) {
+  public LSArrayLiteralImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitArrayLiteral(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitArrayLiteral(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

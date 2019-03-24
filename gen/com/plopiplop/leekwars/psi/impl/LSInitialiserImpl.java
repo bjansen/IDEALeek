@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSInitialiserImpl extends ASTWrapperPsiElement implements LSInitialiser {
 
-  public LSInitialiserImpl(ASTNode node) {
+  public LSInitialiserImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitInitialiser(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitInitialiser(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

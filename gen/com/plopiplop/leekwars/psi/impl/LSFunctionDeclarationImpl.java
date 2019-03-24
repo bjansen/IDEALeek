@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSFunctionDeclarationImpl extends LSNamedElementImpl implements LSFunctionDeclaration {
 
-  public LSFunctionDeclarationImpl(ASTNode node) {
+  public LSFunctionDeclarationImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitFunctionDeclaration(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitFunctionDeclaration(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

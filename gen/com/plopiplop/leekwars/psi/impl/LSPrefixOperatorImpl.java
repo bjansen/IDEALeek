@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSPrefixOperatorImpl extends ASTWrapperPsiElement implements LSPrefixOperator {
 
-  public LSPrefixOperatorImpl(ASTNode node) {
+  public LSPrefixOperatorImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitPrefixOperator(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitPrefixOperator(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

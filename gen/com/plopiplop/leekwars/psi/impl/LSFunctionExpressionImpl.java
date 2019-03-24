@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSFunctionExpressionImpl extends ASTWrapperPsiElement implements LSFunctionExpression {
 
-  public LSFunctionExpressionImpl(ASTNode node) {
+  public LSFunctionExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitFunctionExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitFunctionExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

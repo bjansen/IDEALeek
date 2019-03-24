@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSBitwiseExpressionImpl extends ASTWrapperPsiElement implements LSBitwiseExpression {
 
-  public LSBitwiseExpressionImpl(ASTNode node) {
+  public LSBitwiseExpressionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitBitwiseExpression(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitBitwiseExpression(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

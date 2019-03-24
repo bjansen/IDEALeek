@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSBlockImpl extends ASTWrapperPsiElement implements LSBlock {
 
-  public LSBlockImpl(ASTNode node) {
+  public LSBlockImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitBlock(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitBlock(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 

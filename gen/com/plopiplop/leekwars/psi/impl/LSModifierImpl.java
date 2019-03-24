@@ -13,12 +13,16 @@ import com.plopiplop.leekwars.psi.*;
 
 public class LSModifierImpl extends ASTWrapperPsiElement implements LSModifier {
 
-  public LSModifierImpl(ASTNode node) {
+  public LSModifierImpl(@NotNull ASTNode node) {
     super(node);
   }
 
+  public void accept(@NotNull LSVisitor visitor) {
+    visitor.visitModifier(this);
+  }
+
   public void accept(@NotNull PsiElementVisitor visitor) {
-    if (visitor instanceof LSVisitor) ((LSVisitor)visitor).visitModifier(this);
+    if (visitor instanceof LSVisitor) accept((LSVisitor)visitor);
     else super.accept(visitor);
   }
 
