@@ -10,6 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.plopiplop.leekwars.psi.LSTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.plopiplop.leekwars.psi.*;
+import com.intellij.psi.PsiReference;
 
 public class LSLiteralImpl extends ASTWrapperPsiElement implements LSLiteral {
 
@@ -54,6 +55,10 @@ public class LSLiteralImpl extends ASTWrapperPsiElement implements LSLiteral {
   @Nullable
   public PsiElement getString() {
     return findChildByType(STRING);
+  }
+
+  public PsiReference getReference() {
+    return LSPsiImplUtil.getReference(this);
   }
 
 }

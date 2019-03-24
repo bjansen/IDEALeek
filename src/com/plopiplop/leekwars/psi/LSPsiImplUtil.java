@@ -2,6 +2,7 @@ package com.plopiplop.leekwars.psi;
 
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -96,10 +97,21 @@ public class LSPsiImplUtil {
         return statement.getModifier().getKwGlobal() != null;
     }
 
-    public static PsiReference getReference(final LSReferenceString string) {
-        if (string.getParent() instanceof LSInclude) {
-            return new LSFileReference(string);
+    public static PsiReference getReference(final LSLiteral literal) {
+
+        if (literal.getString() != null) {
+            LSMethodCall call = PsiTreeUtil.getParentOfType(literal, LSMethodCall.class);
+
+            if (call != null) {
+                String methodName = call.getReferenceExpression().getIdentifier().getText();
+                int nbArguments = call.getNbArguments();
+
+                if (methodName.equals("include") && nbArguments == 1) {
+                    return new LSFileReference(literal);
+                }
+            }
         }
+
         return null;
     }
 }

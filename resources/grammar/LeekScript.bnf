@@ -41,7 +41,6 @@
     kw_return='return'
     kw_break='break'
     kw_continue='continue'
-    kw_include='include'
 
     op_inc='++'
     op_dec='--'
@@ -96,7 +95,7 @@
 program ::= sourceElements? <<eof>>
 
 private sourceElements ::= sourceElement+
-private sourceElement ::= functionDeclaration | statement | include | c_style_comment | doc_comment
+private sourceElement ::= functionDeclaration | statement | c_style_comment | doc_comment
 
 private statement ::=
         variableStatement
@@ -111,8 +110,6 @@ private statement ::=
     |   continueStatement
 
 referenceExpression ::= identifier
-include ::= 'include' '(' referenceString ')' eos {pin=1}
-referenceString ::= string {methods=[getReference]}
 functionDeclaration ::= 'function' functionName '(' formalParameterList? ')' block {methods=[getSignature getNbArguments] pin=1}
 
 functionName ::= identifier {methods=[getPresentation]}
@@ -201,7 +198,7 @@ private bitwiseOperator ::= '&' | '^' | '|'
 private multiplicativeOperator ::= '**' | '*' | '/' | '%'
 private additiveOperator ::= '+' | '-'
 private assignmentOperator ::= '=' | '+=' | '-=' | '*=' | '/=' | '&=' | '|=' | '^='
-literal ::= 'null' | 'true' | 'false' | string | number
+literal ::= 'null' | 'true' | 'false' | string | number {methods=[getReference]}
 
 arrayLiteral ::= '[' (keyvalList | elementList)? ']'
 elementList ::= singleExpression (',' singleExpression)*

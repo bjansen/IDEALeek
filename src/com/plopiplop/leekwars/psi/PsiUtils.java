@@ -71,27 +71,58 @@ public class PsiUtils {
     }
 
     public static List<PsiElement> getIncludedFilesBefore(PsiElement element) {
-        List<PsiElement> files = new ArrayList<PsiElement>();
-        int offset = element.getNode().getStartOffset();
+        final List<PsiElement> files = new ArrayList<PsiElement>();
+        final int offset = element.getNode().getStartOffset();
 
-        for (LSInclude include : ((LSFile) element.getContainingFile()).findChildrenByClass(LSInclude.class)) {
-            if (include.getStartOffsetInParent() > offset) {
-                continue;
+        element.getContainingFile().accept(new LSVisitor() {
+            @Override
+            public void visitElement(@NotNull PsiElement o) {
+                super.visitElement(o);
+
+                for (PsiElement child : o.getChildren()) {
+                    child.accept(this);
+                }
             }
 
-            LSReferenceString refString = include.getReferenceString();
+            @Override
+            public void visitMethodCall(@NotNull LSMethodCall include) {
+                super.visitMethodCall(include);
 
-            if (refString != null) {
-                PsiReference reference = refString.getReference();
-                if (reference != null) {
-                    PsiElement resolve = reference.resolve();
+                if (include.getStartOffsetInParent() > offset) {
+                    return;
+                }
+                if (!include.getReferenceExpression().getIdentifier().getText().equals("include")) {
+                    return;
+                }
 
-                    if (resolve != null) {
-                        files.add(resolve);
+                LSArgumentList args = include.getArguments().getArgumentList();
+
+                if (args != null && args.getSingleExpressionList().size() == 1) {
+                    LSSingleExpression expr = args.getSingleExpressionList().get(0);
+                    LSPrefixExpression prefixExpression = expr.getPrefixExpression();
+                    if (prefixExpression != null) {
+                        LSPrimaryExpression primary = prefixExpression.getPrimaryExpression();
+                        if (primary != null) {
+                            LSLiteral literal = primary.getLiteral();
+                            if (literal != null && literal.getString() != null) {
+                                PsiReference reference = literal.getReference();
+
+                                if (reference != null) {
+                                    PsiElement resolve = reference.resolve();
+
+                                    if (resolve != null) {
+                                        files.add(resolve);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
+        });
+        new PsiRecursiveElementVisitor() {
+
+        }.visitFile(element.getContainingFile());
 
         return files;
     }

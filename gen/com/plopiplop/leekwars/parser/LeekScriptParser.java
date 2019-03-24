@@ -92,9 +92,6 @@ public class LeekScriptParser implements PsiParser, LightPsiParser {
     else if (t == IF_STATEMENT) {
       r = ifStatement(b, 0);
     }
-    else if (t == INCLUDE) {
-      r = include(b, 0);
-    }
     else if (t == INITIALISER) {
       r = initialiser(b, 0);
     }
@@ -136,9 +133,6 @@ public class LeekScriptParser implements PsiParser, LightPsiParser {
     }
     else if (t == REFERENCE_EXPRESSION) {
       r = referenceExpression(b, 0);
-    }
-    else if (t == REFERENCE_STRING) {
-      r = referenceString(b, 0);
     }
     else if (t == RETURN_STATEMENT) {
       r = returnStatement(b, 0);
@@ -880,22 +874,6 @@ public class LeekScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'include' '(' referenceString ')' eos
-  public static boolean include(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "include")) return false;
-    if (!nextTokenIs(b, KW_INCLUDE)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, INCLUDE, null);
-    r = consumeTokens(b, 1, KW_INCLUDE, OP_LPAREN);
-    p = r; // pin = 1
-    r = r && report_error_(b, referenceString(b, l + 1));
-    r = p && report_error_(b, consumeToken(b, OP_RPAREN)) && r;
-    r = p && eos(b, l + 1) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
-  }
-
-  /* ********************************************************** */
   // '=' singleExpression
   public static boolean initialiser(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "initialiser")) return false;
@@ -1305,18 +1283,6 @@ public class LeekScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // string
-  public static boolean referenceString(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "referenceString")) return false;
-    if (!nextTokenIs(b, STRING)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, STRING);
-    exit_section_(b, m, REFERENCE_STRING, r);
-    return r;
-  }
-
-  /* ********************************************************** */
   // 'return' singleExpression? eos
   public static boolean returnStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "returnStatement")) return false;
@@ -1442,13 +1408,12 @@ public class LeekScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // functionDeclaration | statement | include | c_style_comment | doc_comment
+  // functionDeclaration | statement | c_style_comment | doc_comment
   static boolean sourceElement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "sourceElement")) return false;
     boolean r;
     r = functionDeclaration(b, l + 1);
     if (!r) r = statement(b, l + 1);
-    if (!r) r = include(b, l + 1);
     if (!r) r = consumeToken(b, C_STYLE_COMMENT);
     if (!r) r = consumeToken(b, DOC_COMMENT);
     return r;

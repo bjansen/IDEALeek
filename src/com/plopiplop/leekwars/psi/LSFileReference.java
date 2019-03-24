@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.regex.Pattern;
 
-public class LSFileReference extends PsiReferenceBase<LSReferenceString> {
+public class LSFileReference extends PsiReferenceBase<LSLiteral> {
 
-    public LSFileReference(@NotNull LSReferenceString element) {
+    public LSFileReference(@NotNull LSLiteral element) {
         super(element, new TextRange(1, element.getTextLength() - 1));
     }
 

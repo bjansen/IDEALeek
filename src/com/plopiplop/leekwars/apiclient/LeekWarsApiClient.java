@@ -134,10 +134,7 @@ public class LeekWarsApiClient {
                     }
                 }
 
-                // TODO include n'est pas un mot-clé, il faut changer la grammaire puis virer ce if
-                if (!"include".equals(function.name)) {
-                    functions.add(function);
-                }
+                functions.add(function);
             }
 
             return functions;

@@ -62,7 +62,7 @@ public class LSCompletionContributor extends CompletionContributor {
                     }
                 }
 
-                if (element != null && element.getParent() instanceof LSReferenceString) {
+                if (isIncludeParameter(element)) {
                     findFileCompletions(element, result);
                 } else {
                     findCompletions(element, result);
@@ -81,6 +81,22 @@ public class LSCompletionContributor extends CompletionContributor {
                 }
             }
         });
+    }
+
+    private boolean isIncludeParameter(PsiElement element) {
+        if (element != null && element.getParent() instanceof LSLiteral) {
+            LSLiteral literal = (LSLiteral) element.getParent();
+
+            if (literal.getString() != null) {
+                LSMethodCall methodCall = PsiTreeUtil.getParentOfType(element, LSMethodCall.class);
+
+                if (methodCall != null && methodCall.getReferenceExpression().getIdentifier().getText().equals("include")) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private void findFileCompletions(PsiElement element, CompletionResultSet result) {
@@ -119,7 +135,6 @@ public class LSCompletionContributor extends CompletionContributor {
 
         if (PsiTreeUtil.getParentOfType(element, LSBlock.class) == null) {
             result.addElement(keyword("function", ADD_SPACE_HANDLER));
-            result.addElement(keyword("include", ParenthesesInsertHandler.getInstance(true, false, false, true, true)));
         }
 
         result.addElement(keyword("while", ParenthesesInsertHandler.getInstance(true, true, false, true, true)));

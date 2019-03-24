@@ -56,10 +56,10 @@ public class LSAnnotator implements Annotator {
 
             syntaxAnnotator.annotate(element, reference, holder);
             // TODO find unused variables/functions? see com.intellij.refactoring.rename.RenameUtil.findUsages()
-        } else if (element instanceof LSReferenceString) {
+        } else if (element instanceof LSLiteral) {
             PsiReference reference = element.getReference();
 
-            if (reference == null || reference.resolve() == null) {
+            if (reference != null && reference.resolve() == null) {
                 holder.createErrorAnnotation(element, "AI not found");
             }
         }

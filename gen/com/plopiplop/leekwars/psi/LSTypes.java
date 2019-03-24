@@ -31,7 +31,6 @@ public interface LSTypes {
   IElementType FUNCTION_EXPRESSION = new LSElementType("FUNCTION_EXPRESSION");
   IElementType FUNCTION_NAME = new LSElementType("FUNCTION_NAME");
   IElementType IF_STATEMENT = new LSElementType("IF_STATEMENT");
-  IElementType INCLUDE = new LSElementType("INCLUDE");
   IElementType INITIALISER = new LSElementType("INITIALISER");
   IElementType KEYVAL = new LSElementType("KEYVAL");
   IElementType KEYVAL_LIST = new LSElementType("KEYVAL_LIST");
@@ -46,7 +45,6 @@ public interface LSTypes {
   IElementType PREFIX_OPERATOR = new LSElementType("PREFIX_OPERATOR");
   IElementType PRIMARY_EXPRESSION = new LSElementType("PRIMARY_EXPRESSION");
   IElementType REFERENCE_EXPRESSION = new LSElementType("REFERENCE_EXPRESSION");
-  IElementType REFERENCE_STRING = new LSElementType("REFERENCE_STRING");
   IElementType RETURN_STATEMENT = new LSElementType("RETURN_STATEMENT");
   IElementType SHIFT_EXPRESSION = new LSElementType("SHIFT_EXPRESSION");
   IElementType SINGLE_EXPRESSION = new LSElementType("SINGLE_EXPRESSION");
@@ -74,7 +72,6 @@ public interface LSTypes {
   IElementType KW_GLOBAL = new LSTokenType("global");
   IElementType KW_IF = new LSTokenType("if");
   IElementType KW_IN = new LSTokenType("in");
-  IElementType KW_INCLUDE = new LSTokenType("include");
   IElementType KW_NULL = new LSTokenType("null");
   IElementType KW_RETURN = new LSTokenType("return");
   IElementType KW_TRUE = new LSTokenType("true");
@@ -202,9 +199,6 @@ public interface LSTypes {
       else if (type == IF_STATEMENT) {
         return new LSIfStatementImpl(node);
       }
-      else if (type == INCLUDE) {
-        return new LSIncludeImpl(node);
-      }
       else if (type == INITIALISER) {
         return new LSInitialiserImpl(node);
       }
@@ -246,9 +240,6 @@ public interface LSTypes {
       }
       else if (type == REFERENCE_EXPRESSION) {
         return new LSReferenceExpressionImpl(node);
-      }
-      else if (type == REFERENCE_STRING) {
-        return new LSReferenceStringImpl(node);
       }
       else if (type == RETURN_STATEMENT) {
         return new LSReturnStatementImpl(node);
