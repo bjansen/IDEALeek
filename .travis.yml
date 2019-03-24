@@ -2,8 +2,20 @@ language: java
 jdk:
   - openjdk8
   - oraclejdk8
+env:
+  global:
+    - secure: "JzptRMU0Ul+AcvHKBQDj++HCnvYMLj5rxaW8VPM6VJG1MC8SOfEMHO1P9yRyPLP5jaw0WPI88BfPaI1LhSr3YPTiOgwCZWWbwtImJVvFdyVJm9ZCbsDExJcIVp5WDX0x0hI3m5QL+JVL4Yf9Bb6EkCD0EwA2XNDrO1hfHmWE5t8="
+  matrix:
+    - IDEA_VERSION=13.0.5
+    - IDEA_VERSION=13.1.7
+    - IDEA_VERSION=14.1.7
+    - IDEA_VERSION=15.0.6
+    - IDEA_VERSION=2016.3.8
+    - IDEA_VERSION=2017.3.6
+    - IDEA_VERSION=2018.1.7
+    - IDEA_VERSION=2018.2.7
+    - IDEA_VERSION=2018.3.4
 install:
-  - IDEA_VERSION=13.1.7
   - IDEA_TAR=ideaIC-${IDEA_VERSION}.tar.gz
   - |
     if [ -f ~/$IDEA_TAR ]; then
@@ -24,5 +36,3 @@ install:
   - echo "Creating build.properties file for ant."
   - echo "idea.home=$(pwd)/idea-IC" > build.properties
 script: ant
-env:
-  secure: "JzptRMU0Ul+AcvHKBQDj++HCnvYMLj5rxaW8VPM6VJG1MC8SOfEMHO1P9yRyPLP5jaw0WPI88BfPaI1LhSr3YPTiOgwCZWWbwtImJVvFdyVJm9ZCbsDExJcIVp5WDX0x0hI3m5QL+JVL4Yf9Bb6EkCD0EwA2XNDrO1hfHmWE5t8="
