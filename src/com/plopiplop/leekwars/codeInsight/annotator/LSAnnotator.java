@@ -33,7 +33,7 @@ public class LSAnnotator implements Annotator {
                 LSMethodCall methodCall = (LSMethodCall) element.getParent().getParent();
 
                 if (!hasExactSignature(methodCall, resolveResults)) {
-                    holder.createErrorAnnotation(methodCall.getArguments(), "Cannot find function '" + element.getText() + "()' with given parameters");
+                    holder.createErrorAnnotation(methodCall.getArgumentsList().get(0), "Cannot find function '" + element.getText() + "()' with given parameters");
                 }
             } else {
                 ResolveResult[] allRefs = reference.resolve(true);

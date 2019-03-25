@@ -42,8 +42,10 @@ public class LSPsiImplUtil {
     public static int getNbArguments(LSMethodCall methodCall) {
         int nbArgs = 0;
 
-        if (methodCall.getArguments().getArgumentList() != null) {
-            nbArgs = methodCall.getArguments().getArgumentList().getSingleExpressionList().size();
+        LSArgumentList firstArgList = methodCall.getArgumentsList().get(0).getArgumentList();
+
+        if (firstArgList != null) {
+            nbArgs = firstArgList.getSingleExpressionList().size();
         }
 
         return nbArgs;

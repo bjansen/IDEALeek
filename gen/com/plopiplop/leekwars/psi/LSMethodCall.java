@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface LSMethodCall extends PsiElement {
 
   @NotNull
-  LSArguments getArguments();
+  List<LSArguments> getArgumentsList();
 
   @NotNull
   LSReferenceExpression getReferenceExpression();

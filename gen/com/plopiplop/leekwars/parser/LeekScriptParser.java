@@ -1095,15 +1095,30 @@ public class LeekScriptParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // referenceExpression arguments
+  // referenceExpression arguments+
   public static boolean methodCall(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "methodCall")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = referenceExpression(b, l + 1);
-    r = r && arguments(b, l + 1);
+    r = r && methodCall_1(b, l + 1);
     exit_section_(b, m, METHOD_CALL, r);
+    return r;
+  }
+
+  // arguments+
+  private static boolean methodCall_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "methodCall_1")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = arguments(b, l + 1);
+    while (r) {
+      int c = current_position_(b);
+      if (!arguments(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "methodCall_1", c)) break;
+    }
+    exit_section_(b, m, null, r);
     return r;
   }
 

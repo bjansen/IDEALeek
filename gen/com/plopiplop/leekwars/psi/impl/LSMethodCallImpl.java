@@ -28,8 +28,8 @@ public class LSMethodCallImpl extends ASTWrapperPsiElement implements LSMethodCa
 
   @Override
   @NotNull
-  public LSArguments getArguments() {
-    return findNotNullChildByClass(LSArguments.class);
+  public List<LSArguments> getArgumentsList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, LSArguments.class);
   }
 
   @Override

@@ -95,7 +95,7 @@ public class PsiUtils {
                     return;
                 }
 
-                LSArgumentList args = include.getArguments().getArgumentList();
+                LSArgumentList args = include.getArgumentsList().get(0).getArgumentList();
 
                 if (args != null && args.getSingleExpressionList().size() == 1) {
                     LSSingleExpression expr = args.getSingleExpressionList().get(0);

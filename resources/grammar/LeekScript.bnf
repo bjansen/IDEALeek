@@ -174,7 +174,7 @@ functionExpression ::= 'function' '(' formalParameterList? ')' block {pin=1}
 
 private leftHandSideExpression ::= memberExpression
 
-methodCall ::= referenceExpression arguments {methods=[getNbArguments]}
+methodCall ::= referenceExpression arguments+ {methods=[getNbArguments]}
 private memberExpression ::= (methodCall | primaryExpression | functionExpression) ('[' singleExpression ']')*
 primaryExpression ::= referenceExpression | literal | arrayLiteral | '(' singleExpression ')'
 
