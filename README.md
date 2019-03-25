@@ -1,7 +1,7 @@
 IDEALeek
 ==========
 
-This plugin adds support for the LeekScript language in IntelliJ (see [http://leekwars.com](http://leekwars.com)).
+This plugin adds support for the [LeekScript](https://leekwars.com) language in IntelliJ-based IDEs (see the [compatibility page](https://plugins.jetbrains.com/plugin/7531-leekscript/update/59866)).
 
 [![Build Status](https://travis-ci.org/bjansen/IDEALeek.svg?branch=master)](https://travis-ci.org/bjansen/IDEALeek)
 
@@ -44,8 +44,3 @@ Features
 Planned features
 ================
 * Javadoc-like popup (very limited at the moment)
-
-Current limitations
-===================
-
-* Most of the data exchanged with the LeekWars server was deduced by reverse engineering, no official API is exposed, so changes on the server may require a new version of this plugin.
