@@ -1,13 +1,18 @@
 <idea-plugin version="2">
     <id>com.plopiplop.leekwars</id>
     <name>LeekScript</name>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <vendor>bjansen</vendor>
 
     <description><![CDATA[
       Support for the LeekScript language (http://leekwars.com).
     ]]></description>
 
+    <change-notes><![CDATA[
+        <ul>
+            <li>Fixed parsing of fun()() expressions (<a href="https://github.com/bjansen/IDEALeek/issues/36">#36</a>)</li>
+        </ul>
+    ]]></change-notes>
     <idea-version since-build="141.3058"/>
     <depends>com.intellij.modules.lang</depends>
 
