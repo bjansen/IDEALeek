@@ -32,7 +32,7 @@ public class LSVfsListener extends AbstractProjectComponent {
             }
 
             @Override
-            public void fileDeleted(@NotNull VirtualFileEvent event) {
+            public void fileDeleted(@NotNull final VirtualFileEvent event) {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
