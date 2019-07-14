@@ -3,16 +3,7 @@ package com.plopiplop.leekwars.apiclient.dto;
 import java.util.List;
 
 public class AIsResponse {
-    private boolean success;
     private List<AI> ais;
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
 
     public List<AI> getAis() {
         return ais;

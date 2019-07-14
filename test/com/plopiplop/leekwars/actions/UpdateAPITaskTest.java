@@ -20,7 +20,7 @@ public class UpdateAPITaskTest extends LightCodeInsightFixtureTestCase {
 
         Chip meteorite = manager.getChip("CHIP_METEORITE");
         assertNotNull(meteorite);
-        assertEquals("Niveau 102", meteorite.getLevel());
+        assertTrue(meteorite.getLevel().matches("Niveau \\d+"));
         //assertEquals("Météorite", meteorite.getName());
         assertEquals("CHIP_METEORITE", meteorite.getId());
         assertNotNull(meteorite.getPrice());
@@ -31,7 +31,7 @@ public class UpdateAPITaskTest extends LightCodeInsightFixtureTestCase {
 
         Weapon electrisor = manager.getWeapon("WEAPON_ELECTRISOR");
         assertNotNull(meteorite);
-        assertEquals("Niveau 257", electrisor.getLevel());
+        assertTrue(electrisor.getLevel().matches("Niveau \\d+"));
         //assertEquals("Électriseur", electrisor.getName());
         assertEquals("WEAPON_ELECTRISOR", electrisor.getId());
         assertNotNull(electrisor.getPrice());

@@ -3,16 +3,7 @@ package com.plopiplop.leekwars.apiclient.dto;
 import java.util.List;
 
 public class FunctionsResponse {
-    private boolean success;
     private List<Fun> functions;
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
 
     public List<Fun> getFunctions() {
         return functions;

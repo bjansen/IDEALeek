@@ -1,11 +1,10 @@
 package com.plopiplop.leekwars.apiclient.dto;
 
 public class AIResponse {
-    private boolean success;
     private AI ai;
 
     public boolean isSuccess() {
-        return success;
+        return ai != null;
     }
 
     public AI getAi() {

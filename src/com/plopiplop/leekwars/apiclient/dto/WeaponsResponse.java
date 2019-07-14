@@ -5,17 +5,7 @@ import java.util.Map;
 
 public class WeaponsResponse {
 
-    private Boolean success;
-
     private Map<String, Weap> weapons;
-
-    public Boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
 
     public Collection<Weap> getWeapons() {
         return weapons.values();

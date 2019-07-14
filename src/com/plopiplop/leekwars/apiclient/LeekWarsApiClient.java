@@ -13,6 +13,7 @@ import com.plopiplop.leekwars.apiclient.dto.*;
 import com.plopiplop.leekwars.model.*;
 import com.plopiplop.leekwars.options.LSSettings;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -52,157 +53,129 @@ public class LeekWarsApiClient {
         WeaponsResponse resp = get("/api/weapon/get-all", WeaponsResponse.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/weapon.json", Map.class);
 
-        if (resp.isSuccess()) {
-            List<Weapon> weapons = new ArrayList<Weapon>();
+        List<Weapon> weapons = new ArrayList<Weapon>();
 
-            for (WeaponsResponse.Weap w : resp.getWeapons()) {
-                Weapon weapon = new Weapon();
-                weapon.id = "WEAPON_" + w.getName().toUpperCase();
-                weapon.name = labels.get(w.getName());
-                weapon.description = "";
-                weapon.level = "Niveau " + w.getLevel();
-                weapon.price = "" + w.getCost();
-                weapon.value = w.getId();
-                weapons.add(weapon);
-            }
-
-            return weapons;
+        for (WeaponsResponse.Weap w : resp.getWeapons()) {
+            Weapon weapon = new Weapon();
+            weapon.id = "WEAPON_" + w.getName().toUpperCase();
+            weapon.name = labels.get(w.getName());
+            weapon.description = "";
+            weapon.level = "Niveau " + w.getLevel();
+            weapon.price = "" + w.getCost();
+            weapon.value = w.getId();
+            weapons.add(weapon);
         }
 
-        throw new IOException("Can't fetch weapons");
+        return weapons;
     }
 
     public List<Chip> getChips() throws IOException, PluginNotConfiguredException {
         Map resp = get("/api/chip/get-all", Map.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/chip.json", Map.class);
 
-        if (resp.get("success") == Boolean.TRUE) {
-            Map map = (Map) resp.get("chips");
+        Map map = (Map) resp.get("chips");
 
-            List<Chip> chips = new ArrayList<Chip>();
+        List<Chip> chips = new ArrayList<Chip>();
 
-            for (Object o : map.values()) {
-                Map w = (Map) o;
+        for (Object o : map.values()) {
+            Map w = (Map) o;
 
-                Chip chip = new Chip();
-                chip.id = "CHIP_" + w.get("name").toString().toUpperCase();
-                chip.name = labels.get(w.get("name").toString());
-                chip.description = "";
-                chip.level = "Niveau " + (int) Double.parseDouble(w.get("level").toString());
-                chip.price = w.get("cost").toString();
-                chip.value = "" + (int) Double.parseDouble(w.get("id").toString());
-                chips.add(chip);
-            }
-
-            return chips;
+            Chip chip = new Chip();
+            chip.id = "CHIP_" + w.get("name").toString().toUpperCase();
+            chip.name = labels.get(w.get("name").toString());
+            chip.description = "";
+            chip.level = "Niveau " + (int) Double.parseDouble(w.get("level").toString());
+            chip.price = w.get("cost").toString();
+            chip.value = "" + (int) Double.parseDouble(w.get("id").toString());
+            chips.add(chip);
         }
 
-        throw new IOException("Can't fetch chips");
+        return chips;
     }
 
     public List<Function> getFunctions() throws IOException, PluginNotConfiguredException {
         FunctionsResponse resp = get("/api/function/get-all", FunctionsResponse.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
 
-        if (resp.isSuccess()) {
-            List<Function> functions = new ArrayList<Function>();
-            String lastName = null;
-            int overloads = 0;
+        List<Function> functions = new ArrayList<Function>();
+        String lastName = null;
+        int overloads = 0;
 
-            for (FunctionsResponse.Fun fun : resp.getFunctions()) {
-                Function function = new Function();
-                function.name = fun.getName();
+        for (FunctionsResponse.Fun fun : resp.getFunctions()) {
+            Function function = new Function();
+            function.name = fun.getName();
 
-                String funName = fun.getName();
+            String funName = fun.getName();
 
-                if (fun.getName().equals(lastName)) {
-                    overloads++;
-                    funName += "_" + (overloads + 1);
-                } else {
-                    overloads = 0;
+            if (fun.getName().equals(lastName)) {
+                overloads++;
+                funName += "_" + (overloads + 1);
+            } else {
+                overloads = 0;
+            }
+            lastName = fun.getName();
+
+            function.description = labels.get("func_" + funName);
+
+            int argPos = 0;
+
+            for (String arg : fun.getArgumentNames()) {
+                argPos++;
+                if (!arg.matches("\\d+")) {
+                    function.getParameters().put(arg, labels.get("func_" + funName + "_arg_" + argPos));
                 }
-                lastName = fun.getName();
-
-                function.description = labels.get("func_" + funName);
-
-                int argPos = 0;
-
-                for (String arg : fun.getArgumentNames()) {
-                    argPos++;
-                    if (!arg.matches("\\d+")) {
-                        function.getParameters().put(arg, labels.get("func_" + funName + "_arg_" + argPos));
-                    }
-                }
-
-                functions.add(function);
             }
 
-            return functions;
+            functions.add(function);
         }
 
-        throw new IOException("Can't fetch functions");
+        return functions;
     }
 
     public List<Constant> getConstants() throws IOException, PluginNotConfiguredException {
         ConstantsResponse resp = get("/api/constant/get-all", ConstantsResponse.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
 
-        if (resp.isSuccess()) {
-            List<Constant> constants = ContainerUtil.filter(resp.getConstants(), new Condition<Constant>() {
-                @Override
-                public boolean value(Constant constant) {
-                    return !(constant.getName().startsWith("CHIP_") || constant.getName().startsWith("WEAPON_"));
-                }
-            });
-
-            for (Constant constant : constants) {
-                if (labels.containsKey("const_" + constant.getName())) {
-                    constant.description = labels.get("const_" + constant.getName());
-                } else {
-                    constant.description = constant.getName();
-                }
+        List<Constant> constants = ContainerUtil.filter(resp.getConstants(), new Condition<Constant>() {
+            @Override
+            public boolean value(Constant constant) {
+                return !(constant.getName().startsWith("CHIP_") || constant.getName().startsWith("WEAPON_"));
             }
+        });
 
-            return constants;
+        for (Constant constant : constants) {
+            if (labels.containsKey("const_" + constant.getName())) {
+                constant.description = labels.get("const_" + constant.getName());
+            } else {
+                constant.description = constant.getName();
+            }
         }
 
-        throw new IOException("Can't fetch constants");
+        return constants;
     }
 
     public Map<Integer, String> listScripts() throws IOException, PluginNotConfiguredException {
         AIsResponse resp = secureGet("/api/ai/get-farmer-ais", AIsResponse.class);
 
-        if (resp.isSuccess()) {
-            Map<Integer, String> scripts = new TreeMap<Integer, String>();
+        Map<Integer, String> scripts = new TreeMap<Integer, String>();
 
-            for (AIsResponse.AI fun : resp.getAis()) {
-                scripts.put(fun.getId(), fun.getName());
-            }
-
-            return scripts;
+        for (AIsResponse.AI fun : resp.getAis()) {
+            scripts.put(fun.getId(), fun.getName());
         }
 
-        throw new IOException("Can't fetch script");
+        return scripts;
     }
 
     public String downloadScript(int id) throws IOException, PluginNotConfiguredException {
         AIResponse resp = secureGet("/api/ai/get/" + id, AIResponse.class);
 
-        if (resp.isSuccess()) {
-            return resp.getAi().getCode();
-        }
-
-        throw new IOException("Can't fetch script");
+        return resp.getAi().getCode();
     }
 
     public void renameScript(int id, String name) throws IOException, PluginNotConfiguredException {
         String params = String.format("ai_id=%d&new_name=%s", id, name);
 
-        GenericResponse result = securePost("/api/ai/rename", params, GenericResponse.class);
-
-        if (!result.isSuccess()) {
-            throw new IOException(result.getError());
-        }
+        securePost("/api/ai/rename", params, Void[].class);
     }
 
     public void uploadScript(int id, String name, String content) throws CompilationException, IOException, PluginNotConfiguredException {
@@ -212,8 +185,11 @@ public class LeekWarsApiClient {
 
         renameScript(id, name);
 
-        if (!result.isSuccess()) {
-            throw new CompilationException(result.getResult());
+        if (result.getResult() != null) {
+            CompilationException compilationException = new CompilationException(result.getResult());
+            if (!compilationException.getSuccess()) {
+                throw compilationException;
+            }
         }
     }
 
@@ -232,18 +208,17 @@ public class LeekWarsApiClient {
     }
 
     public void deleteScript(int scriptId) throws IOException, PluginNotConfiguredException {
-        GenericResponse response = securePost("/api/ai/delete", "ai_id=" + scriptId, GenericResponse.class);
-
-        if (!response.isSuccess()) {
-            throw new IOException(response.getError());
-        }
+        securePost("/api/ai/delete", "ai_id=" + scriptId, Void[].class);
     }
 
     private <T> T securePost(String url, String params, Class<T> responseType) throws IOException, PluginNotConfiguredException {
         HttpURLConnection connection = getConnection(url, params, true, true);
+        String json = IOUtils.toString(new InputStreamReader(connection.getInputStream()));
+
+        System.out.println(json);
 
         return new GsonBuilder().create().fromJson(
-                new InputStreamReader(connection.getInputStream()),
+                json,
                 responseType
         );
     }
@@ -275,18 +250,16 @@ public class LeekWarsApiClient {
             if (token == null) {
                 connectToLeekWars();
             }
-
-            if (postData != null) {
-                postData += "&token=" + token;
-            } else {
-                url += "/" + token;
-            }
         }
 
         HttpURLConnection connection = HttpConfigurable.getInstance().openHttpConnection(buildUrl(url));
         connection.setDoInput(true);
         connection.setRequestMethod("GET");
         connection.setInstanceFollowRedirects(followRedirects);
+        if (appendToken) {
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+        }
+        connection.setRequestProperty("Accept", "application/json");
 
         if (postData != null) {
             connection.setDoOutput(true);
@@ -322,7 +295,7 @@ public class LeekWarsApiClient {
 
         //System.out.println(map);
 
-        if (map.get("success") == Boolean.TRUE) {
+        if (map.containsKey("token")) {
             token = map.get("token").toString();
         } else {
             throw new PluginNotConfiguredException();
