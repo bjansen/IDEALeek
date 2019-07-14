@@ -1,6 +1,7 @@
 package com.plopiplop.leekwars.actions;
 
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
+import com.plopiplop.leekwars.apiclient.ApiException;
 import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.options.LSSettings;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
@@ -13,7 +14,7 @@ public class ScriptEditingTest extends LightCodeInsightFixtureTestCase {
     private static final String SCRIPT_CONTENT = "var foo = getLeek();";
     private static final String SCRIPT_NEW_CONTENT = "//You got it man!\nvar foo = getLeek();";
 
-    public void testScriptEditionWorkflow() throws IOException, PluginNotConfiguredException, CompilationException {
+    public void testScriptEditionWorkflow() throws IOException, PluginNotConfiguredException, CompilationException, ApiException {
         LSSettings.getInstance().siteLogin = System.getenv("LKS_LOGIN");
         LSSettings.getInstance().sitePassword = System.getenv("LKS_PASSWORD");
 

@@ -46,10 +46,12 @@ public class LeekWarsApiClient {
             throw new RuntimeException(e);
         } catch (PluginNotConfiguredException e) {
             Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "Please configure the LeekScript plugin", NotificationType.ERROR));
+        } catch (ApiException e) {
+            Notifications.Bus.notify(new Notification("LeekScript", "Can't connect to LeekWars server", "An error occured while calling the LeekWars API", NotificationType.ERROR));
         }
     }
 
-    public List<Weapon> getWeapons() throws IOException, PluginNotConfiguredException {
+    public List<Weapon> getWeapons() throws IOException, PluginNotConfiguredException, ApiException {
         WeaponsResponse resp = get("/api/weapon/get-all", WeaponsResponse.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/weapon.json", Map.class);
 
@@ -69,7 +71,7 @@ public class LeekWarsApiClient {
         return weapons;
     }
 
-    public List<Chip> getChips() throws IOException, PluginNotConfiguredException {
+    public List<Chip> getChips() throws IOException, PluginNotConfiguredException, ApiException {
         Map resp = get("/api/chip/get-all", Map.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/chip.json", Map.class);
 
@@ -93,7 +95,7 @@ public class LeekWarsApiClient {
         return chips;
     }
 
-    public List<Function> getFunctions() throws IOException, PluginNotConfiguredException {
+    public List<Function> getFunctions() throws IOException, PluginNotConfiguredException, ApiException {
         FunctionsResponse resp = get("/api/function/get-all", FunctionsResponse.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
 
@@ -132,7 +134,7 @@ public class LeekWarsApiClient {
         return functions;
     }
 
-    public List<Constant> getConstants() throws IOException, PluginNotConfiguredException {
+    public List<Constant> getConstants() throws IOException, PluginNotConfiguredException, ApiException {
         ConstantsResponse resp = get("/api/constant/get-all", ConstantsResponse.class);
         Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
 
@@ -154,7 +156,7 @@ public class LeekWarsApiClient {
         return constants;
     }
 
-    public Map<Integer, String> listScripts() throws IOException, PluginNotConfiguredException {
+    public Map<Integer, String> listScripts() throws IOException, PluginNotConfiguredException, ApiException {
         AIsResponse resp = secureGet("/api/ai/get-farmer-ais", AIsResponse.class);
 
         Map<Integer, String> scripts = new TreeMap<Integer, String>();
@@ -166,19 +168,19 @@ public class LeekWarsApiClient {
         return scripts;
     }
 
-    public String downloadScript(int id) throws IOException, PluginNotConfiguredException {
+    public String downloadScript(int id) throws IOException, PluginNotConfiguredException, ApiException {
         AIResponse resp = secureGet("/api/ai/get/" + id, AIResponse.class);
 
         return resp.getAi().getCode();
     }
 
-    public void renameScript(int id, String name) throws IOException, PluginNotConfiguredException {
+    public void renameScript(int id, String name) throws IOException, PluginNotConfiguredException, ApiException {
         String params = String.format("ai_id=%d&new_name=%s", id, name);
 
         securePost("/api/ai/rename", params, Void[].class);
     }
 
-    public void uploadScript(int id, String name, String content) throws CompilationException, IOException, PluginNotConfiguredException {
+    public void uploadScript(int id, String name, String content) throws CompilationException, IOException, PluginNotConfiguredException, ApiException {
         String params = String.format("ai_id=%d&code=%s", id, URLEncoder.encode(content, "UTF-8"));
 
         GenericResponse result = securePost("/api/ai/save", params, GenericResponse.class);
@@ -193,52 +195,61 @@ public class LeekWarsApiClient {
         }
     }
 
-    public int createScript(String name, String content) throws IOException, PluginNotConfiguredException, CompilationException {
+    public int createScript(String name, String content) throws IOException, PluginNotConfiguredException, CompilationException, ApiException {
         AIResponse resp = securePost("/api/ai/new", "folder_id=0&v2=false", AIResponse.class);
 
-        if (resp.isSuccess()) {
-            int id = resp.getAi().getId();
+        int id = resp.getAi().getId();
 
-            uploadScript(id, name, content);
+        uploadScript(id, name, content);
 
-            return id;
-        }
-
-        throw new IOException("Can't create script");
+        return id;
     }
 
-    public void deleteScript(int scriptId) throws IOException, PluginNotConfiguredException {
+    public void deleteScript(int scriptId) throws IOException, PluginNotConfiguredException, ApiException {
         securePost("/api/ai/delete", "ai_id=" + scriptId, Void[].class);
     }
 
-    private <T> T securePost(String url, String params, Class<T> responseType) throws IOException, PluginNotConfiguredException {
+    private <T> T securePost(String url, String params, Class<T> responseType) throws IOException, PluginNotConfiguredException, ApiException {
         HttpURLConnection connection = getConnection(url, params, true, true);
-        String json = IOUtils.toString(new InputStreamReader(connection.getInputStream()));
 
-        System.out.println(json);
+        if (connection.getResponseCode() == 200) {
+            String json = IOUtils.toString(new InputStreamReader(connection.getInputStream()));
 
-        return new GsonBuilder().create().fromJson(
-                json,
-                responseType
-        );
+            System.out.println(json);
+
+            return new GsonBuilder().create().fromJson(
+                    json,
+                    responseType
+            );
+        } else {
+            throw new ApiException("securePost", url, params);
+        }
     }
 
-    private <T> T secureGet(String url, Class<T> responseType) throws IOException, PluginNotConfiguredException {
+    private <T> T secureGet(String url, Class<T> responseType) throws IOException, PluginNotConfiguredException, ApiException {
         HttpURLConnection connection = getConnection(url, null, true, true);
 
-        return new GsonBuilder().create().fromJson(
-                new InputStreamReader(connection.getInputStream()),
-                responseType
-        );
+        if (connection.getResponseCode() == 200) {
+            return new GsonBuilder().create().fromJson(
+                    new InputStreamReader(connection.getInputStream()),
+                    responseType
+            );
+        } else {
+            throw new ApiException("secureGet", url, null);
+        }
     }
 
-    private <T> T get(String url, Class<T> responseType) throws IOException, PluginNotConfiguredException {
+    private <T> T get(String url, Class<T> responseType) throws IOException, PluginNotConfiguredException, ApiException {
         HttpURLConnection connection = getConnection(url, null, true, false);
 
-        return new GsonBuilder().create().fromJson(
-                new InputStreamReader(connection.getInputStream()),
-                responseType
-        );
+        if (connection.getResponseCode() == 200) {
+            return new GsonBuilder().create().fromJson(
+                    new InputStreamReader(connection.getInputStream()),
+                    responseType
+            );
+        } else {
+            throw new ApiException("get", url, null);
+        }
     }
 
     private HttpURLConnection getConnection(String url, String postData, boolean followRedirects, boolean appendToken) throws PluginNotConfiguredException, IOException {

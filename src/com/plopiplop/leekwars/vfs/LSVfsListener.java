@@ -7,6 +7,7 @@ import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.*;
 import com.plopiplop.leekwars.actions.CompilationException;
+import com.plopiplop.leekwars.apiclient.ApiException;
 import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
@@ -55,7 +56,7 @@ public class LSVfsListener extends AbstractProjectComponent {
 
                 LeekWarsApiClient.callAction(new ServerAction() {
                     @Override
-                    public void doAction() throws PluginNotConfiguredException, IOException {
+                    public void doAction() throws PluginNotConfiguredException, IOException, ApiException {
                         LeekWarsApiClient.getInstance().deleteScript(id);
                     }
                 });
@@ -77,7 +78,7 @@ public class LSVfsListener extends AbstractProjectComponent {
 
                     LeekWarsApiClient.callAction(new ServerAction() {
                         @Override
-                        public void doAction() throws PluginNotConfiguredException, IOException {
+                        public void doAction() throws PluginNotConfiguredException, IOException, ApiException {
                             try {
                                 LeekWarsApiClient.getInstance().uploadScript(Integer.parseInt(newMatcher.group(2)), newMatcher.group(1), new String(event.getFile().contentsToByteArray()));
                             } catch (CompilationException e) {

@@ -14,6 +14,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiManager;
 import com.plopiplop.leekwars.LeekWarsApi;
+import com.plopiplop.leekwars.apiclient.ApiException;
 import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ModelManager;
 import com.plopiplop.leekwars.model.ServerAction;
@@ -42,7 +43,7 @@ public class UpdateAPITask implements Runnable {
 
         LeekWarsApiClient.callAction(new ServerAction() {
             @Override
-            public void doAction() throws PluginNotConfiguredException, IOException {
+            public void doAction() throws PluginNotConfiguredException, IOException, ApiException {
                 modelManager.setWeapons(LeekWarsApiClient.getInstance().getWeapons());
                 modelManager.setChips(LeekWarsApiClient.getInstance().getChips());
                 modelManager.setFunctions(LeekWarsApiClient.getInstance().getFunctions());

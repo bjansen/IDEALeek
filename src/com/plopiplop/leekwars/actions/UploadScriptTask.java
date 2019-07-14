@@ -15,6 +15,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.ui.content.MessageView;
+import com.plopiplop.leekwars.apiclient.ApiException;
 import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
@@ -72,7 +73,7 @@ public class UploadScriptTask implements Runnable {
     private void uploadFile(final VirtualFile file, final PsiFile psiFile, final Integer id, final String name) {
         LeekWarsApiClient.callAction(new ServerAction() {
             @Override
-            public void doAction() throws PluginNotConfiguredException, IOException {
+            public void doAction() throws PluginNotConfiguredException, IOException, ApiException {
                 try {
                     if (id == null) {
                         int newId = LeekWarsApiClient.getInstance().createScript(name, psiFile.getText());

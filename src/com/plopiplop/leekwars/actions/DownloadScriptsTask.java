@@ -9,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.plopiplop.leekwars.apiclient.ApiException;
 import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
@@ -45,7 +46,7 @@ public class DownloadScriptsTask implements Runnable {
                     public void run() {
                         LeekWarsApiClient.callAction(new ServerAction() {
                             @Override
-                            public void doAction() throws PluginNotConfiguredException, IOException {
+                            public void doAction() throws PluginNotConfiguredException, IOException, ApiException {
                                 downloadFiles();
                             }
                         });
@@ -73,7 +74,7 @@ public class DownloadScriptsTask implements Runnable {
         }
     }
 
-    private void downloadFiles() throws IOException, PluginNotConfiguredException {
+    private void downloadFiles() throws IOException, PluginNotConfiguredException, ApiException {
         Module module = ModuleManager.getInstance(project).getModules()[0];
         VirtualFile[] sourceRoots = ModuleRootManager.getInstance(module).getSourceRoots(false);
         PsiDirectory srcDirectory = null;
