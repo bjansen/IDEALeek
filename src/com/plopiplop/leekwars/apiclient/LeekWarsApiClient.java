@@ -1,5 +1,6 @@
 package com.plopiplop.leekwars.apiclient;
 
+import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.intellij.notification.Notification;
@@ -13,7 +14,6 @@ import com.plopiplop.leekwars.apiclient.dto.*;
 import com.plopiplop.leekwars.model.*;
 import com.plopiplop.leekwars.options.LSSettings;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
-import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -213,7 +213,7 @@ public class LeekWarsApiClient {
         HttpURLConnection connection = getConnection(url, params, true, true);
 
         if (connection.getResponseCode() == 200) {
-            String json = IOUtils.toString(new InputStreamReader(connection.getInputStream()));
+            String json = CharStreams.toString(new InputStreamReader(connection.getInputStream()));
 
             System.out.println(json);
 

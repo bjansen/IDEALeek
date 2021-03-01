@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/IDEALeek.iml" filepath="$PROJECT_DIR$/.idea/IDEALeek.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IDEALeek.main.iml" filepath="$PROJECT_DIR$/.idea/modules/IDEALeek.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/IDEALeek.test.iml" filepath="$PROJECT_DIR$/.idea/modules/IDEALeek.test.iml" />
     </modules>
   </component>
 </project>
-
