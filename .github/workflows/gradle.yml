@@ -15,9 +15,9 @@ jobs:
             matrix:
                 env:
                     - IDEA_VERSION: IC-2016.1.4
-                    - IDEA_VERSION: IC-2017.3.7
+                    - IDEA_VERSION: IC-2017.3.6
                     - IDEA_VERSION: IC-2018.3.6
-                    - IDEA_VERSION: IC-2029.3.5
+                    - IDEA_VERSION: IC-2019.3.5
                     - IDEA_VERSION: IC-2020.3.2
                       JDK_VERSION: '11'
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
