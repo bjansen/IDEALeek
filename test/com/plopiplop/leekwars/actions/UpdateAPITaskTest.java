@@ -30,12 +30,12 @@ public class UpdateAPITaskTest extends LightCodeInsightFixtureTestCase {
         assertNotEmpty(manager.getWeapons());
 
         Weapon electrisor = manager.getWeapon("WEAPON_ELECTRISOR");
-        assertNotNull(meteorite);
+        assertNotNull(electrisor);
         assertTrue(electrisor.getLevel().matches("Niveau \\d+"));
         //assertEquals("Électriseur", electrisor.getName());
         assertEquals("WEAPON_ELECTRISOR", electrisor.getId());
         assertNotNull(electrisor.getPrice());
         assertNotNull(electrisor.getDescription());
-        assertEquals("44", electrisor.getValue());
+        assertEquals("11", electrisor.getValue());
     }
 }

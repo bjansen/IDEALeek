@@ -1,59 +1,23 @@
 package com.plopiplop.leekwars.actions;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompilationException extends Exception {
-    private boolean success;
-    private int line;
-    @SerializedName("char")
-    private int character;
-    @SerializedName("error")
-    private String message;
 
-    public CompilationException(Object[][] objects) {
-        for (Object[] object : objects) {
-            int code = (int) Double.parseDouble(object[0].toString());
-            success = code == 2;
+    private final List<CompilationError> errors = new ArrayList<>();
 
-            if (code == 1) {
-                message = "Unknown error";
-            } else if (code == 0) {
-                line = (int) Double.parseDouble(object[3].toString());
-                character = (int) Double.parseDouble(object[4].toString());
-                message = object[5].toString();
-            }
+    public CompilationException(List<Object> objects) {
+        for (Object o : objects) {
+            errors.add(new CompilationError((List<Object>) o));
         }
     }
 
-    public boolean getSuccess() {
-        return success;
+    public List<CompilationError> getErrors() {
+        return errors;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public int getLine() {
-        return line;
-    }
-
-    public void setLine(int line) {
-        this.line = line;
-    }
-
-    public int getCharacter() {
-        return character;
-    }
-
-    public void setCharacter(int character) {
-        this.character = character;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
+    public boolean isSuccess() {
+        return errors.size() == 0;
     }
 }

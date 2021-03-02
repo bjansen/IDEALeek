@@ -1,10 +1,12 @@
 package com.plopiplop.leekwars.apiclient.dto;
 
+import java.util.Map;
+
 public class GenericResponse {
 
 	private boolean success;
 	private String error;
-	private Object[][] result;
+	private Map<String, Object> result;
 
 	public boolean isSuccess() {
 		return success;
@@ -14,7 +16,7 @@ public class GenericResponse {
 		return error;
 	}
 
-	public Object[][] getResult() {
+	public Map<String, Object> getResult() {
 		return result;
 	}
 }

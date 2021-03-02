@@ -132,7 +132,7 @@ public class LSStructureViewModel extends TextEditorBasedStructureViewModel {
         @NotNull
         @Override
         public ActionPresentation getPresentation() {
-            return new ActionPresentationData("Show " + label, null, AllIcons.General.HideDown);
+            return new ActionPresentationData("Show " + label, null, AllIcons.General.Filter);
         }
 
         @NotNull

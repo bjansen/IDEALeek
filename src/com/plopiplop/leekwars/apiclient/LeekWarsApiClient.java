@@ -97,7 +97,7 @@ public class LeekWarsApiClient {
 
     public List<Function> getFunctions() throws IOException, PluginNotConfiguredException, ApiException {
         FunctionsResponse resp = get("/api/function/get-all", FunctionsResponse.class);
-        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
+        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars/master/src/lang/doc.fr.lang", Map.class);
 
         List<Function> functions = new ArrayList<Function>();
         String lastName = null;
@@ -136,7 +136,7 @@ public class LeekWarsApiClient {
 
     public List<Constant> getConstants() throws IOException, PluginNotConfiguredException, ApiException {
         ConstantsResponse resp = get("/api/constant/get-all", ConstantsResponse.class);
-        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars-client/master/src/lang/fr/documentation.json", Map.class);
+        Map<String, String> labels = get("https://raw.githubusercontent.com/leek-wars/leek-wars/master/src/lang/doc.fr.lang", Map.class);
 
         List<Constant> constants = ContainerUtil.filter(resp.getConstants(), new Condition<Constant>() {
             @Override
@@ -187,16 +187,21 @@ public class LeekWarsApiClient {
 
         renameScript(id, name);
 
-        if (result.getResult() != null) {
-            CompilationException compilationException = new CompilationException(result.getResult());
-            if (!compilationException.getSuccess()) {
-                throw compilationException;
+        Object uploadResult = result.getResult().get("" + id);
+        if (uploadResult instanceof List) {
+            List<Object> list = (List<Object>) uploadResult;
+
+            if (!list.isEmpty()) {
+                CompilationException compilationException = new CompilationException(list);
+                if (!compilationException.isSuccess()) {
+                    throw compilationException;
+                }
             }
         }
     }
 
     public int createScript(String name, String content) throws IOException, PluginNotConfiguredException, CompilationException, ApiException {
-        AIResponse resp = securePost("/api/ai/new", "folder_id=0&v2=false", AIResponse.class);
+        AIResponse resp = securePost("/api/ai/new", "folder_id=0&v2=false&version=10", AIResponse.class);
 
         int id = resp.getAi().getId();
 
@@ -222,6 +227,7 @@ public class LeekWarsApiClient {
                     responseType
             );
         } else {
+            System.out.println(CharStreams.toString(new InputStreamReader(connection.getErrorStream())));
             throw new ApiException("securePost", url, params);
         }
     }

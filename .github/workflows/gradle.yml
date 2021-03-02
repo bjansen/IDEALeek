@@ -18,9 +18,12 @@ jobs:
                     - IDEA_VERSION: IC-2017.3.6
                     - IDEA_VERSION: IC-2018.3.6
                     - IDEA_VERSION: IC-2019.3.5
+                      TEST_PLUGINS: 'java'
                     - IDEA_VERSION: IC-2020.3.2
+                      TEST_PLUGINS: 'java'
                       JDK_VERSION: '11'
                     - IDEA_VERSION: IU-LATEST-EAP-SNAPSHOT
+                      TEST_PLUGINS: 'java'
                       JDK_VERSION: '11'
 
         steps:
@@ -36,8 +39,13 @@ jobs:
                   java-version: 11
               if: matrix.env.JDK_VERSION == '11'
             - name: Build with Gradle
-              run: ./gradlew build -PideaVersion=${IDEA_VERSION}
-              env: ${{ matrix.env }}
+              run: ./gradlew build -PideaVersion=${IDEA_VERSION} -PtestPlugins=${TEST_PLUGINS}
+              env:
+                TEST_PLUGINS: ${{ matrix.env.TEST_PLUGINS }}
+                IDEA_VERSION: ${{ matrix.env.IDEA_VERSION }}
+                LKS_LOGIN: ${{ secrets.LKS_LOGIN }}
+                LKS_PASSWORD: ${{ secrets.LKS_PASSWORD }}
+
             - name: SonarQube analysis
               if: matrix.env.IDEA_VERSION == 'IU-2020.3.2'
               run: ./gradlew jacocoTestReport sonarqube -Dsonar.login=${SONAR_TOKEN} -PideaVersion=${IDEA_VERSION}

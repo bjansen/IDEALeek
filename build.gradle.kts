@@ -5,6 +5,7 @@ val downloadIdeaSources: String by project
 val publishUsername: String by project
 val publishPassword: String by project
 val publishChannels: String by project
+val testPlugins: String by project
 
 repositories {
     mavenCentral()
@@ -29,6 +30,10 @@ intellij {
     version = ideaVersion
     downloadSources = downloadIdeaSources.toBoolean()
     updateSinceUntilBuild = false
+    val plugins = testPlugins.split(",")
+    if (testPlugins.isNotBlank() && plugins.isNotEmpty()) {
+        setPlugins(*plugins.toTypedArray())
+    }
 
     tasks.withType<RunPluginVerifierTask> {
         setIdeVersions(listOf("IU-2019.2.3", "IU-2020.3.2"))

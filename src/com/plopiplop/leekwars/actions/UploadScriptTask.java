@@ -1,26 +1,27 @@
 package com.plopiplop.leekwars.actions;
 
-import com.intellij.compiler.CompilerMessageImpl;
-import com.intellij.compiler.progress.CompilerTask;
+import com.intellij.ide.errorTreeView.NewErrorTreeViewPanel;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.LangDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.compiler.CompilerMessageCategory;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.EmptyRunnable;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.ToolWindowId;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.ui.content.MessageView;
+import com.intellij.ui.content.ContentManager;
+import com.intellij.ui.content.MessageView.SERVICE;
+import com.intellij.ui.content.impl.ContentImpl;
+import com.intellij.util.ui.MessageCategory;
 import com.plopiplop.leekwars.apiclient.ApiException;
 import com.plopiplop.leekwars.apiclient.LeekWarsApiClient;
 import com.plopiplop.leekwars.model.ServerAction;
 import com.plopiplop.leekwars.options.PluginNotConfiguredException;
 import com.plopiplop.leekwars.psi.LSFile;
-
 import java.io.IOException;
 import java.util.regex.Matcher;
 
@@ -116,12 +117,20 @@ public class UploadScriptTask implements Runnable {
                 ApplicationManager.getApplication().runWriteAction(new Runnable() {
                     @Override
                     public void run() {
+                        ContentManager contentManager = SERVICE.getInstance(project).getContentManager();
+
                         if (e == null) {
-                            MessageView.SERVICE.getInstance(project).getContentManager().removeAllContents(false);
+                            contentManager.removeAllContents(false);
                         } else {
-                            CompilerTask task = new CompilerTask(project, "LeekScript", false, false, false, true);
-                            task.start(EmptyRunnable.getInstance(), null);
-                            task.addMessage(new CompilerMessageImpl(project, CompilerMessageCategory.ERROR, e.getMessage(), file, e.getLine(), e.getCharacter(), null));
+                            NewErrorTreeViewPanel panel = new NewErrorTreeViewPanel(project, "LeekScript", false, true);
+
+                            for (CompilationError error : e.getErrors()) {
+                                panel.addMessage(MessageCategory.ERROR, new String[]{error.getMessage()}, file, error.getLine() - 1, error.getCharacter() - 1, null);
+                            }
+                            contentManager.addContent(new ContentImpl(panel, "Compilation Result", false));
+
+                            ToolWindowManager.getInstance(project).getToolWindow(ToolWindowId.MESSAGES_WINDOW).activate(null);
+
                             e.printStackTrace();
                         }
                     }
