@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <id>com.plopiplop.leekwars</id>
     <name>LeekScript</name>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <vendor>bjansen</vendor>
 
     <description><![CDATA[
@@ -10,8 +10,7 @@
 
     <change-notes><![CDATA[
         <ul>
-            <li>Fixed connection issues to the LeekWars API (<a href="https://github.com/bjansen/IDEALeek/issues/37">#37</a>)</li>
-            <li>Minimum version is now IntelliJ IDEA 2016.1</li>
+            <li>Fixed connection issues to the LeekWars API (again)</li>
         </ul>
     ]]></change-notes>
     <idea-version since-build="145"/>
