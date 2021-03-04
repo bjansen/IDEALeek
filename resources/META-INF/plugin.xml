@@ -5,7 +5,7 @@
     <vendor>bjansen</vendor>
 
     <description><![CDATA[
-      Support for the LeekScript language (http://leekwars.com).
+      Support for the <a href="https://leekwars.com">LeekScript</a> language.
     ]]></description>
 
     <change-notes><![CDATA[
